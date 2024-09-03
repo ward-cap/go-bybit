@@ -1,4 +1,4 @@
-package bybit
+package src
 
 // SymbolDerivative :
 type SymbolDerivative string

@@ -1,4 +1,4 @@
-package bybit
+package src
 
 // CopyTradingService :
 type CopyTradingService struct {

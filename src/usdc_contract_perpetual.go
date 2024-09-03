@@ -1,4 +1,4 @@
-package bybit
+package src
 
 // USDCContractPerpetualService :
 type USDCContractPerpetualService struct {

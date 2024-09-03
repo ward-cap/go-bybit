@@ -1,4 +1,4 @@
-package bybit
+package src
 
 // V5ServiceI :
 type V5ServiceI interface {

@@ -1,4 +1,4 @@
-package bybit
+package src
 
 // V5SpotMarginTradeServiceI :
 type V5SpotMarginTradeServiceI interface {

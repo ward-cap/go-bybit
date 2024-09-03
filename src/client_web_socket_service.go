@@ -1,4 +1,4 @@
-package bybit
+package src
 
 // SpotWebsocketService :
 type SpotWebsocketService struct {

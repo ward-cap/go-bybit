@@ -1,4 +1,4 @@
-package bybit
+package src
 
 import (
 	"bytes"
@@ -8,9 +8,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/hirokisan/bybit/v2"
+	"go.uber.org/zap"
 	"io"
-	"log"
 	"net/http"
 	"net/url"
 	"sort"
@@ -31,7 +30,7 @@ type Client struct {
 	httpClient *http.Client
 
 	debug  bool
-	logger *log.Logger
+	logger *zap.SugaredLogger
 
 	baseURL string
 	key     string
@@ -45,7 +44,7 @@ type Client struct {
 
 func (c *Client) debugf(format string, v ...interface{}) {
 	if c.debug {
-		c.logger.Printf(format, v...)
+		c.logger.Infof(format, v...)
 	}
 }
 
@@ -53,8 +52,6 @@ func (c *Client) debugf(format string, v ...interface{}) {
 func NewClient() *Client {
 	return &Client{
 		httpClient: &http.Client{},
-
-		logger: bybit.newDefaultLogger(),
 
 		baseURL:           MainNetBaseURL,
 		checkResponseBody: checkResponseBody,
@@ -76,7 +73,7 @@ func (c *Client) WithDebug(debug bool) *Client {
 }
 
 // WithLogger :
-func (c *Client) WithLogger(logger *log.Logger) *Client {
+func (c *Client) WithLogger(logger *zap.SugaredLogger) *Client {
 	c.debug = true
 	c.logger = logger
 

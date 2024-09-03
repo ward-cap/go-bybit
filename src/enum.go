@@ -1,4 +1,4 @@
-package bybit
+package src
 
 // Coin :
 type Coin string

@@ -1,4 +1,4 @@
-package bybit
+package src
 
 // USDCContractOptionService :
 type USDCContractOptionService struct {

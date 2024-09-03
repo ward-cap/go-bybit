@@ -1,4 +1,4 @@
-package bybit
+package src
 
 // SpotServiceI :
 type SpotServiceI interface {
@@ -105,8 +105,8 @@ func (c *Client) Derivative() DerivativeServiceI {
 }
 
 // AccountAsset :
-func (c *Client) AccountAsset() *src.AccountAssetService {
-	return &src.AccountAssetService{c}
+func (c *Client) AccountAsset() *AccountAssetService {
+	return &AccountAssetService{c}
 }
 
 // CopyTrading :

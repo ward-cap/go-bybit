@@ -1,4 +1,4 @@
-package bybit
+package src
 
 // V5SpotLeverageTokenServiceI :
 type V5SpotLeverageTokenServiceI interface {

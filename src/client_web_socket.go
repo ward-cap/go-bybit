@@ -1,4 +1,4 @@
-package bybit
+package src
 
 import (
 	"context"
@@ -7,7 +7,6 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"github.com/hirokisan/bybit/v2"
 	"log"
 	"os"
 	"os/signal"
@@ -40,8 +39,6 @@ func (c *WebSocketClient) debugf(format string, v ...interface{}) {
 // NewWebsocketClient :
 func NewWebsocketClient() *WebSocketClient {
 	return &WebSocketClient{
-		logger: bybit.newDefaultLogger(),
-
 		baseURL: WebsocketBaseURL,
 	}
 }

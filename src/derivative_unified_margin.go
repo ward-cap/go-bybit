@@ -1,4 +1,4 @@
-package bybit
+package src
 
 // DerivativeUnifiedMarginServiceI :
 type DerivativeUnifiedMarginServiceI interface {

@@ -1,4 +1,4 @@
-package bybit
+package src
 
 // TimeInForceSpot :
 type TimeInForceSpot string

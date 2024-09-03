@@ -1,16 +1,13 @@
-module github.com/hirokisan/bybit/v2
+module github.com/ward-cap/go-bybit
 
 go 1.21
 
 require (
 	github.com/google/go-querystring v1.1.0
-	github.com/gorilla/websocket v1.5.0
-	github.com/stretchr/testify v1.8.2
+	github.com/google/uuid v1.6.0
+	github.com/gorilla/websocket v1.5.3
+	github.com/hirokisan/bybit/v2 v2.32.0
+	go.uber.org/zap v1.27.0
 )
 
-require (
-	github.com/davecgh/go-spew v1.1.1 // indirect
-	github.com/google/uuid v1.6.0 // indirect
-	github.com/pmezard/go-difflib v1.0.0 // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
-)
+require go.uber.org/multierr v1.11.0 // indirect

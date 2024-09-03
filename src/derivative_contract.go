@@ -1,4 +1,4 @@
-package bybit
+package src
 
 // DerivativeContractServiceI :
 type DerivativeContractServiceI interface {
