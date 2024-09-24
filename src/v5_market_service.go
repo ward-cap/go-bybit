@@ -296,7 +296,7 @@ type V5GetPremiumIndexPriceKlineItem struct {
 
 // UnmarshalJSON :
 func (l *V5GetPremiumIndexPriceKlineList) UnmarshalJSON(data []byte) error {
-	parsedData := [][]interface{}{}
+	var parsedData [][]any
 	if err := json.Unmarshal(data, &parsedData); err != nil {
 		return err
 	}
@@ -304,7 +304,7 @@ func (l *V5GetPremiumIndexPriceKlineList) UnmarshalJSON(data []byte) error {
 		if len(d) != 5 {
 			return errors.New("so far len(items) must be 5, please check it on documents")
 		}
-		logger.Printf("parse v5 get premium index price kline list item: %v", d)
+		//logger.Printf("parse v5 get premium index price kline list item: %v", d)
 		*l = append(*l, V5GetPremiumIndexPriceKlineItem{
 			StartTime: d[0].(string),
 			Open:      d[1].(string),
