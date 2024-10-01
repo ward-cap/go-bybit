@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/shopspring/decimal"
 	"strings"
 
 	"github.com/gorilla/websocket"
@@ -18,11 +19,11 @@ func (s *V5WebsocketPublicService) SubscribeTicker(
 		return nil, err
 	}
 	param := struct {
-		Op   string        `json:"op"`
-		Args []interface{} `json:"args"`
+		Op   string `json:"op"`
+		Args []any  `json:"args"`
 	}{
 		Op:   "subscribe",
-		Args: []interface{}{key.Topic()},
+		Args: []any{key.Topic()},
 	}
 	buf, err := json.Marshal(param)
 	if err != nil {
@@ -33,17 +34,17 @@ func (s *V5WebsocketPublicService) SubscribeTicker(
 	}
 	return func() error {
 		param := struct {
-			Op   string        `json:"op"`
-			Args []interface{} `json:"args"`
+			Op   string `json:"op"`
+			Args []any  `json:"args"`
 		}{
 			Op:   "unsubscribe",
-			Args: []interface{}{key.Topic()},
+			Args: []any{key.Topic()},
 		}
 		buf, err := json.Marshal(param)
 		if err != nil {
 			return err
 		}
-		if err := s.writeMessage(websocket.TextMessage, []byte(buf)); err != nil {
+		if err := s.writeMessage(websocket.TextMessage, buf); err != nil {
 			return err
 		}
 		s.removeParamTickerFunc(key)
@@ -138,15 +139,15 @@ type V5WebsocketPublicTickerOptionResult struct {
 
 // V5WebsocketPublicTickerSpotResult :
 type V5WebsocketPublicTickerSpotResult struct {
-	Symbol        SymbolV5 `json:"symbol"`
-	LastPrice     string   `json:"lastPrice"`
-	HighPrice24H  string   `json:"highPrice24h"`
-	LowPrice24H   string   `json:"lowPrice24h"`
-	PrevPrice24H  string   `json:"prevPrice24h"`
-	Volume24H     string   `json:"volume24h"`
-	Turnover24H   string   `json:"turnover24h"`
-	Price24HPcnt  string   `json:"price24hPcnt"`
-	UsdIndexPrice string   `json:"usdIndexPrice"`
+	Symbol        SymbolV5            `json:"symbol"`
+	LastPrice     decimal.NullDecimal `json:"lastPrice"`
+	HighPrice24H  decimal.NullDecimal `json:"highPrice24h"`
+	LowPrice24H   decimal.NullDecimal `json:"lowPrice24h"`
+	PrevPrice24H  decimal.NullDecimal `json:"prevPrice24h"`
+	Volume24H     decimal.NullDecimal `json:"volume24h"`
+	Turnover24H   decimal.NullDecimal `json:"turnover24h"`
+	Price24HPcnt  decimal.NullDecimal `json:"price24hPcnt"`
+	UsdIndexPrice decimal.NullDecimal `json:"usdIndexPrice"`
 }
 
 // Key :
