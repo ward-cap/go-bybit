@@ -141,13 +141,13 @@ type V5WebsocketPublicTickerOptionResult struct {
 type V5WebsocketPublicTickerSpotResult struct {
 	Symbol        SymbolV5            `json:"symbol"`
 	LastPrice     decimal.NullDecimal `json:"lastPrice"`
-	HighPrice24H  decimal.NullDecimal `json:"highPrice24h"`
-	LowPrice24H   decimal.NullDecimal `json:"lowPrice24h"`
-	PrevPrice24H  decimal.NullDecimal `json:"prevPrice24h"`
-	Volume24H     decimal.NullDecimal `json:"volume24h"`
-	Turnover24H   decimal.NullDecimal `json:"turnover24h"`
-	Price24HPcnt  decimal.NullDecimal `json:"price24hPcnt"`
-	UsdIndexPrice decimal.NullDecimal `json:"usdIndexPrice"`
+	HighPrice24H  string              `json:"highPrice24h"`
+	LowPrice24H   string              `json:"lowPrice24h"`
+	PrevPrice24H  string              `json:"prevPrice24h"`
+	Volume24H     string              `json:"volume24h"`
+	Turnover24H   string              `json:"turnover24h"`
+	Price24HPcnt  string              `json:"price24hPcnt"`
+	UsdIndexPrice string              `json:"usdIndexPrice"`
 }
 
 // Key :
