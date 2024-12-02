@@ -1,51 +1,27 @@
 package src
 
-// Coin :
 type Coin string
 
-const (
-	// CoinBTC :
-	CoinBTC = Coin("BTC")
-	// CoinETH :
-	CoinETH = Coin("ETH")
-	// CoinEOS :
-	CoinEOS = Coin("EOS")
-	// CoinXRP :
-	CoinXRP = Coin("XRP")
-	// CoinUSDT :
-	CoinUSDT = Coin("USDT")
-)
-
-// Side :
 type Side string
 
 const (
-	// SideNone : not defined officially
-	SideNone = Side("None")
-	// SideBuy :
-	SideBuy = Side("Buy")
-	// SideSell :
-	SideSell = Side("Sell")
+	SideNone Side = "None"
+	SideBuy  Side = "Buy"
+	SideSell Side = "Sell"
 )
 
-// OrderType :
 type OrderType string
 
 const (
-	// OrderTypeLimit :
-	OrderTypeLimit = OrderType("Limit")
-	// OrderTypeMarket :
-	OrderTypeMarket = OrderType("Market")
+	OrderTypeLimit  OrderType = "Limit"
+	OrderTypeMarket OrderType = "Market"
 )
 
-// The unit for qty when create Spot market orders for UTA account.
 type MarketUnit string
 
 const (
-	// Buy BTCUSDT, then "qty" unit is BTC.
-	MarketUnitBaseCoin = MarketUnit("baseCoin")
-	// Sell BTCUSDT, then "qty" unit is USDT.
-	MarketUnitQuoteCoin = MarketUnit("quoteCoin")
+	MarketUnitBaseCoin  MarketUnit = "baseCoin"
+	MarketUnitQuoteCoin MarketUnit = "quoteCoin"
 )
 
 // OrderStatus :
@@ -121,32 +97,19 @@ var Intervals = []Interval{
 }
 
 const (
-	// Interval1 :
-	Interval1 = Interval("1")
-	// Interval3 :
-	Interval3 = Interval("3")
-	// Interval5 :
-	Interval5 = Interval("5")
-	// Interval15 :
-	Interval15 = Interval("15")
-	// Interval30 :
-	Interval30 = Interval("30")
-	// Interval60 :
-	Interval60 = Interval("60")
-	// Interval120 :
+	Interval1   = Interval("1")
+	Interval3   = Interval("3")
+	Interval5   = Interval("5")
+	Interval15  = Interval("15")
+	Interval30  = Interval("30")
+	Interval60  = Interval("60")
 	Interval120 = Interval("120")
-	// Interval240 :
 	Interval240 = Interval("240")
-	// Interval360 :
 	Interval360 = Interval("360")
-	// Interval720 :
 	Interval720 = Interval("720")
-	// IntervalD :
-	IntervalD = Interval("D")
-	// IntervalW :
-	IntervalW = Interval("W")
-	// IntervalM :
-	IntervalM = Interval("M")
+	IntervalD   = Interval("D")
+	IntervalW   = Interval("W")
+	IntervalM   = Interval("M")
 )
 
 // TickDirection :

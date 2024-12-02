@@ -325,7 +325,7 @@ func (c *Client) getV5Privately(path string, query url.Values, dst interface{}) 
 	u.RawQuery = query.Encode()
 
 	timestamp := c.getTimestamp()
-	sign := getV5Signature(timestamp, c.key, query.Encode(), c.secret)
+	sign := getV5Signature(timestamp, c.key, u.RawQuery, c.secret)
 
 	req, err := http.NewRequest(http.MethodGet, u.String(), nil)
 	if err != nil {
