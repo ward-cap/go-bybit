@@ -129,7 +129,7 @@ func (s *V5PositionService) SetLeverage(param V5SetLeverageParam) (*V5SetLeverag
 		return &res, fmt.Errorf("json marshal: %w", err)
 	}
 
-	if err := s.client.postV5JSON("/v5/position/set-leverage", body, &res); err != nil {
+	if err := s.client.postV5JSON(nil, "/v5/position/set-leverage", body, &res); err != nil {
 		return &res, err
 	}
 
@@ -186,7 +186,7 @@ func (s *V5PositionService) SetTradingStop(param V5SetTradingStopParam) (*V5SetT
 		return &res, fmt.Errorf("json marshal: %w", err)
 	}
 
-	if err := s.client.postV5JSON("/v5/position/trading-stop", body, &res); err != nil {
+	if err := s.client.postV5JSON(nil, "/v5/position/trading-stop", body, &res); err != nil {
 		return &res, err
 	}
 
@@ -231,7 +231,7 @@ func (s *V5PositionService) SetTpSlMode(param V5SetTpSlModeParam) (*V5SetTpSlMod
 		return &res, fmt.Errorf("json marshal: %w", err)
 	}
 
-	if err := s.client.postV5JSON("/v5/position/set-tpsl-mode", body, &res); err != nil {
+	if err := s.client.postV5JSON(nil, "/v5/position/set-tpsl-mode", body, &res); err != nil {
 		return &res, err
 	}
 
@@ -273,7 +273,7 @@ func (s *V5PositionService) SwitchPositionMode(param V5SwitchPositionModeParam) 
 		return &res, fmt.Errorf("json marshal: %w", err)
 	}
 
-	if err := s.client.postV5JSON("/v5/position/switch-mode", body, &res); err != nil {
+	if err := s.client.postV5JSON(nil, "/v5/position/switch-mode", body, &res); err != nil {
 		return &res, err
 	}
 
@@ -382,7 +382,7 @@ func (s *V5PositionService) SwitchPositionMarginMode(param V5SwitchPositionMargi
 		return &res, fmt.Errorf("json marshal: %w", err)
 	}
 
-	if err := s.client.postV5JSON("/v5/position/switch-isolated", body, &res); err != nil {
+	if err := s.client.postV5JSON(nil, "/v5/position/switch-isolated", body, &res); err != nil {
 		return &res, err
 	}
 
@@ -420,7 +420,7 @@ func (s *V5PositionService) SetRiskLimit(param V5SetRiskLimitParam) (*V5SetRiskL
 		return &res, fmt.Errorf("json marshal: %w", err)
 	}
 
-	if err := s.client.postV5JSON("/v5/position/set-risk-limit", body, &res); err != nil {
+	if err := s.client.postV5JSON(nil, "/v5/position/set-risk-limit", body, &res); err != nil {
 		return &res, err
 	}
 

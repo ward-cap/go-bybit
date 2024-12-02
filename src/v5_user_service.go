@@ -1,13 +1,14 @@
 package src
 
 import (
+	"context"
 	"net/url"
 	"time"
 )
 
 type V5UserServiceI interface {
 	GetAPIKey() (*V5APIKeyResponse, error)
-	CreateSubAcc(CreateSubUserRequest) (*V5APICreateSubAcc, error)
+	CreateSubAcc(context.Context, CreateSubUserRequest) (*V5APICreateSubAcc, error)
 }
 
 // V5UserService :

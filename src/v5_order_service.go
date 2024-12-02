@@ -77,7 +77,7 @@ func (s *V5OrderService) CreateOrder(param V5CreateOrderParam) (*V5CreateOrderRe
 		return &res, fmt.Errorf("json marshal: %w", err)
 	}
 
-	if err := s.client.postV5JSON("/v5/order/create", body, &res); err != nil {
+	if err := s.client.postV5JSON(nil, "/v5/order/create", body, &res); err != nil {
 		return &res, err
 	}
 
@@ -137,7 +137,7 @@ func (s *V5OrderService) AmendOrder(param V5AmendOrderParam) (*V5AmendOrderRespo
 		return &res, fmt.Errorf("json marshal: %w", err)
 	}
 
-	if err := s.client.postV5JSON("/v5/order/amend", body, &res); err != nil {
+	if err := s.client.postV5JSON(nil, "/v5/order/amend", body, &res); err != nil {
 		return &res, err
 	}
 
@@ -179,7 +179,7 @@ func (s *V5OrderService) CancelOrder(param V5CancelOrderParam) (*V5CancelOrderRe
 		return &res, fmt.Errorf("json marshal: %w", err)
 	}
 
-	if err := s.client.postV5JSON("/v5/order/cancel", body, &res); err != nil {
+	if err := s.client.postV5JSON(nil, "/v5/order/cancel", body, &res); err != nil {
 		return &res, err
 	}
 
@@ -378,7 +378,7 @@ func (s *V5OrderService) CancelAllOrders(param V5CancelAllOrdersParam) (*V5Cance
 		return &res, fmt.Errorf("json marshal: %w", err)
 	}
 
-	if err := s.client.postV5JSON("/v5/order/cancel-all", body, &res); err != nil {
+	if err := s.client.postV5JSON(nil, "/v5/order/cancel-all", body, &res); err != nil {
 		return &res, err
 	}
 

@@ -1,6 +1,7 @@
 package src
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 )
@@ -27,14 +28,14 @@ type CreateSubUserRequest struct {
 	//Note       string  `json:"note,omitempty"`
 }
 
-func (s *V5UserService) CreateSubAcc(param CreateSubUserRequest) (res *V5APICreateSubAcc, _ error) {
+func (s *V5UserService) CreateSubAcc(ctx context.Context, param CreateSubUserRequest) (res *V5APICreateSubAcc, _ error) {
 
 	body, err := json.Marshal(param)
 	if err != nil {
 		return nil, fmt.Errorf("json marshal for CreateSubAcc: %w", err)
 	}
 
-	if err := s.client.postJSON("/v5/user/create-sub-member", body, &res); err != nil {
+	if err := s.client.postV5JSON(ctx, "/v5/user/create-sub-member", body, &res); err != nil {
 		return nil, err
 	}
 

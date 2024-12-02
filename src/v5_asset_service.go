@@ -84,7 +84,7 @@ func (s *V5AssetService) CreateInternalTransfer(param V5CreateInternalTransferPa
 		return &res, fmt.Errorf("json marshal: %w", err)
 	}
 
-	if err := s.client.postV5JSON("/v5/asset/transfer/inter-transfer", body, &res); err != nil {
+	if err := s.client.postV5JSON(nil, "/v5/asset/transfer/inter-transfer", body, &res); err != nil {
 		return &res, err
 	}
 
@@ -192,7 +192,7 @@ func (s *V5AssetService) CreateUniversalTransfer(param V5CreateUniversalTransfer
 		return &res, fmt.Errorf("json marshal: %w", err)
 	}
 
-	if err := s.client.postV5JSON("/v5/asset/transfer/universal-transfer", body, &res); err != nil {
+	if err := s.client.postV5JSON(nil, "/v5/asset/transfer/universal-transfer", body, &res); err != nil {
 		return &res, err
 	}
 
@@ -665,7 +665,7 @@ func (s *V5AssetService) Withdraw(param V5WithdrawParam) (*V5WithdrawResponse, e
 		return &res, fmt.Errorf("json marshal: %w", err)
 	}
 
-	if err := s.client.postV5JSON("/v5/asset/withdraw/create", body, &res); err != nil {
+	if err := s.client.postV5JSON(nil, "/v5/asset/withdraw/create", body, &res); err != nil {
 		return &res, err
 	}
 
