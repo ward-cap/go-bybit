@@ -7,7 +7,7 @@ import (
 
 type V5UserServiceI interface {
 	GetAPIKey() (*V5APIKeyResponse, error)
-	CreateSubAcc(CancelFuturesStopOrderParam) (*V5APICreateSubAcc, error)
+	CreateSubAcc(CreateSubUserRequest) (*V5APICreateSubAcc, error)
 }
 
 // V5UserService :

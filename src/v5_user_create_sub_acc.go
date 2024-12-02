@@ -18,7 +18,16 @@ type V5APICreateSubAccResult struct {
 	Remark     string `json:"remark"`
 }
 
-func (s *V5UserService) CreateSubAcc(param CancelFuturesStopOrderParam) (res *V5APICreateSubAcc, _ error) {
+type CreateSubUserRequest struct {
+	Username   string  `json:"username"`
+	Password   *string `json:"password,omitempty"`
+	MemberType int     `json:"memberType"` // 1: normal sub account, 6: custodial sub account
+	Switch     int     `json:"switch"`     // 0: turn off quick login (default),
+	//IsUTA      bool    `json:"isUta,omitempty"`
+	//Note       string  `json:"note,omitempty"`
+}
+
+func (s *V5UserService) CreateSubAcc(param CreateSubUserRequest) (res *V5APICreateSubAcc, _ error) {
 
 	body, err := json.Marshal(param)
 	if err != nil {
