@@ -9,6 +9,7 @@ import (
 type V5UserServiceI interface {
 	GetAPIKey() (*V5APIKeyResponse, error)
 	CreateSubAcc(context.Context, CreateSubUserRequest) (*V5APICreateSubAcc, error)
+	CreateSubAPIKey(context.Context, CreateSubAPIKeyRequest) (*V5APICreateSubAPIKey, error)
 }
 
 // V5UserService :
