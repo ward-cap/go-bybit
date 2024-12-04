@@ -11,6 +11,7 @@ type V5UserServiceI interface {
 	CreateSubAcc(context.Context, CreateSubUserRequest) (*V5APICreateSubAcc, error)
 	CreateSubAPIKey(context.Context, CreateSubAPIKeyRequest) (*V5APICreateSubAPIKey, error)
 	ModifySubAPIKey(context.Context, ModifySubAPIKeyRequest) (*V5APIModifySubAPIKey, error)
+	DeleteSubAPIKey(context.Context, DeleteSubAPIKeyRequest) (*V5APIDeleteSubAPIKey, error)
 }
 
 // V5UserService :
