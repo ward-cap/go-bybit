@@ -1,17 +1,19 @@
 package src
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
+	"github.com/shopspring/decimal"
 )
 
 // V5AccountServiceI :
 type V5AccountServiceI interface {
-	GetWalletBalance(AccountTypeV5, []Coin) (*V5GetWalletBalanceResponse, error)
+	GetWalletBalance(ctx context.Context, _ AccountTypeV5, _ []Coin) (*V5GetWalletBalanceResponse, error)
 	SetCollateralCoin(V5SetCollateralCoinParam) (*V5SetCollateralCoinResponse, error)
 	GetCollateralInfo(V5GetCollateralInfoParam) (*V5GetCollateralInfoResponse, error)
 	GetAccountInfo() (*V5GetAccountInfoResponse, error)
@@ -36,21 +38,21 @@ type V5WalletBalanceResult struct {
 
 // V5WalletBalanceCoin :
 type V5WalletBalanceCoin struct {
-	AvailableToBorrow   string `json:"availableToBorrow"`
-	AccruedInterest     string `json:"accruedInterest"`
-	AvailableToWithdraw string `json:"availableToWithdraw"`
-	TotalOrderIM        string `json:"totalOrderIM"`
-	Equity              string `json:"equity"`
-	TotalPositionMM     string `json:"totalPositionMM"`
-	UsdValue            string `json:"usdValue"`
-	UnrealisedPnl       string `json:"unrealisedPnl"`
-	BorrowAmount        string `json:"borrowAmount"`
-	TotalPositionIM     string `json:"totalPositionIM"`
-	WalletBalance       string `json:"walletBalance"`
-	CumRealisedPnl      string `json:"cumRealisedPnl"`
-	Free                string `json:"free"`
-	Locked              string `json:"locked"`
-	Coin                Coin   `json:"coin"`
+	AvailableToBorrow   string          `json:"availableToBorrow"`
+	AccruedInterest     string          `json:"accruedInterest"`
+	AvailableToWithdraw string          `json:"availableToWithdraw"`
+	TotalOrderIM        string          `json:"totalOrderIM"`
+	Equity              string          `json:"equity"`
+	TotalPositionMM     string          `json:"totalPositionMM"`
+	UsdValue            string          `json:"usdValue"`
+	UnrealisedPnl       string          `json:"unrealisedPnl"`
+	BorrowAmount        string          `json:"borrowAmount"`
+	TotalPositionIM     string          `json:"totalPositionIM"`
+	WalletBalance       decimal.Decimal `json:"walletBalance"`
+	CumRealisedPnl      string          `json:"cumRealisedPnl"`
+	Free                decimal.Decimal `json:"free"`
+	Locked              string          `json:"locked"`
+	Coin                Coin            `json:"coin"`
 }
 
 // V5WalletBalanceList :
@@ -75,7 +77,7 @@ type V5WalletBalanceList struct {
 // coin:
 // If not passed, it returns non-zero asset info
 // You can pass multiple coins to query, separated by comma. "USDT,USDC".
-func (s *V5AccountService) GetWalletBalance(at AccountTypeV5, coins []Coin) (*V5GetWalletBalanceResponse, error) {
+func (s *V5AccountService) GetWalletBalance(ctx context.Context, at AccountTypeV5, coins []Coin) (*V5GetWalletBalanceResponse, error) {
 	switch at {
 	case AccountTypeV5UNIFIED, AccountTypeV5CONTRACT, AccountTypeV5SPOT:
 	default:
@@ -95,7 +97,7 @@ func (s *V5AccountService) GetWalletBalance(at AccountTypeV5, coins []Coin) (*V5
 		query.Add("coin", strings.Join(coinsStr, ","))
 	}
 
-	if err := s.client.getV5Privately("/v5/account/wallet-balance", query, &res); err != nil {
+	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/account/wallet-balance", query, &res); err != nil {
 		return nil, err
 	}
 

@@ -313,7 +313,11 @@ func (c *Client) getPrivately(path string, query url.Values, dst interface{}) er
 	return nil
 }
 
-func (c *Client) getV5Privately(path string, query url.Values, dst interface{}) error {
+func (c *Client) getV5Privately(path string, query url.Values, dst any) error {
+	return c.getV5PrivatelyCtx(context.Background(), path, query, dst)
+}
+
+func (c *Client) getV5PrivatelyCtx(ctx context.Context, path string, query url.Values, dst any) error {
 	if !c.hasAuth() {
 		return fmt.Errorf("this is private endpoint, please set api key and secret")
 	}
@@ -328,7 +332,7 @@ func (c *Client) getV5Privately(path string, query url.Values, dst interface{}) 
 	timestamp := c.getTimestamp()
 	sign := getV5Signature(timestamp, c.key, u.RawQuery, c.secret)
 
-	req, err := http.NewRequest(http.MethodGet, u.String(), nil)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, u.String(), nil)
 	if err != nil {
 		return err
 	}
@@ -343,37 +347,7 @@ func (c *Client) getV5Privately(path string, query url.Values, dst interface{}) 
 	return nil
 }
 
-func (c *Client) getV5PrivatelyCtx(path string, query url.Values, dst interface{}) error {
-	if !c.hasAuth() {
-		return fmt.Errorf("this is private endpoint, please set api key and secret")
-	}
-
-	u, err := url.Parse(c.baseURL)
-	if err != nil {
-		return err
-	}
-	u.Path = path
-	u.RawQuery = query.Encode()
-
-	timestamp := c.getTimestamp()
-	sign := getV5Signature(timestamp, c.key, u.RawQuery, c.secret)
-
-	req, err := http.NewRequest(http.MethodGet, u.String(), nil)
-	if err != nil {
-		return err
-	}
-	req.Header.Set("X-BAPI-API-KEY", c.key)
-	req.Header.Set("X-BAPI-TIMESTAMP", strconv.FormatInt(timestamp, 10))
-	req.Header.Set("X-BAPI-SIGN", sign)
-
-	if err := c.Request(req, &dst); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (c *Client) postJSON(path string, body []byte, dst interface{}) error {
+func (c *Client) postJSON(path string, body []byte, dst any) error {
 	if !c.hasAuth() {
 		return fmt.Errorf("this is private endpoint, please set api key and secret")
 	}
@@ -399,7 +373,7 @@ func (c *Client) postJSON(path string, body []byte, dst interface{}) error {
 	return nil
 }
 
-func (c *Client) postV5JSON(ctx context.Context, path string, body []byte, dst interface{}) error {
+func (c *Client) postV5JSON(ctx context.Context, path string, body []byte, dst any) error {
 	if !c.hasAuth() {
 		return fmt.Errorf("this is private endpoint, please set api key and secret")
 	}
@@ -436,7 +410,7 @@ func (c *Client) postV5JSON(ctx context.Context, path string, body []byte, dst i
 	return nil
 }
 
-func (c *Client) postForm(path string, body url.Values, dst interface{}) error {
+func (c *Client) postForm(path string, body url.Values, dst any) error {
 	if !c.hasAuth() {
 		return fmt.Errorf("this is private endpoint, please set api key and secret")
 	}
@@ -465,7 +439,7 @@ func (c *Client) postForm(path string, body url.Values, dst interface{}) error {
 	return nil
 }
 
-func (c *Client) deletePrivately(path string, query url.Values, dst interface{}) error {
+func (c *Client) deletePrivately(path string, query url.Values, dst any) error {
 	if !c.hasAuth() {
 		return fmt.Errorf("this is private endpoint, please set api key and secret")
 	}
