@@ -43,7 +43,7 @@ type Client struct {
 	syncTimeDeltaNanoSeconds int64
 }
 
-func (c *Client) debugf(format string, v ...interface{}) {
+func (c *Client) debugf(format string, v ...any) {
 	if c.debug {
 		c.logger.Infof(format, v...)
 	}
@@ -130,6 +130,8 @@ func (c *Client) Request(req *http.Request, dst interface{}) (err error) {
 		if err != nil {
 			return err
 		}
+
+		c.debugf("response body: %s", body)
 
 		if c.checkResponseBody == nil {
 			return errors.New("checkResponseBody func should be set")
@@ -268,7 +270,11 @@ func getSignatureForBody(src map[string]interface{}, key string) string {
 	return fmt.Sprintf("%x", h.Sum(nil))
 }
 
-func (c *Client) getPublicly(path string, query url.Values, dst interface{}) error {
+func (c *Client) getPublicly(path string, query url.Values, dst any) error {
+	return c.getPubliclyCtx(context.Background(), path, query, dst)
+}
+
+func (c *Client) getPubliclyCtx(ctx context.Context, path string, query url.Values, dst any) error {
 	u, err := url.Parse(c.baseURL)
 	if err != nil {
 		return err
@@ -276,7 +282,7 @@ func (c *Client) getPublicly(path string, query url.Values, dst interface{}) err
 	u.Path = path
 	u.RawQuery = query.Encode()
 
-	req, err := http.NewRequest(http.MethodGet, u.String(), nil)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, u.String(), nil)
 	if err != nil {
 		return err
 	}
@@ -287,7 +293,6 @@ func (c *Client) getPublicly(path string, query url.Values, dst interface{}) err
 
 	return nil
 }
-
 func (c *Client) getPrivately(path string, query url.Values, dst interface{}) error {
 	if !c.hasAuth() {
 		return fmt.Errorf("this is private endpoint, please set api key and secret")

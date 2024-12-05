@@ -1,6 +1,7 @@
 package src
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"strconv"
@@ -21,8 +22,8 @@ type V5AssetServiceI interface {
 	GetInternalDepositRecords(V5GetInternalDepositRecordsParam) (*V5GetInternalDepositRecordsResponse, error)
 	GetMasterDepositAddress(V5GetMasterDepositAddressParam) (*V5GetMasterDepositAddressResponse, error)
 	GetWithdrawalRecords(V5GetWithdrawalRecordsParam) (*V5GetWithdrawalRecordsResponse, error)
-	GetCoinInfo(V5GetCoinInfoParam) (*V5GetCoinInfoResponse, error)
-	GetAllCoinsBalance(V5GetAllCoinsBalanceParam) (*V5GetAllCoinsBalanceResponse, error)
+	GetCoinInfo(context.Context, V5GetCoinInfoParam) (*V5GetCoinInfoResponse, error)
+	GetAllCoinsBalance(context.Context, V5GetAllCoinsBalanceParam) (*V5GetAllCoinsBalanceResponse, error)
 	Withdraw(param V5WithdrawParam) (*V5WithdrawResponse, error)
 }
 
@@ -565,7 +566,7 @@ type V5GetCoinInfoChain struct {
 }
 
 // GetCoinInfo :
-func (s *V5AssetService) GetCoinInfo(param V5GetCoinInfoParam) (*V5GetCoinInfoResponse, error) {
+func (s *V5AssetService) GetCoinInfo(ctx context.Context, param V5GetCoinInfoParam) (*V5GetCoinInfoResponse, error) {
 	var res V5GetCoinInfoResponse
 
 	queryString, err := query.Values(param)
@@ -573,7 +574,7 @@ func (s *V5AssetService) GetCoinInfo(param V5GetCoinInfoParam) (*V5GetCoinInfoRe
 		return nil, err
 	}
 
-	if err := s.client.getV5Privately("/v5/asset/coin/query-info", queryString, &res); err != nil {
+	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/asset/coin/query-info", queryString, &res); err != nil {
 		return nil, err
 	}
 
@@ -611,7 +612,7 @@ type V5GetAllCoinsBalanceBalance struct {
 
 // GetAllCoinsBalance :
 // https://bybit-exchange.github.io/docs/v5/asset/all-balance
-func (s *V5AssetService) GetAllCoinsBalance(param V5GetAllCoinsBalanceParam) (*V5GetAllCoinsBalanceResponse, error) {
+func (s *V5AssetService) GetAllCoinsBalance(ctx context.Context, param V5GetAllCoinsBalanceParam) (*V5GetAllCoinsBalanceResponse, error) {
 	var res V5GetAllCoinsBalanceResponse
 
 	queryString, err := query.Values(param)
@@ -627,7 +628,7 @@ func (s *V5AssetService) GetAllCoinsBalance(param V5GetAllCoinsBalanceParam) (*V
 		queryString.Set("coin", strings.Join(coinsToQuery, ","))
 	}
 
-	if err := s.client.getV5Privately("/v5/asset/transfer/query-account-coins-balance", queryString, &res); err != nil {
+	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/asset/transfer/query-account-coins-balance", queryString, &res); err != nil {
 		return nil, err
 	}
 
