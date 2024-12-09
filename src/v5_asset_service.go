@@ -20,7 +20,7 @@ type V5AssetServiceI interface {
 	GetDepositRecords(V5GetDepositRecordsParam) (*V5GetDepositRecordsResponse, error)
 	GetSubDepositRecords(V5GetSubDepositRecordsParam) (*V5GetSubDepositRecordsResponse, error)
 	GetInternalDepositRecords(V5GetInternalDepositRecordsParam) (*V5GetInternalDepositRecordsResponse, error)
-	GetMasterDepositAddress(V5GetMasterDepositAddressParam) (*V5GetMasterDepositAddressResponse, error)
+	GetMasterDepositAddress(context.Context, V5GetMasterDepositAddressParam) (*V5GetMasterDepositAddressResponse, error)
 	GetWithdrawalRecords(V5GetWithdrawalRecordsParam) (*V5GetWithdrawalRecordsResponse, error)
 	GetCoinInfo(context.Context, V5GetCoinInfoParam) (*V5GetCoinInfoResponse, error)
 	GetAllCoinsBalance(context.Context, V5GetAllCoinsBalanceParam) (*V5GetAllCoinsBalanceResponse, error)
@@ -448,7 +448,7 @@ type V5GetMasterDepositAddressResponse struct {
 	Result           V5GetMasterDepositAddressResult `json:"result"`
 }
 
-func (s *V5AssetService) GetMasterDepositAddress(param V5GetMasterDepositAddressParam) (*V5GetMasterDepositAddressResponse, error) {
+func (s *V5AssetService) GetMasterDepositAddress(ctx context.Context, param V5GetMasterDepositAddressParam) (*V5GetMasterDepositAddressResponse, error) {
 	var res V5GetMasterDepositAddressResponse
 
 	queryString, err := query.Values(param)
@@ -456,7 +456,7 @@ func (s *V5AssetService) GetMasterDepositAddress(param V5GetMasterDepositAddress
 		return nil, err
 	}
 
-	if err := s.client.getV5Privately("/v5/asset/deposit/query-address", queryString, &res); err != nil {
+	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/asset/deposit/query-address", queryString, &res); err != nil {
 		return nil, err
 	}
 

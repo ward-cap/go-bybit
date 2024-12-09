@@ -12,6 +12,7 @@ type V5UserServiceI interface {
 	CreateSubAPIKey(context.Context, CreateSubAPIKeyRequest) (*V5APICreateSubAPIKey, error)
 	ModifySubAPIKey(context.Context, ModifySubAPIKeyRequest) (*V5APIModifySubAPIKey, error)
 	DeleteSubAPIKey(context.Context, DeleteSubAPIKeyRequest) (*V5APIDeleteSubAPIKey, error)
+	GetSubDepositAddress(context.Context, GetSubDepositAddressRequest) (*V5APIGetSubDepositAddress, error)
 }
 
 // V5UserService :

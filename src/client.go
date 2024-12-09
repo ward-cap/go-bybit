@@ -109,7 +109,7 @@ func (c *Client) WithReferer(referer string) *Client {
 }
 
 // Request :
-func (c *Client) Request(req *http.Request, dst interface{}) (err error) {
+func (c *Client) Request(req *http.Request, dst any) (err error) {
 	c.debugf("request: %v", req)
 	resp, err := c.httpClient.Do(req)
 	c.debugf("response: %v", resp)
