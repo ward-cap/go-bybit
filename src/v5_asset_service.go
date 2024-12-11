@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/shopspring/decimal"
 	"strconv"
 	"strings"
 
@@ -13,7 +14,7 @@ import (
 
 // V5AssetServiceI :
 type V5AssetServiceI interface {
-	CreateInternalTransfer(V5CreateInternalTransferParam) (*V5CreateInternalTransferResponse, error)
+	CreateInternalTransfer(context.Context, V5CreateInternalTransferParam) (*V5CreateInternalTransferResponse, error)
 	GetInternalTransferRecords(V5GetInternalTransferRecordsParam) (*V5GetInternalTransferRecordsResponse, error)
 	CreateUniversalTransfer(V5CreateUniversalTransferParam) (*V5CreateUniversalTransferResponse, error)
 	GetUniversalTransferRecords(V5GetUniversalTransferRecordsParam) (*V5GetUniversalTransferRecordsResponse, error)
@@ -73,7 +74,7 @@ type V5CreateInternalTransferResult struct {
 }
 
 // CreateInternalTransfer :
-func (s *V5AssetService) CreateInternalTransfer(param V5CreateInternalTransferParam) (*V5CreateInternalTransferResponse, error) {
+func (s *V5AssetService) CreateInternalTransfer(ctx context.Context, param V5CreateInternalTransferParam) (*V5CreateInternalTransferResponse, error) {
 	var res V5CreateInternalTransferResponse
 
 	if err := param.validate(); err != nil {
@@ -85,7 +86,7 @@ func (s *V5AssetService) CreateInternalTransfer(param V5CreateInternalTransferPa
 		return &res, fmt.Errorf("json marshal: %w", err)
 	}
 
-	if err := s.client.postV5JSON(nil, "/v5/asset/transfer/inter-transfer", body, &res); err != nil {
+	if err := s.client.postV5JSON(ctx, "/v5/asset/transfer/inter-transfer", body, &res); err != nil {
 		return &res, err
 	}
 
@@ -604,10 +605,10 @@ type V5GetAllCoinsBalanceResult struct {
 
 // V5GetAllCoinsBalanceBalance :
 type V5GetAllCoinsBalanceBalance struct {
-	Coin            Coin   `json:"coin"`
-	TransferBalance string `json:"transferBalance"`
-	WalletBalance   string `json:"walletBalance"`
-	Bonus           string `json:"bonus"`
+	Coin            Coin            `json:"coin"`
+	TransferBalance string          `json:"transferBalance"`
+	WalletBalance   decimal.Decimal `json:"walletBalance"`
+	Bonus           string          `json:"bonus"`
 }
 
 // GetAllCoinsBalance :
