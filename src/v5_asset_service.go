@@ -3,6 +3,7 @@ package src
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/shopspring/decimal"
 	"strconv"
@@ -16,7 +17,7 @@ import (
 type V5AssetServiceI interface {
 	CreateInternalTransfer(context.Context, V5CreateInternalTransferParam) (*V5CreateInternalTransferResponse, error)
 	GetInternalTransferRecords(V5GetInternalTransferRecordsParam) (*V5GetInternalTransferRecordsResponse, error)
-	CreateUniversalTransfer(V5CreateUniversalTransferParam) (*V5CreateUniversalTransferResponse, error)
+	CreateUniversalTransfer(context.Context, V5CreateUniversalTransferParam) (*V5CreateUniversalTransferResponse, error)
 	GetUniversalTransferRecords(context.Context, V5GetUniversalTransferRecordsParam) (*V5GetUniversalTransferRecordsResponse, error)
 	GetDepositRecords(V5GetDepositRecordsParam) (*V5GetDepositRecordsResponse, error)
 	GetSubDepositRecords(V5GetSubDepositRecordsParam) (*V5GetSubDepositRecordsResponse, error)
@@ -147,19 +148,20 @@ func (s *V5AssetService) GetInternalTransferRecords(param V5GetInternalTransferR
 }
 
 type V5CreateUniversalTransferParam struct {
-	TransferID      string        `json:"transferId"`
+	TransferID      uuid.UUID     `json:"transferId"`
 	Coin            Coin          `json:"coin"`
 	Amount          string        `json:"amount"`
 	FromAccountType AccountTypeV5 `json:"fromAccountType"`
 	ToAccountType   AccountTypeV5 `json:"toAccountType"`
-	FromMemberID    int           `json:"fromMemberId"`
-	ToMemberID      int           `json:"toMemberId"`
+	FromMemberID    int64         `json:"fromMemberId"`
+	ToMemberID      int64         `json:"toMemberId"`
 }
 
 func (p V5CreateUniversalTransferParam) validate() error {
-	if _, err := uuid.Parse(p.TransferID); err != nil {
-		return fmt.Errorf("%w: transferId must be a valid UUID", err)
+	if p.TransferID.Version() == 0 {
+		return errors.New("transferId must be a valid UUID")
 	}
+
 	amount, err := strconv.ParseFloat(p.Amount, 64)
 	if err != nil {
 		return fmt.Errorf("%w: parse amount", err)
@@ -182,7 +184,7 @@ type V5CreateUniversalTransferResult struct {
 	TransferID string `json:"transferId"`
 }
 
-func (s *V5AssetService) CreateUniversalTransfer(param V5CreateUniversalTransferParam) (*V5CreateUniversalTransferResponse, error) {
+func (s *V5AssetService) CreateUniversalTransfer(ctx context.Context, param V5CreateUniversalTransferParam) (*V5CreateUniversalTransferResponse, error) {
 	var res V5CreateUniversalTransferResponse
 
 	if err := param.validate(); err != nil {
@@ -194,7 +196,7 @@ func (s *V5AssetService) CreateUniversalTransfer(param V5CreateUniversalTransfer
 		return &res, fmt.Errorf("json marshal: %w", err)
 	}
 
-	if err := s.client.postV5JSON(nil, "/v5/asset/transfer/universal-transfer", body, &res); err != nil {
+	if err := s.client.postV5JSON(ctx, "/v5/asset/transfer/universal-transfer", body, &res); err != nil {
 		return &res, err
 	}
 

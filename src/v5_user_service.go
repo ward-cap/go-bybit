@@ -14,6 +14,8 @@ type V5UserServiceI interface {
 	DeleteSubAPIKey(context.Context, DeleteSubAPIKeyRequest) (*V5APIDeleteSubAPIKey, error)
 	GetSubDepositAddress(context.Context, GetSubDepositAddressRequest) (*V5APIGetSubDepositAddress, error)
 	GetBrokerAccountInfo(context.Context) (*V5APIBrokerAccountInfo, error)
+	GetSubUIDList(context.Context) (*V5APISubUIDList, error)
+	GetMemberType(context.Context) (*V5APIGetMemberType, error)
 }
 
 // V5UserService :
