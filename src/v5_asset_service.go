@@ -226,7 +226,7 @@ type V5GetUniversalTransferRecordsList []V5GetUniversalTransferRecordsItem
 type V5GetUniversalTransferRecordsItem struct {
 	TransferID      string           `json:"transferId"`
 	Coin            Coin             `json:"coin"`
-	Amount          string           `json:"amount"`
+	Amount          decimal.Decimal  `json:"amount"`
 	FromMemberID    string           `json:"fromMemberId"`
 	ToMemberID      string           `json:"toMemberId"`
 	FromAccountType AccountTypeV5    `json:"fromAccountType"`
