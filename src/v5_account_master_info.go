@@ -10,11 +10,17 @@ type V5APIBrokerAccountInfo struct {
 }
 
 type V5APIBrokerAccountInfoResult struct {
-	BrokerID        string  `json:"brokerId"`
-	Rebate          string  `json:"rebate"`
-	TotalSubMembers int     `json:"totalSubMembers"`
-	TotalBalance    float64 `json:"totalBalance"`
-	CreatedAt       int64   `json:"createdAt"`
+	SubAcctQty        string `json:"subAcctQty"`
+	MaxSubAcctQty     string `json:"maxSubAcctQty"`
+	BaseFeeRebateRate struct {
+		Spot        string `json:"spot"`
+		Derivatives string `json:"derivatives"`
+	} `json:"baseFeeRebateRate"`
+	MarkupFeeRebateRate struct {
+		Spot        string `json:"spot"`
+		Derivatives string `json:"derivatives"`
+		Convert     string `json:"convert"`
+	} `json:"markupFeeRebateRate"`
 }
 
 func (s *V5UserService) GetBrokerAccountInfo(ctx context.Context) (res *V5APIBrokerAccountInfo, err error) {
