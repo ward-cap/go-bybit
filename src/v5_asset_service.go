@@ -26,7 +26,7 @@ type V5AssetServiceI interface {
 	GetWithdrawalRecords(V5GetWithdrawalRecordsParam) (*V5GetWithdrawalRecordsResponse, error)
 	GetCoinInfo(context.Context, V5GetCoinInfoParam) (*V5GetCoinInfoResponse, error)
 	GetAllCoinsBalance(context.Context, V5GetAllCoinsBalanceParam) (*V5GetAllCoinsBalanceResponse, error)
-	Withdraw(param V5WithdrawParam) (*V5WithdrawResponse, error)
+	Withdraw(context.Context, V5WithdrawParam) (*V5WithdrawResponse, error)
 }
 
 // V5AssetService :
@@ -661,7 +661,7 @@ type V5WithdrawParam struct {
 	RequestID   *string        `json:"requestId,omitempty"`
 }
 
-func (s *V5AssetService) Withdraw(param V5WithdrawParam) (*V5WithdrawResponse, error) {
+func (s *V5AssetService) Withdraw(ctx context.Context, param V5WithdrawParam) (*V5WithdrawResponse, error) {
 	var res V5WithdrawResponse
 
 	body, err := json.Marshal(param)
@@ -669,7 +669,7 @@ func (s *V5AssetService) Withdraw(param V5WithdrawParam) (*V5WithdrawResponse, e
 		return &res, fmt.Errorf("json marshal: %w", err)
 	}
 
-	if err := s.client.postV5JSON(nil, "/v5/asset/withdraw/create", body, &res); err != nil {
+	if err := s.client.postV5JSON(ctx, "/v5/asset/withdraw/create", body, &res); err != nil {
 		return &res, err
 	}
 
