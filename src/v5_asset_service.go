@@ -17,7 +17,7 @@ type V5AssetServiceI interface {
 	CreateInternalTransfer(context.Context, V5CreateInternalTransferParam) (*V5CreateInternalTransferResponse, error)
 	GetInternalTransferRecords(V5GetInternalTransferRecordsParam) (*V5GetInternalTransferRecordsResponse, error)
 	CreateUniversalTransfer(V5CreateUniversalTransferParam) (*V5CreateUniversalTransferResponse, error)
-	GetUniversalTransferRecords(V5GetUniversalTransferRecordsParam) (*V5GetUniversalTransferRecordsResponse, error)
+	GetUniversalTransferRecords(context.Context, V5GetUniversalTransferRecordsParam) (*V5GetUniversalTransferRecordsResponse, error)
 	GetDepositRecords(V5GetDepositRecordsParam) (*V5GetDepositRecordsResponse, error)
 	GetSubDepositRecords(V5GetSubDepositRecordsParam) (*V5GetSubDepositRecordsResponse, error)
 	GetInternalDepositRecords(V5GetInternalDepositRecordsParam) (*V5GetInternalDepositRecordsResponse, error)
@@ -235,19 +235,19 @@ type V5GetUniversalTransferRecordsItem struct {
 	Status          TransferStatusV5 `json:"status"`
 }
 
-func (s *V5AssetService) GetUniversalTransferRecords(param V5GetUniversalTransferRecordsParam) (*V5GetUniversalTransferRecordsResponse, error) {
-	var res V5GetUniversalTransferRecordsResponse
+func (s *V5AssetService) GetUniversalTransferRecords(
+	ctx context.Context,
+	param V5GetUniversalTransferRecordsParam,
+) (res *V5GetUniversalTransferRecordsResponse, err error) {
 
 	queryString, err := query.Values(param)
 	if err != nil {
-		return nil, err
+		return
 	}
 
-	if err := s.client.getV5Privately("/v5/asset/transfer/query-universal-transfer-list", queryString, &res); err != nil {
-		return nil, err
-	}
+	err = s.client.getV5PrivatelyCtx(ctx, "/v5/asset/transfer/query-universal-transfer-list", queryString, &res)
 
-	return &res, nil
+	return
 }
 
 // V5GetDepositRecordsParam :
