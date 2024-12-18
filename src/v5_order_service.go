@@ -1,28 +1,26 @@
 package src
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 
 	"github.com/google/go-querystring/query"
 )
 
-// V5OrderServiceI :
 type V5OrderServiceI interface {
-	CreateOrder(V5CreateOrderParam) (*V5CreateOrderResponse, error)
-	AmendOrder(V5AmendOrderParam) (*V5AmendOrderResponse, error)
-	CancelOrder(V5CancelOrderParam) (*V5CancelOrderResponse, error)
-	GetOpenOrders(V5GetOpenOrdersParam) (*V5GetOrdersResponse, error)
-	CancelAllOrders(V5CancelAllOrdersParam) (*V5CancelAllOrdersResponse, error)
-	GetHistoryOrders(V5GetHistoryOrdersParam) (*V5GetOrdersResponse, error)
+	CreateOrder(context.Context, V5CreateOrderParam) (*V5CreateOrderResponse, error)
+	AmendOrder(context.Context, V5AmendOrderParam) (*V5AmendOrderResponse, error)
+	CancelOrder(context.Context, V5CancelOrderParam) (*V5CancelOrderResponse, error)
+	GetOpenOrders(context.Context, V5GetOpenOrdersParam) (*V5GetOrdersResponse, error)
+	CancelAllOrders(context.Context, V5CancelAllOrdersParam) (*V5CancelAllOrdersResponse, error)
+	GetHistoryOrders(context.Context, V5GetHistoryOrdersParam) (*V5GetOrdersResponse, error)
 }
 
-// V5OrderService :
 type V5OrderService struct {
 	client *Client
 }
 
-// V5CreateOrderParam :
 type V5CreateOrderParam struct {
 	Category  CategoryV5 `json:"category"`
 	Symbol    SymbolV5   `json:"symbol"`
@@ -56,20 +54,17 @@ type V5CreateOrderParam struct {
 	MarketUnit            *MarketUnit       `json:"marketUnit,omitempty"` // The unit for qty when create Spot market orders for UTA account.
 }
 
-// V5CreateOrderResponse :
 type V5CreateOrderResponse struct {
 	CommonV5Response `json:",inline"`
 	Result           V5CreateOrderResult `json:"result"`
 }
 
-// V5CreateOrderResult :
 type V5CreateOrderResult struct {
 	OrderID     string `json:"orderId"`
 	OrderLinkID string `json:"orderLinkId"`
 }
 
-// CreateOrder :
-func (s *V5OrderService) CreateOrder(param V5CreateOrderParam) (*V5CreateOrderResponse, error) {
+func (s *V5OrderService) CreateOrder(ctx context.Context, param V5CreateOrderParam) (*V5CreateOrderResponse, error) {
 	var res V5CreateOrderResponse
 
 	body, err := json.Marshal(param)
@@ -77,14 +72,13 @@ func (s *V5OrderService) CreateOrder(param V5CreateOrderParam) (*V5CreateOrderRe
 		return &res, fmt.Errorf("json marshal: %w", err)
 	}
 
-	if err := s.client.postV5JSON(nil, "/v5/order/create", body, &res); err != nil {
+	if err := s.client.postV5JSON(ctx, "/v5/order/create", body, &res); err != nil {
 		return &res, err
 	}
 
 	return &res, nil
 }
 
-// V5AmendOrderParam :
 type V5AmendOrderParam struct {
 	Category CategoryV5 `json:"category"`
 	Symbol   SymbolV5   `json:"symbol"`
@@ -124,8 +118,7 @@ type V5AmendOrderResult struct {
 	OrderLinkID string `json:"orderLinkId"`
 }
 
-// AmendOrder :
-func (s *V5OrderService) AmendOrder(param V5AmendOrderParam) (*V5AmendOrderResponse, error) {
+func (s *V5OrderService) AmendOrder(ctx context.Context, param V5AmendOrderParam) (*V5AmendOrderResponse, error) {
 	var res V5AmendOrderResponse
 
 	if err := param.validate(); err != nil {
@@ -137,14 +130,13 @@ func (s *V5OrderService) AmendOrder(param V5AmendOrderParam) (*V5AmendOrderRespo
 		return &res, fmt.Errorf("json marshal: %w", err)
 	}
 
-	if err := s.client.postV5JSON(nil, "/v5/order/amend", body, &res); err != nil {
+	if err := s.client.postV5JSON(ctx, "/v5/order/amend", body, &res); err != nil {
 		return &res, err
 	}
 
 	return &res, nil
 }
 
-// V5CancelOrderParam :
 type V5CancelOrderParam struct {
 	Category CategoryV5 `json:"category"`
 	Symbol   SymbolV5   `json:"symbol"`
@@ -154,20 +146,17 @@ type V5CancelOrderParam struct {
 	OrderFilter *OrderFilter `json:"orderFilter,omitempty"` // If not passed, Order by default
 }
 
-// V5CancelOrderResponse :
 type V5CancelOrderResponse struct {
 	CommonV5Response `json:",inline"`
 	Result           V5CancelOrderResult `json:"result"`
 }
 
-// V5CancelOrderResult :
 type V5CancelOrderResult struct {
 	OrderID     string `json:"orderId"`
 	OrderLinkID string `json:"orderLinkId"`
 }
 
-// CancelOrder :
-func (s *V5OrderService) CancelOrder(param V5CancelOrderParam) (*V5CancelOrderResponse, error) {
+func (s *V5OrderService) CancelOrder(ctx context.Context, param V5CancelOrderParam) (*V5CancelOrderResponse, error) {
 	var res V5CancelOrderResponse
 
 	if param.OrderID == nil && param.OrderLinkID == nil {
@@ -179,14 +168,13 @@ func (s *V5OrderService) CancelOrder(param V5CancelOrderParam) (*V5CancelOrderRe
 		return &res, fmt.Errorf("json marshal: %w", err)
 	}
 
-	if err := s.client.postV5JSON(nil, "/v5/order/cancel", body, &res); err != nil {
+	if err := s.client.postV5JSON(ctx, "/v5/order/cancel", body, &res); err != nil {
 		return &res, err
 	}
 
 	return &res, nil
 }
 
-// V5GetOpenOrdersParam :
 type V5GetOpenOrdersParam struct {
 	Category CategoryV5 `url:"category"`
 
@@ -201,7 +189,6 @@ type V5GetOpenOrdersParam struct {
 	Cursor      *string      `url:"cursor,omitempty"`
 }
 
-// V5GetGetHistoryOrderssParam :
 type V5GetHistoryOrdersParam struct {
 	Category CategoryV5 `url:"category"`
 
@@ -266,8 +253,7 @@ type V5GetOrder struct {
 	TriggerBy          TriggerBy   `json:"triggerBy"`
 }
 
-// GetOpenOrders :
-func (s *V5OrderService) GetOpenOrders(param V5GetOpenOrdersParam) (*V5GetOrdersResponse, error) {
+func (s *V5OrderService) GetOpenOrders(ctx context.Context, param V5GetOpenOrdersParam) (*V5GetOrdersResponse, error) {
 	var res V5GetOrdersResponse
 
 	if param.Category == "" {
@@ -279,15 +265,14 @@ func (s *V5OrderService) GetOpenOrders(param V5GetOpenOrdersParam) (*V5GetOrders
 		return nil, err
 	}
 
-	if err := s.client.getV5Privately("/v5/order/realtime", queryString, &res); err != nil {
+	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/order/realtime", queryString, &res); err != nil {
 		return nil, err
 	}
 
 	return &res, nil
 }
 
-// GetHistoryOrders :
-func (s *V5OrderService) GetHistoryOrders(param V5GetHistoryOrdersParam) (*V5GetOrdersResponse, error) {
+func (s *V5OrderService) GetHistoryOrders(ctx context.Context, param V5GetHistoryOrdersParam) (*V5GetOrdersResponse, error) {
 	var res V5GetOrdersResponse
 
 	if param.Category == "" {
@@ -299,15 +284,13 @@ func (s *V5OrderService) GetHistoryOrders(param V5GetHistoryOrdersParam) (*V5Get
 		return nil, err
 	}
 
-	if err := s.client.getV5Privately("/v5/order/history", queryString, &res); err != nil {
+	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/order/history", queryString, &res); err != nil {
 		return nil, err
 	}
 
 	return &res, nil
 }
 
-// V5CancelAllOrdersParam :
-// If you pass multiple of these params, the system will process one of param, which priority is symbol > baseCoin > settleCoin.
 type V5CancelAllOrdersParam struct {
 	Category CategoryV5 `json:"category"`
 
@@ -329,19 +312,16 @@ func (p V5CancelAllOrdersParam) validate() error {
 	return nil
 }
 
-// V5CancelAllOrdersResponse :
 type V5CancelAllOrdersResponse struct {
 	CommonV5Response `json:",inline"`
 	Result           V5CancelAllOrdersResult `json:"result"`
 }
 
-// V5CancelAllOrdersResult :
 type V5CancelAllOrdersResult struct {
 	LinearInverseOption *V5CancelAllOrdersLinearInverseOptionResult
 	Spot                *V5CancelAllOrdersSpotResult
 }
 
-// UnmarshalJSON :
 func (r *V5CancelAllOrdersResult) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &r.LinearInverseOption); err != nil {
 		return err
@@ -352,7 +332,6 @@ func (r *V5CancelAllOrdersResult) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// V5CancelAllOrdersLinearInverseOptionResult :
 type V5CancelAllOrdersLinearInverseOptionResult struct {
 	List []struct {
 		OrderID     string `json:"orderId"`
@@ -360,13 +339,11 @@ type V5CancelAllOrdersLinearInverseOptionResult struct {
 	} `json:"list"`
 }
 
-// V5CancelAllOrdersSpotResult :
 type V5CancelAllOrdersSpotResult struct {
 	Success string `json:"success"` // 1: success, 0: fail
 }
 
-// CancelAllOrders :
-func (s *V5OrderService) CancelAllOrders(param V5CancelAllOrdersParam) (*V5CancelAllOrdersResponse, error) {
+func (s *V5OrderService) CancelAllOrders(ctx context.Context, param V5CancelAllOrdersParam) (*V5CancelAllOrdersResponse, error) {
 	var res V5CancelAllOrdersResponse
 
 	if err := param.validate(); err != nil {
@@ -378,7 +355,7 @@ func (s *V5OrderService) CancelAllOrders(param V5CancelAllOrdersParam) (*V5Cance
 		return &res, fmt.Errorf("json marshal: %w", err)
 	}
 
-	if err := s.client.postV5JSON(nil, "/v5/order/cancel-all", body, &res); err != nil {
+	if err := s.client.postV5JSON(ctx, "/v5/order/cancel-all", body, &res); err != nil {
 		return &res, err
 	}
 
