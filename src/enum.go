@@ -51,10 +51,9 @@ const (
 type TimeInForce string
 
 const (
-	TimeInForceGoodTillCancel    TimeInForce = "GoodTillCancel"
-	TimeInForceImmediateOrCancel TimeInForce = "ImmediateOrCancel"
-	TimeInForceFillOrKill        TimeInForce = "FillOrKill"
-	TimeInForcePostOnly          TimeInForce = "PostOnly"
+	TimeInForceGoodTillCancel    TimeInForce = "GTC"
+	TimeInForceImmediateOrCancel TimeInForce = "IOC"
+	TimeInForceFillOrKill        TimeInForce = "FOK"
 )
 
 // Interval :
