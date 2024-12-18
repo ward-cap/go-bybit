@@ -28,53 +28,33 @@ const (
 type OrderStatus string
 
 const (
-	// OrderStatusCreated :
-	OrderStatusCreated = OrderStatus("Created")
-	// OrderStatusRejected :
-	OrderStatusRejected = OrderStatus("Rejected")
-	// OrderStatusNew :
-	OrderStatusNew = OrderStatus("New")
-	// OrderStatusPartiallyFilled :
-	OrderStatusPartiallyFilled = OrderStatus("PartiallyFilled")
-	// OrderStatusFilled :
-	OrderStatusFilled = OrderStatus("Filled")
-	// OrderStatusCancelled :
-	OrderStatusCancelled = OrderStatus("Cancelled")
-	// OrderStatusPendingCancel :
-	OrderStatusPendingCancel = OrderStatus("PendingCancel")
-
-	// OrderStatusUntriggered : Only for conditional orders
-	OrderStatusUntriggered = OrderStatus("Untriggered")
-	// OrderStatusDeactivated : Only for conditional orders
-	OrderStatusDeactivated = OrderStatus("Deactivated")
-	// OrderStatusTriggered : Only for conditional orders
-	OrderStatusTriggered = OrderStatus("Triggered")
-	// OrderStatusActive : Only for conditional orders
-	OrderStatusActive = OrderStatus("Active")
+	OrderStatusCreated         OrderStatus = "Created"
+	OrderStatusRejected        OrderStatus = "Rejected"
+	OrderStatusNew             OrderStatus = "New"
+	OrderStatusPartiallyFilled OrderStatus = "PartiallyFilled"
+	OrderStatusFilled          OrderStatus = "Filled"
+	OrderStatusCancelled       OrderStatus = "Cancelled"
+	OrderStatusPendingCancel   OrderStatus = "PendingCancel"
+	OrderStatusUntriggered     OrderStatus = "Triggered"
+	OrderStatusDeactivated     OrderStatus = "Deactivated"
+	OrderStatusTriggered       OrderStatus = "Triggered"
+	OrderStatusActive          OrderStatus = "Active"
 )
 
-// Order :
 type Order string
 
 const (
-	// OrderDesc :
-	OrderDesc = "desc"
-	// OrderAsc :
-	OrderAsc = "asc"
+	OrderDesc Order = "desc"
+	OrderAsc  Order = "asc"
 )
 
-// TimeInForce :
 type TimeInForce string
 
 const (
-	// TimeInForceGoodTillCancel :
-	TimeInForceGoodTillCancel = TimeInForce("GoodTillCancel")
-	// TimeInForceImmediateOrCancel :
-	TimeInForceImmediateOrCancel = TimeInForce("ImmediateOrCancel")
-	// TimeInForceFillOrKill :
-	TimeInForceFillOrKill = TimeInForce("FillOrKill")
-	// TimeInForcePostOnly :
-	TimeInForcePostOnly = TimeInForce("PostOnly")
+	TimeInForceGoodTillCancel    TimeInForce = "GoodTillCancel"
+	TimeInForceImmediateOrCancel TimeInForce = "ImmediateOrCancel"
+	TimeInForceFillOrKill        TimeInForce = "FillOrKill"
+	TimeInForcePostOnly          TimeInForce = "PostOnly"
 )
 
 // Interval :
