@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/google/go-querystring/query"
+	"github.com/shopspring/decimal"
 )
 
 type V5OrderServiceI interface {
@@ -218,39 +219,39 @@ type V5GetOrdersResult struct {
 }
 
 type V5GetOrder struct {
-	Symbol             SymbolV5    `json:"symbol"`
-	OrderType          OrderType   `json:"orderType"`
-	OrderLinkID        string      `json:"orderLinkId"`
-	OrderID            string      `json:"orderId"`
-	CancelType         string      `json:"cancelType"`
-	AvgPrice           string      `json:"avgPrice"`
-	StopOrderType      string      `json:"stopOrderType"`
-	LastPriceOnCreated string      `json:"lastPriceOnCreated"`
-	OrderStatus        OrderStatus `json:"orderStatus"`
-	TakeProfit         string      `json:"takeProfit"`
-	CumExecValue       string      `json:"cumExecValue"`
-	TriggerDirection   int         `json:"triggerDirection"`
-	IsLeverage         string      `json:"isLeverage"`
-	RejectReason       string      `json:"rejectReason"`
-	Price              string      `json:"price"`
-	OrderIv            string      `json:"orderIv"`
-	CreatedTime        string      `json:"createdTime"`
-	TpTriggerBy        string      `json:"tpTriggerBy"`
-	PositionIdx        int         `json:"positionIdx"`
-	TimeInForce        TimeInForce `json:"timeInForce"`
-	LeavesValue        string      `json:"leavesValue"`
-	UpdatedTime        string      `json:"updatedTime"`
-	Side               Side        `json:"side"`
-	TriggerPrice       string      `json:"triggerPrice"`
-	CumExecFee         string      `json:"cumExecFee"`
-	LeavesQty          string      `json:"leavesQty"`
-	SlTriggerBy        string      `json:"slTriggerBy"`
-	CloseOnTrigger     bool        `json:"closeOnTrigger"`
-	CumExecQty         string      `json:"cumExecQty"`
-	ReduceOnly         bool        `json:"reduceOnly"`
-	Qty                string      `json:"qty"`
-	StopLoss           string      `json:"stopLoss"`
-	TriggerBy          TriggerBy   `json:"triggerBy"`
+	Symbol             SymbolV5            `json:"symbol"`
+	OrderType          OrderType           `json:"orderType"`
+	OrderLinkID        string              `json:"orderLinkId"`
+	OrderID            string              `json:"orderId"`
+	CancelType         string              `json:"cancelType"`
+	AvgPrice           string              `json:"avgPrice"`
+	StopOrderType      string              `json:"stopOrderType"`
+	LastPriceOnCreated string              `json:"lastPriceOnCreated"`
+	OrderStatus        OrderStatus         `json:"orderStatus"`
+	TakeProfit         string              `json:"takeProfit"`
+	CumExecValue       string              `json:"cumExecValue"`
+	TriggerDirection   int                 `json:"triggerDirection"`
+	IsLeverage         string              `json:"isLeverage"`
+	RejectReason       string              `json:"rejectReason"`
+	Price              decimal.Decimal     `json:"price"`
+	OrderIv            string              `json:"orderIv"`
+	CreatedTime        string              `json:"createdTime"`
+	TpTriggerBy        string              `json:"tpTriggerBy"`
+	PositionIdx        int                 `json:"positionIdx"`
+	TimeInForce        TimeInForce         `json:"timeInForce"`
+	LeavesValue        string              `json:"leavesValue"`
+	UpdatedTime        string              `json:"updatedTime"`
+	Side               Side                `json:"side"`
+	TriggerPrice       string              `json:"triggerPrice"`
+	CumExecFee         string              `json:"cumExecFee"`
+	LeavesQty          string              `json:"leavesQty"`
+	SlTriggerBy        string              `json:"slTriggerBy"`
+	CloseOnTrigger     bool                `json:"closeOnTrigger"`
+	CumExecQty         decimal.NullDecimal `json:"cumExecQty"`
+	ReduceOnly         bool                `json:"reduceOnly"`
+	Qty                decimal.Decimal     `json:"qty"`
+	StopLoss           string              `json:"stopLoss"`
+	TriggerBy          TriggerBy           `json:"triggerBy"`
 }
 
 func (s *V5OrderService) GetOpenOrders(ctx context.Context, param V5GetOpenOrdersParam) (*V5GetOrdersResponse, error) {
