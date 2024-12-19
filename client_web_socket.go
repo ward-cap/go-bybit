@@ -7,7 +7,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"log"
+	"go.uber.org/zap"
 	"os"
 	"os/signal"
 	"time"
@@ -23,7 +23,7 @@ const (
 // WebSocketClient :
 type WebSocketClient struct {
 	debug  bool
-	logger *log.Logger
+	logger *zap.SugaredLogger
 
 	baseURL string
 	key     string
@@ -32,7 +32,7 @@ type WebSocketClient struct {
 
 func (c *WebSocketClient) debugf(format string, v ...interface{}) {
 	if c.debug {
-		c.logger.Printf(format, v...)
+		c.logger.Infof(format, v...)
 	}
 }
 
@@ -51,7 +51,7 @@ func (c *WebSocketClient) WithDebug(debug bool) *WebSocketClient {
 }
 
 // WithLogger :
-func (c *WebSocketClient) WithLogger(logger *log.Logger) *WebSocketClient {
+func (c *WebSocketClient) WithLogger(logger *zap.SugaredLogger) *WebSocketClient {
 	c.debug = true
 	c.logger = logger
 
