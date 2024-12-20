@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/google/go-querystring/query"
+	"github.com/shopspring/decimal"
 )
 
 // V5PositionServiceI :
@@ -54,7 +55,7 @@ type V5GetPositionInfoList []V5GetPositionInfoItem
 // V5GetPositionInfoItem :
 type V5GetPositionInfoItem struct {
 	Symbol                 SymbolV5         `json:"symbol"`
-	Leverage               string           `json:"leverage"`
+	Leverage               decimal.Decimal  `json:"leverage"`
 	AvgPrice               string           `json:"avgPrice"`
 	LiqPrice               string           `json:"liqPrice"`
 	RiskLimitValue         string           `json:"riskLimitValue"`

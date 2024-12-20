@@ -32,11 +32,11 @@ func (c *Client) NewTimeService() TimeServiceI {
 }
 
 // FutureServiceI :
-type FutureServiceI interface {
-	InversePerpetual() FutureInversePerpetualServiceI
-	USDTPerpetual() FutureUSDTPerpetualServiceI
-	InverseFuture() FutureInverseFutureServiceI
-}
+//type FutureServiceI interface {
+//	InversePerpetual() FutureInversePerpetualServiceI
+//	//USDTPerpetual() FutureUSDTPerpetualServiceI
+//	InverseFuture() FutureInverseFutureServiceI
+//}
 
 // FutureService :
 type FutureService struct {
@@ -44,33 +44,33 @@ type FutureService struct {
 }
 
 // InversePerpetual :
-func (s *FutureService) InversePerpetual() FutureInversePerpetualServiceI {
-	return &FutureInversePerpetualService{
-		client:              s.client,
-		FutureCommonService: &FutureCommonService{s.client},
-	}
-}
+//func (s *FutureService) InversePerpetual() FutureInversePerpetualServiceI {
+//	return &FutureInversePerpetualService{
+//		client:              s.client,
+//		FutureCommonService: &FutureCommonService{s.client},
+//	}
+//}
 
 // USDTPerpetual :
-func (s *FutureService) USDTPerpetual() FutureUSDTPerpetualServiceI {
-	return &FutureUSDTPerpetualService{
-		client:              s.client,
-		FutureCommonService: &FutureCommonService{s.client},
-	}
-}
+//func (s *FutureService) USDTPerpetual() FutureUSDTPerpetualServiceI {
+//	return &FutureUSDTPerpetualService{
+//		client:              s.client,
+//		FutureCommonService: &FutureCommonService{s.client},
+//	}
+//}
 
 // InverseFuture :
-func (s *FutureService) InverseFuture() FutureInverseFutureServiceI {
-	return &FutureInverseFutureService{
-		client:              s.client,
-		FutureCommonService: &FutureCommonService{s.client},
-	}
-}
+//func (s *FutureService) InverseFuture() FutureInverseFutureServiceI {
+//	return &FutureInverseFutureService{
+//		client:              s.client,
+//		FutureCommonService: &FutureCommonService{s.client},
+//	}
+//}
 
 // Future :
-func (c *Client) Future() FutureServiceI {
-	return &FutureService{c}
-}
+//func (c *Client) Future() FutureServiceI {
+//	return &FutureService{c}
+//}
 
 // DerivativeServiceI :
 type DerivativeServiceI interface {
