@@ -333,7 +333,6 @@ func (c *Client) getV5PrivatelyCtx(ctx context.Context, path string, query url.V
 	u.RawQuery = query.Encode()
 
 	timestamp := c.getTimestamp()
-	sign := getV5Signature(timestamp, c.key, u.RawQuery, c.secret)
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, u.String(), nil)
 	if err != nil {
@@ -341,7 +340,7 @@ func (c *Client) getV5PrivatelyCtx(ctx context.Context, path string, query url.V
 	}
 	req.Header.Set("X-BAPI-API-KEY", c.key)
 	req.Header.Set("X-BAPI-TIMESTAMP", strconv.FormatInt(timestamp, 10))
-	req.Header.Set("X-BAPI-SIGN", sign)
+	req.Header.Set("X-BAPI-SIGN", getV5Signature(timestamp, c.key, u.RawQuery, c.secret))
 
 	if err := c.Request(req, &dst); err != nil {
 		return err
