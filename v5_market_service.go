@@ -23,7 +23,7 @@ type V5MarketServiceI interface {
 	GetOpenInterest(V5GetOpenInterestParam) (*V5GetOpenInterestResponse, error)
 	GetHistoricalVolatility(V5GetHistoricalVolatilityParam) (*V5GetHistoricalVolatilityResponse, error)
 	GetInsurance(V5GetInsuranceParam) (*V5GetInsuranceResponse, error)
-	GetRiskLimit(V5GetRiskLimitParam) (*V5GetRiskLimitResponse, error)
+	GetRiskLimit(context.Context, V5GetRiskLimitParam) (*V5GetRiskLimitResponse, error)
 }
 
 // V5MarketService :
@@ -1088,7 +1088,7 @@ type V5GetRiskLimitItem struct {
 }
 
 // GetRiskLimit :
-func (s *V5MarketService) GetRiskLimit(param V5GetRiskLimitParam) (*V5GetRiskLimitResponse, error) {
+func (s *V5MarketService) GetRiskLimit(ctx context.Context, param V5GetRiskLimitParam) (*V5GetRiskLimitResponse, error) {
 	var res V5GetRiskLimitResponse
 
 	if err := param.validate(); err != nil {
@@ -1100,7 +1100,7 @@ func (s *V5MarketService) GetRiskLimit(param V5GetRiskLimitParam) (*V5GetRiskLim
 		return nil, err
 	}
 
-	if err := s.client.getPublicly("/v5/market/risk-limit", queryString, &res); err != nil {
+	if err := s.client.getPubliclyCtx(ctx, "/v5/market/risk-limit", queryString, &res); err != nil {
 		return nil, err
 	}
 
