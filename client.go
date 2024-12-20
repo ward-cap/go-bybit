@@ -206,10 +206,8 @@ func getV5Signature(
 	queryString string,
 	secret string,
 ) string {
-	val := strconv.FormatInt(timestamp, 10) + key
-	val = val + queryString
 	h := hmac.New(sha256.New, []byte(secret))
-	h.Write([]byte(val))
+	h.Write([]byte(fmt.Sprintf("%d%s%s", timestamp, key, queryString)))
 	return hex.EncodeToString(h.Sum(nil))
 }
 
