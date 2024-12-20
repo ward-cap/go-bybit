@@ -1,6 +1,7 @@
 package bybit
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/url"
@@ -32,7 +33,7 @@ type FutureUSDTPerpetualServiceI interface {
 	CancelAllLinearStopOrder(CancelAllLinearStopOrderParam) (*CancelAllLinearStopOrderResponse, error)
 	QueryLinearStopOrder(QueryLinearStopOrderParam) (*QueryLinearStopOrderResponse, error)
 	ListLinearPosition(SymbolFuture) (*ListLinearPositionResponse, error)
-	ListLinearPositions() (*ListLinearPositionsResponse, error)
+	ListLinearPositions(context.Context) (*ListLinearPositionsResponse, error)
 	SaveLinearLeverage(SaveLinearLeverageParam) (*SaveLinearLeverageResponse, error)
 	LinearTradingStop(LinearTradingStopParam) (*LinearTradingStopResponse, error)
 	LinearExecutionList(LinearExecutionListParam) (*LinearExecutionListResponse, error)
@@ -290,10 +291,10 @@ type ListLinearPositionsResult struct {
 }
 
 // ListLinearPositions :
-func (s *FutureUSDTPerpetualService) ListLinearPositions() (*ListLinearPositionsResponse, error) {
+func (s *FutureUSDTPerpetualService) ListLinearPositions(ctx context.Context) (*ListLinearPositionsResponse, error) {
 	var res ListLinearPositionsResponse
 
-	if err := s.client.getPrivately("/private/linear/position/list", nil, &res); err != nil {
+	if err := s.client.getV5PrivatelyCtx(ctx, "/private/linear/position/list", nil, &res); err != nil {
 		return nil, err
 	}
 
