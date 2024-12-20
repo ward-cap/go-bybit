@@ -7,6 +7,7 @@ import (
 	"fmt"
 
 	"github.com/google/go-querystring/query"
+	"github.com/shopspring/decimal"
 )
 
 // V5MarketServiceI :
@@ -1078,13 +1079,13 @@ type V5GetRiskLimitResult struct {
 }
 
 type V5GetRiskLimitItem struct {
-	ID                int64        `json:"id"`
-	Symbol            SymbolV5     `json:"symbol"`
-	RiskLimitValue    string       `json:"riskLimitValue"`
-	MaintenanceMargin string       `json:"maintenanceMargin"`
-	InitialMargin     string       `json:"initialMargin"`
-	IsLowestRisk      IsLowestRisk `json:"isLowestRisk"`
-	MaxLeverage       string       `json:"maxLeverage"`
+	ID                int64           `json:"id"`
+	Symbol            SymbolV5        `json:"symbol"`
+	RiskLimitValue    decimal.Decimal `json:"riskLimitValue"`
+	MaintenanceMargin decimal.Decimal `json:"maintenanceMargin"`
+	InitialMargin     decimal.Decimal `json:"initialMargin"`
+	IsLowestRisk      IsLowestRisk    `json:"isLowestRisk"`
+	MaxLeverage       decimal.Decimal `json:"maxLeverage"`
 }
 
 // GetRiskLimit :
