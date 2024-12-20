@@ -1,6 +1,7 @@
 package bybit
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 
@@ -10,7 +11,7 @@ import (
 
 // V5PositionServiceI :
 type V5PositionServiceI interface {
-	GetPositionInfo(V5GetPositionInfoParam) (*V5GetPositionInfoResponse, error)
+	GetPositionInfo(context.Context, V5GetPositionInfoParam) (*V5GetPositionInfoResponse, error)
 	SetLeverage(V5SetLeverageParam) (*V5SetLeverageResponse, error)
 	SetTradingStop(V5SetTradingStopParam) (*V5SetTradingStopResponse, error)
 	SetTpSlMode(V5SetTpSlModeParam) (*V5SetTpSlModeResponse, error)
@@ -88,7 +89,7 @@ type V5GetPositionInfoItem struct {
 }
 
 // GetPositionInfo :
-func (s *V5PositionService) GetPositionInfo(param V5GetPositionInfoParam) (*V5GetPositionInfoResponse, error) {
+func (s *V5PositionService) GetPositionInfo(ctx context.Context, param V5GetPositionInfoParam) (*V5GetPositionInfoResponse, error) {
 	var res V5GetPositionInfoResponse
 
 	queryString, err := query.Values(param)
@@ -96,7 +97,7 @@ func (s *V5PositionService) GetPositionInfo(param V5GetPositionInfoParam) (*V5Ge
 		return nil, err
 	}
 
-	if err := s.client.getV5Privately("/v5/position/list", queryString, &res); err != nil {
+	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/position/list", queryString, &res); err != nil {
 		return nil, err
 	}
 
