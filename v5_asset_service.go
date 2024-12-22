@@ -19,7 +19,7 @@ type V5AssetServiceI interface {
 	GetInternalTransferRecords(V5GetInternalTransferRecordsParam) (*V5GetInternalTransferRecordsResponse, error)
 	CreateUniversalTransfer(context.Context, V5CreateUniversalTransferParam) (*V5CreateUniversalTransferResponse, error)
 	GetUniversalTransferRecords(context.Context, V5GetUniversalTransferRecordsParam) (*V5GetUniversalTransferRecordsResponse, error)
-	GetDepositRecords(V5GetDepositRecordsParam) (*V5GetDepositRecordsResponse, error)
+	GetDepositRecords(context.Context, V5GetDepositRecordsParam) (*V5GetDepositRecordsResponse, error)
 	GetSubDepositRecords(V5GetSubDepositRecordsParam) (*V5GetSubDepositRecordsResponse, error)
 	GetInternalDepositRecords(V5GetInternalDepositRecordsParam) (*V5GetInternalDepositRecordsResponse, error)
 	GetMasterDepositAddress(context.Context, V5GetMasterDepositAddressParam) (*V5GetMasterDepositAddressResponse, error)
@@ -280,7 +280,7 @@ type V5GetDepositRecordsRows []V5GetDepositRecordsRow
 type V5GetDepositRecordsRow struct {
 	Coin          Coin            `json:"coin"`
 	Chain         string          `json:"chain"`
-	Amount        string          `json:"amount"`
+	Amount        decimal.Decimal `json:"amount"`
 	TxID          string          `json:"txID"`
 	Status        DepositStatusV5 `json:"status"`
 	ToAddress     string          `json:"toAddress"`
@@ -293,7 +293,7 @@ type V5GetDepositRecordsRow struct {
 }
 
 // GetDepositRecords :
-func (s *V5AssetService) GetDepositRecords(param V5GetDepositRecordsParam) (*V5GetDepositRecordsResponse, error) {
+func (s *V5AssetService) GetDepositRecords(ctx context.Context, param V5GetDepositRecordsParam) (*V5GetDepositRecordsResponse, error) {
 	var res V5GetDepositRecordsResponse
 
 	queryString, err := query.Values(param)
@@ -301,7 +301,7 @@ func (s *V5AssetService) GetDepositRecords(param V5GetDepositRecordsParam) (*V5G
 		return nil, err
 	}
 
-	if err := s.client.getV5Privately("/v5/asset/deposit/query-record", queryString, &res); err != nil {
+	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/asset/deposit/query-record", queryString, &res); err != nil {
 		return nil, err
 	}
 
