@@ -23,7 +23,7 @@ type V5AssetServiceI interface {
 	GetSubDepositRecords(V5GetSubDepositRecordsParam) (*V5GetSubDepositRecordsResponse, error)
 	GetInternalDepositRecords(V5GetInternalDepositRecordsParam) (*V5GetInternalDepositRecordsResponse, error)
 	GetMasterDepositAddress(context.Context, V5GetMasterDepositAddressParam) (*V5GetMasterDepositAddressResponse, error)
-	GetWithdrawalRecords(V5GetWithdrawalRecordsParam) (*V5GetWithdrawalRecordsResponse, error)
+	GetWithdrawalRecords(context.Context, V5GetWithdrawalRecordsParam) (*V5GetWithdrawalRecordsResponse, error)
 	GetCoinInfo(context.Context, V5GetCoinInfoParam) (*V5GetCoinInfoResponse, error)
 	GetAllCoinsBalance(context.Context, V5GetAllCoinsBalanceParam) (*V5GetAllCoinsBalanceResponse, error)
 	Withdraw(context.Context, V5WithdrawParam) (*V5WithdrawResponse, error)
@@ -494,22 +494,22 @@ type V5GetWithdrawalRecordsRows []V5GetWithdrawalRecordsRow
 
 // V5GetWithdrawalRecordsRow :
 type V5GetWithdrawalRecordsRow struct {
-	WithdrawID   string           `json:"withdrawId"`
-	TxID         string           `json:"txId"`
-	WithdrawType WithdrawTypeV5   `json:"withdrawType"`
-	Coin         Coin             `json:"coin"`
-	Chain        string           `json:"chain"`
-	Amount       string           `json:"amount"`
-	WithdrawFee  string           `json:"withdrawFee"`
-	Status       WithdrawStatusV5 `json:"status"`
-	ToAddress    string           `json:"toAddress"`
-	Tag          string           `json:"tag"`
-	CreatedTime  string           `json:"createTime"`
-	UpdatedTime  string           `json:"updateTime"`
+	WithdrawID   string              `json:"withdrawId"`
+	TxID         string              `json:"txId"`
+	WithdrawType WithdrawTypeV5      `json:"withdrawType"`
+	Coin         Coin                `json:"coin"`
+	Chain        string              `json:"chain"`
+	Amount       decimal.Decimal     `json:"amount"`
+	WithdrawFee  decimal.NullDecimal `json:"withdrawFee"`
+	Status       WithdrawStatusV5    `json:"status"`
+	ToAddress    string              `json:"toAddress"`
+	Tag          string              `json:"tag"`
+	CreatedTime  string              `json:"createTime"`
+	UpdatedTime  string              `json:"updateTime"`
 }
 
 // GetWithdrawalRecords :
-func (s *V5AssetService) GetWithdrawalRecords(param V5GetWithdrawalRecordsParam) (*V5GetWithdrawalRecordsResponse, error) {
+func (s *V5AssetService) GetWithdrawalRecords(ctx context.Context, param V5GetWithdrawalRecordsParam) (*V5GetWithdrawalRecordsResponse, error) {
 	var res V5GetWithdrawalRecordsResponse
 
 	queryString, err := query.Values(param)
@@ -517,7 +517,7 @@ func (s *V5AssetService) GetWithdrawalRecords(param V5GetWithdrawalRecordsParam)
 		return nil, err
 	}
 
-	if err := s.client.getV5Privately("/v5/asset/withdraw/query-record", queryString, &res); err != nil {
+	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/asset/withdraw/query-record", queryString, &res); err != nil {
 		return nil, err
 	}
 
