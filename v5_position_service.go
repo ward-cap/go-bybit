@@ -12,7 +12,7 @@ import (
 // V5PositionServiceI :
 type V5PositionServiceI interface {
 	GetPositionInfo(context.Context, V5GetPositionInfoParam) (*V5GetPositionInfoResponse, error)
-	SetLeverage(V5SetLeverageParam) (*V5SetLeverageResponse, error)
+	SetLeverage(context.Context, V5SetLeverageParam) (*V5SetLeverageResponse, error)
 	SetTradingStop(V5SetTradingStopParam) (*V5SetTradingStopResponse, error)
 	SetTpSlMode(V5SetTpSlModeParam) (*V5SetTpSlModeResponse, error)
 	SwitchPositionMode(V5SwitchPositionModeParam) (*V5SwitchPositionModeResponse, error)
@@ -119,7 +119,7 @@ type V5SetLeverageResponse struct {
 }
 
 // SetLeverage :
-func (s *V5PositionService) SetLeverage(param V5SetLeverageParam) (*V5SetLeverageResponse, error) {
+func (s *V5PositionService) SetLeverage(ctx context.Context, param V5SetLeverageParam) (*V5SetLeverageResponse, error) {
 	var res V5SetLeverageResponse
 
 	if param.Category == "" || param.Symbol == "" || param.BuyLeverage == "" || param.SellLeverage == "" {
@@ -131,7 +131,7 @@ func (s *V5PositionService) SetLeverage(param V5SetLeverageParam) (*V5SetLeverag
 		return &res, fmt.Errorf("json marshal: %w", err)
 	}
 
-	if err := s.client.postV5JSON(nil, "/v5/position/set-leverage", body, &res); err != nil {
+	if err := s.client.postV5JSON(ctx, "/v5/position/set-leverage", body, &res); err != nil {
 		return &res, err
 	}
 
