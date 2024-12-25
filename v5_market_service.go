@@ -25,6 +25,7 @@ type V5MarketServiceI interface {
 	GetHistoricalVolatility(V5GetHistoricalVolatilityParam) (*V5GetHistoricalVolatilityResponse, error)
 	GetInsurance(V5GetInsuranceParam) (*V5GetInsuranceResponse, error)
 	GetRiskLimit(context.Context, V5GetRiskLimitParam) (*V5GetRiskLimitResponse, error)
+	GetExchangeEarning(context.Context, ExchangeEarningRequest) (*V5APIExchangeEarning, error)
 }
 
 // V5MarketService :
