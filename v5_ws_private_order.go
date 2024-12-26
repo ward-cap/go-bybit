@@ -65,7 +65,7 @@ type V5WebsocketPrivateOrderData struct {
 	AvgPrice           string              `json:"avgPrice"`
 	BlockTradeID       string              `json:"blockTradeId"`
 	CancelType         string              `json:"cancelType"`
-	Category           string              `json:"category"`
+	Category           CategoryV5          `json:"category"`
 	CloseOnTrigger     bool                `json:"closeOnTrigger"`
 	CreatedTime        string              `json:"createdTime"`
 	CumExecFee         string              `json:"cumExecFee"`
