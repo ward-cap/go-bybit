@@ -1,10 +1,13 @@
 package bybit
 
-import "github.com/google/go-querystring/query"
+import (
+	"context"
+	"github.com/google/go-querystring/query"
+)
 
 // V5ExecutionServiceI :
 type V5ExecutionServiceI interface {
-	GetExecutionList(V5GetExecutionParam) (*V5GetExecutionListResponse, error)
+	GetExecutionList(context.Context, V5GetExecutionParam) (*V5GetExecutionListResponse, error)
 }
 
 // V5ExecutionService :
@@ -69,17 +72,13 @@ type V5GetExecutionListItem struct {
 	ClosedSize      string     `json:"closedSize"`
 }
 
-func (s *V5ExecutionService) GetExecutionList(param V5GetExecutionParam) (*V5GetExecutionListResponse, error) {
-	var res V5GetExecutionListResponse
-
+func (s *V5ExecutionService) GetExecutionList(ctx context.Context, param V5GetExecutionParam) (res *V5GetExecutionListResponse, err error) {
 	queryString, err := query.Values(param)
 	if err != nil {
-		return nil, err
+		return
 	}
 
-	if err := s.client.getV5Privately("/v5/execution/list", queryString, &res); err != nil {
-		return nil, err
-	}
+	err = s.client.getV5PrivatelyCtx(ctx, "/v5/execution/list", queryString, &res)
 
-	return &res, nil
+	return
 }
