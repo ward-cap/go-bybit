@@ -3,6 +3,7 @@ package bybit
 import (
 	"context"
 	"github.com/google/go-querystring/query"
+	"github.com/shopspring/decimal"
 )
 
 // V5ExecutionServiceI :
@@ -39,37 +40,38 @@ type V5GetExecutionListResponse struct {
 // V5GetExecutionListResult :
 type V5GetExecutionListResult struct {
 	NextPageCursor string                   `json:"nextPageCursor"`
-	Category       string                   `json:"category"`
+	Category       CategoryV5               `json:"category"`
 	List           []V5GetExecutionListItem `json:"list"`
 }
 
 // V5GetExecutionListItem :
 type V5GetExecutionListItem struct {
-	Symbol          SymbolV5   `json:"symbol"`
-	OrderID         string     `json:"orderId"`
-	OrderLinkID     string     `json:"orderLinkId"`
-	Side            Side       `json:"side"`
-	OrderPrice      string     `json:"orderPrice"`
-	OrderQty        string     `json:"orderQty"`
-	LeavesQty       string     `json:"leavesQty"`
-	OrderType       OrderType  `json:"orderType"`
-	StopOrderType   string     `json:"stopOrderType"`
-	ExecFee         string     `json:"execFee"`
-	ExecID          string     `json:"execId"`
-	ExecPrice       string     `json:"execPrice"`
-	ExecQty         string     `json:"execQty"`
-	ExecType        ExecTypeV5 `json:"execType"`
-	ExecValue       string     `json:"execValue"`
-	ExecTime        string     `json:"execTime"`
-	IsMaker         bool       `json:"isMaker"`
-	FeeRate         string     `json:"feeRate"`
-	TradeIv         string     `json:"tradeIv"`
-	MarkIv          string     `json:"markIv"`
-	MarkPrice       string     `json:"markPrice"`
-	IndexPrice      string     `json:"indexPrice"`
-	UnderlyingPrice string     `json:"underlyingPrice"`
-	BlockTradeID    string     `json:"blockTradeId"`
-	ClosedSize      string     `json:"closedSize"`
+	Symbol          SymbolV5        `json:"symbol"`
+	OrderID         string          `json:"orderId"`
+	OrderLinkID     string          `json:"orderLinkId"`
+	Side            Side            `json:"side"`
+	OrderPrice      string          `json:"orderPrice"`
+	OrderQty        string          `json:"orderQty"`
+	LeavesQty       string          `json:"leavesQty"`
+	OrderType       OrderType       `json:"orderType"`
+	StopOrderType   string          `json:"stopOrderType"`
+	ExecFee         decimal.Decimal `json:"execFee"`
+	FeeCurrency     string          `json:"feeCurrency"`
+	ExecID          string          `json:"execId"`
+	ExecPrice       decimal.Decimal `json:"execPrice"`
+	ExecQty         decimal.Decimal `json:"execQty"`
+	ExecType        ExecTypeV5      `json:"execType"`
+	ExecValue       string          `json:"execValue"`
+	ExecTime        string          `json:"execTime"`
+	IsMaker         bool            `json:"isMaker"`
+	FeeRate         string          `json:"feeRate"`
+	TradeIv         string          `json:"tradeIv"`
+	MarkIv          string          `json:"markIv"`
+	MarkPrice       string          `json:"markPrice"`
+	IndexPrice      string          `json:"indexPrice"`
+	UnderlyingPrice string          `json:"underlyingPrice"`
+	BlockTradeID    string          `json:"blockTradeId"`
+	ClosedSize      string          `json:"closedSize"`
 }
 
 func (s *V5ExecutionService) GetExecutionList(ctx context.Context, param V5GetExecutionParam) (res *V5GetExecutionListResponse, err error) {

@@ -199,8 +199,8 @@ type V5GetHistoryOrdersParam struct {
 	OrderLinkID *string      `url:"orderLinkId,omitempty"`
 	OrderFilter *OrderFilter `url:"orderFilter,omitempty"` // If not passed, Order by default
 	OrderStatus *OrderStatus `url:"orderStatus,omitempty"`
-	StartTime   *int         `url:"startTime,omitempty"`
-	EndTime     *int         `url:"endTime,omitempty"`
+	StartTime   *int64       `url:"startTime,omitempty"`
+	EndTime     *int64       `url:"endTime,omitempty"`
 	Limit       *int         `url:"limit,omitempty"`
 	Cursor      *string      `url:"cursor,omitempty"`
 }
