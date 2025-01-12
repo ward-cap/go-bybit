@@ -112,10 +112,10 @@ func (c *Client) WithReferer(referer string) *Client {
 func (c *Client) Request(req *http.Request, dst any) (err error) {
 	c.debugf("request: %v", req)
 	resp, err := c.httpClient.Do(req)
-	//c.debugf("response: %v", resp)
-	//if err != nil {
-	//	return err
-	//}
+	if err != nil {
+		return err
+	}
+
 	c.debugf("response status code: %v", resp.StatusCode)
 	defer func() {
 		cerr := resp.Body.Close()

@@ -57,7 +57,7 @@ type V5GetPositionInfoList []V5GetPositionInfoItem
 type V5GetPositionInfoItem struct {
 	Symbol                 SymbolV5         `json:"symbol"`
 	Leverage               decimal.Decimal  `json:"leverage"`
-	AvgPrice               string           `json:"avgPrice"`
+	AvgPrice               string           `json:"avgPrice"` // Do not move to decimal. it can be emplty while get with symbol
 	LiqPrice               string           `json:"liqPrice"`
 	RiskLimitValue         string           `json:"riskLimitValue"`
 	TakeProfit             string           `json:"takeProfit"`
