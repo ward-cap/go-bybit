@@ -5,6 +5,7 @@ import (
 	"errors"
 
 	"github.com/gorilla/websocket"
+	"github.com/shopspring/decimal"
 )
 
 // SubscribePosition :
@@ -61,33 +62,33 @@ type V5WebsocketPrivatePositionResponse struct {
 
 // V5WebsocketPrivatePositionData :
 type V5WebsocketPrivatePositionData struct {
-	AutoAddMargin   int        `json:"autoAddMargin"`
-	PositionIdx     int        `json:"positionIdx"`
-	TradeMode       int        `json:"tradeMode"`
-	RiskID          int        `json:"riskId"`
-	RiskLimitValue  string     `json:"riskLimitValue"`
-	Symbol          SymbolV5   `json:"symbol"`
-	Side            Side       `json:"side"`
-	Size            string     `json:"size"`
-	EntryPrice      string     `json:"entryPrice"`
-	Leverage        string     `json:"leverage"`
-	PositionValue   string     `json:"positionValue"`
-	MarkPrice       string     `json:"markPrice"`
-	PositionBalance string     `json:"positionBalance"`
-	PositionIM      string     `json:"positionIM"`
-	PositionMM      string     `json:"positionMM"`
-	TakeProfit      string     `json:"takeProfit"`
-	StopLoss        string     `json:"stopLoss"`
-	TrailingStop    string     `json:"trailingStop"`
-	UnrealisedPnl   string     `json:"unrealisedPnl"`
-	CumRealisedPnl  string     `json:"cumRealisedPnl"`
-	CreatedTime     string     `json:"CreatedTime"`
-	UpdatedTime     string     `json:"updatedTime"`
-	TpslMode        TpSlMode   `json:"tpslMode"`
-	LiqPrice        string     `json:"liqPrice"`
-	BustPrice       string     `json:"bustPrice"`
-	Category        CategoryV5 `json:"category"`
-	PositionStatus  string     `json:"positionStatus"`
+	AutoAddMargin   int             `json:"autoAddMargin"`
+	PositionIdx     int             `json:"positionIdx"`
+	TradeMode       int             `json:"tradeMode"`
+	RiskID          int             `json:"riskId"`
+	RiskLimitValue  string          `json:"riskLimitValue"`
+	Symbol          SymbolV5        `json:"symbol"`
+	Side            Side            `json:"side"`
+	Size            decimal.Decimal `json:"size"`
+	EntryPrice      decimal.Decimal `json:"entryPrice"`
+	Leverage        string          `json:"leverage"`
+	PositionValue   string          `json:"positionValue"`
+	MarkPrice       decimal.Decimal `json:"markPrice"`
+	PositionBalance string          `json:"positionBalance"`
+	PositionIM      string          `json:"positionIM"`
+	PositionMM      string          `json:"positionMM"`
+	TakeProfit      string          `json:"takeProfit"`
+	StopLoss        string          `json:"stopLoss"`
+	TrailingStop    string          `json:"trailingStop"`
+	UnrealisedPnl   string          `json:"unrealisedPnl"`
+	CumRealisedPnl  string          `json:"cumRealisedPnl"`
+	CreatedTime     string          `json:"CreatedTime"`
+	UpdatedTime     string          `json:"updatedTime"`
+	TpslMode        TpSlMode        `json:"tpslMode"`
+	LiqPrice        string          `json:"liqPrice"`
+	BustPrice       string          `json:"bustPrice"`
+	Category        CategoryV5      `json:"category"`
+	PositionStatus  string          `json:"positionStatus"`
 }
 
 // Key :
