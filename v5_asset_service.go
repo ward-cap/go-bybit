@@ -556,16 +556,16 @@ type V5GetCoinInfoChains []V5GetCoinInfoChain
 
 // V5GetCoinInfoChain :
 type V5GetCoinInfoChain struct {
-	Chain                 string `json:"chain"`
-	ChainType             string `json:"chainType"`
-	Confirmation          string `json:"confirmation"`
-	WithdrawFee           string `json:"withdrawFee"`
-	DepositMin            string `json:"depositMin"`
-	WithdrawMin           string `json:"withdrawMin"`
-	MinAccuracy           string `json:"minAccuracy"`
-	ChainDeposit          string `json:"chainDeposit"`
-	ChainWithdraw         string `json:"chainWithdraw"`
-	WithdrawPercentageFee string `json:"withdrawPercentageFee"`
+	Chain                 string        `json:"chain"`
+	ChainType             string        `json:"chainType"`
+	Confirmation          NullDecimalV2 `json:"confirmation"`
+	WithdrawFee           NullDecimalV2 `json:"withdrawFee"`
+	DepositMin            NullDecimalV2 `json:"depositMin"`
+	WithdrawMin           NullDecimalV2 `json:"withdrawMin"`
+	MinAccuracy           NullDecimalV2 `json:"minAccuracy"`
+	ChainDeposit          string        `json:"chainDeposit"`
+	ChainWithdraw         string        `json:"chainWithdraw"`
+	WithdrawPercentageFee NullDecimalV2 `json:"withdrawPercentageFee"`
 }
 
 // GetCoinInfo :
