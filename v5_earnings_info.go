@@ -39,6 +39,7 @@ type EarningDetail struct {
 	MarkupEarning  string          `json:"markupEarning"`
 	BaseFeeEarning string          `json:"baseFeeEarning"`
 	OrderID        string          `json:"orderId"`
+	TradeID        string          `json:"execId"`
 	ExecTime       string          `json:"execTime"`
 }
 
