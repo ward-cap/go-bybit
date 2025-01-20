@@ -400,9 +400,9 @@ type V5GetInstrumentsInfoLinearInverseResult struct {
 }
 
 type LinearInverseLeverageFilterV5 struct {
-	MinLeverage  string `json:"minLeverage"`
-	MaxLeverage  string `json:"maxLeverage"`
-	LeverageStep string `json:"leverageStep"`
+	MinLeverage  decimal.Decimal `json:"minLeverage"`
+	MaxLeverage  decimal.Decimal `json:"maxLeverage"`
+	LeverageStep decimal.Decimal `json:"leverageStep"`
 }
 
 type V5GetInstrumentsInfoLinearInverseItem struct {

@@ -5,6 +5,7 @@ import (
 	"errors"
 
 	"github.com/gorilla/websocket"
+	"github.com/shopspring/decimal"
 )
 
 // SubscribeWallet :
@@ -76,19 +77,20 @@ type V5WebsocketPrivateWalletData struct {
 
 // V5WebsocketPrivateWalletCoin :
 type V5WebsocketPrivateWalletCoin struct {
-	Coin                Coin   `json:"coin"`
-	Equity              string `json:"equity"`
-	UsdValue            string `json:"usdValue"`
-	WalletBalance       string `json:"walletBalance"`
-	AvailableToWithdraw string `json:"availableToWithdraw"`
-	AvailableToBorrow   string `json:"availableToBorrow"`
-	BorrowAmount        string `json:"borrowAmount"`
-	AccruedInterest     string `json:"accruedInterest"`
-	TotalOrderIM        string `json:"totalOrderIM"`
-	TotalPositionIM     string `json:"totalPositionIM"`
-	TotalPositionMM     string `json:"totalPositionMM"`
-	UnrealisedPnl       string `json:"unrealisedPnl"`
-	CumRealisedPnl      string `json:"cumRealisedPnl"`
+	Coin          Coin            `json:"coin"`
+	Equity        decimal.Decimal `json:"equity"`
+	WalletBalance decimal.Decimal `json:"walletBalance"`
+
+	//BorrowAmount        string `json:"borrowAmount"`
+	//AccruedInterest     string `json:"accruedInterest"`
+	//TotalOrderIM        string `json:"totalOrderIM"`
+	//TotalPositionIM     string `json:"totalPositionIM"`
+	//TotalPositionMM     string `json:"totalPositionMM"`
+	//UnrealisedPnl       string `json:"unrealisedPnl"`
+	//CumRealisedPnl      string `json:"cumRealisedPnl"`
+	//UsdValue            string `json:"usdValue"`
+	//AvailableToWithdraw string `json:"availableToWithdraw"`
+	//AvailableToBorrow   string `json:"availableToBorrow"`
 }
 
 // Key :
