@@ -589,7 +589,7 @@ type V5GetAllCoinsBalanceParam struct {
 	AccountType AccountTypeV5 `url:"accountType"`
 	MemberID    string        `url:"memberId,omitempty"`
 	WithBonus   string        `url:"withBonus,omitempty"`
-	Coins       []Coin
+	Coins       []string
 }
 
 // V5GetAllCoinsBalanceResponse :
@@ -624,11 +624,7 @@ func (s *V5AssetService) GetAllCoinsBalance(ctx context.Context, param V5GetAllC
 	}
 
 	if len(param.Coins) > 0 {
-		var coinsToQuery []string
-		for _, coin := range param.Coins {
-			coinsToQuery = append(coinsToQuery, string(coin))
-		}
-		queryString.Set("coin", strings.Join(coinsToQuery, ","))
+		queryString.Set("coin", strings.Join(param.Coins, ","))
 	}
 
 	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/asset/transfer/query-account-coins-balance", queryString, &res); err != nil {
