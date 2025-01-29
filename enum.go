@@ -28,16 +28,17 @@ const (
 type OrderStatus string
 
 const (
-	OrderStatusCreated         OrderStatus = "Created"
-	OrderStatusRejected        OrderStatus = "Rejected"
-	OrderStatusNew             OrderStatus = "New"
-	OrderStatusPartiallyFilled OrderStatus = "PartiallyFilled"
-	OrderStatusFilled          OrderStatus = "Filled"
-	OrderStatusCancelled       OrderStatus = "Cancelled"
-	OrderStatusPendingCancel   OrderStatus = "PendingCancel"
-	OrderStatusDeactivated     OrderStatus = "Deactivated"
-	OrderStatusTriggered       OrderStatus = "Triggered"
-	OrderStatusActive          OrderStatus = "Active"
+	OrderStatusCreated                 OrderStatus = "Created"
+	OrderStatusRejected                OrderStatus = "Rejected"
+	OrderStatusNew                     OrderStatus = "New"
+	OrderStatusPartiallyFilled         OrderStatus = "PartiallyFilled"
+	OrderStatusFilled                  OrderStatus = "Filled"
+	OrderStatusCancelled               OrderStatus = "Cancelled"
+	OrderStatusPendingCancel           OrderStatus = "PendingCancel"
+	OrderStatusDeactivated             OrderStatus = "Deactivated"
+	OrderStatusTriggered               OrderStatus = "Triggered"
+	OrderStatusActive                  OrderStatus = "Active"
+	OrderStatusPartiallyFilledCanceled OrderStatus = "PartiallyFilledCanceled"
 )
 
 type Order string
