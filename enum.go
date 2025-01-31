@@ -37,6 +37,7 @@ const (
 	OrderStatusPendingCancel           OrderStatus = "PendingCancel"
 	OrderStatusDeactivated             OrderStatus = "Deactivated"
 	OrderStatusTriggered               OrderStatus = "Triggered"
+	OrderStatusUntriggered             OrderStatus = "Untriggered"
 	OrderStatusActive                  OrderStatus = "Active"
 	OrderStatusPartiallyFilledCanceled OrderStatus = "PartiallyFilledCanceled"
 )
