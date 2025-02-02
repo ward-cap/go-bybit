@@ -54,7 +54,7 @@ func (s *V5WebsocketPublicService) SubscribeKline(
 // V5WebsocketPublicKlineParamKey :
 type V5WebsocketPublicKlineParamKey struct {
 	Interval Interval
-	Symbol   SymbolV5
+	Symbol   string
 }
 
 // Topic :
@@ -95,7 +95,7 @@ func (r *V5WebsocketPublicKlineResponse) Key() V5WebsocketPublicKlineParamKey {
 
 	return V5WebsocketPublicKlineParamKey{
 		Interval: Interval(arr[1]),
-		Symbol:   SymbolV5(arr[2]),
+		Symbol:   string(arr[2]),
 	}
 }
 

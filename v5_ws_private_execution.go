@@ -63,7 +63,7 @@ type V5WebsocketPrivateExecutionResponse struct {
 // V5WebsocketPrivateExecutionData :
 type V5WebsocketPrivateExecutionData struct {
 	Category        CategoryV5      `json:"category"`
-	Symbol          SymbolV5        `json:"symbol"`
+	Symbol          string          `json:"symbol"`
 	ExecFee         decimal.Decimal `json:"execFee"`
 	ExecID          string          `json:"execId"`
 	ExecPrice       decimal.Decimal `json:"execPrice"`

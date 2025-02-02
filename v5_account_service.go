@@ -243,7 +243,7 @@ type V5GetTransactionLogList []V5GetTransactionLogItem
 
 // V5GetTransactionLogItem :
 type V5GetTransactionLogItem struct {
-	Symbol          SymbolV5             `json:"symbol"`
+	Symbol          string               `json:"symbol"`
 	Category        CategoryV5           `json:"category"`
 	Side            Side                 `json:"side"`
 	TransactionTime string               `json:"transactionTime"`

@@ -20,7 +20,7 @@ type V5ExecutionService struct {
 type V5GetExecutionParam struct {
 	Category CategoryV5 `url:"category"`
 
-	Symbol      *SymbolV5   `url:"symbol,omitempty"`
+	Symbol      *string     `url:"symbol,omitempty"`
 	OrderID     *string     `url:"orderId,omitempty"`
 	OrderLinkID *string     `url:"orderLinkId,omitempty"`
 	BaseCoin    *Coin       `url:"baseCoin,omitempty"`
@@ -46,7 +46,7 @@ type V5GetExecutionListResult struct {
 
 // V5GetExecutionListItem :
 type V5GetExecutionListItem struct {
-	Symbol          SymbolV5        `json:"symbol"`
+	Symbol          string          `json:"symbol"`
 	OrderID         string          `json:"orderId"`
 	OrderLinkID     string          `json:"orderLinkId"`
 	Side            Side            `json:"side"`

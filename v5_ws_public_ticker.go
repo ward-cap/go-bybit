@@ -54,7 +54,7 @@ func (s *V5WebsocketPublicService) SubscribeTicker(
 
 // V5WebsocketPublicTickerParamKey :
 type V5WebsocketPublicTickerParamKey struct {
-	Symbol SymbolV5
+	Symbol string
 }
 
 // Topic :
@@ -82,7 +82,7 @@ type V5WebsocketPublicTickerData struct {
 
 // V5WebsocketPublicTickerLinearInverseResult :
 type V5WebsocketPublicTickerLinearInverseResult struct {
-	Symbol                 SymbolV5            `json:"symbol"`
+	Symbol                 string              `json:"symbol"`
 	TickDirection          TickDirection       `json:"tickDirection"`
 	Price24hPercent        string              `json:"price24hPcnt"`
 	LastPrice              decimal.NullDecimal `json:"lastPrice"`
@@ -110,36 +110,36 @@ type V5WebsocketPublicTickerLinearInverseResult struct {
 
 // V5WebsocketPublicTickerOptionResult :
 type V5WebsocketPublicTickerOptionResult struct {
-	Symbol                 SymbolV5 `json:"symbol"`
-	BidPrice               string   `json:"bidPrice"`
-	BidSize                string   `json:"bidSize"`
-	BidIv                  string   `json:"bidIv"`
-	AskPrice               string   `json:"askPrice"`
-	AskSize                string   `json:"askSize"`
-	AskIv                  string   `json:"askIv"`
-	LastPrice              string   `json:"lastPrice"`
-	HighPrice24H           string   `json:"highPrice24h"`
-	LowPrice24H            string   `json:"lowPrice24h"`
-	MarkPrice              string   `json:"markPrice"`
-	IndexPrice             string   `json:"indexPrice"`
-	MarkPriceIv            string   `json:"markPriceIv"`
-	UnderlyingPrice        string   `json:"underlyingPrice"`
-	OpenInterest           string   `json:"openInterest"`
-	Turnover24H            string   `json:"turnover24h"`
-	Volume24H              string   `json:"volume24h"`
-	TotalVolume            string   `json:"totalVolume"`
-	TotalTurnover          string   `json:"totalTurnover"`
-	Delta                  string   `json:"delta"`
-	Gamma                  string   `json:"gamma"`
-	Vega                   string   `json:"vega"`
-	Theta                  string   `json:"theta"`
-	PredictedDeliveryPrice string   `json:"predictedDeliveryPrice"`
-	Change24H              string   `json:"change24h"`
+	Symbol                 string `json:"symbol"`
+	BidPrice               string `json:"bidPrice"`
+	BidSize                string `json:"bidSize"`
+	BidIv                  string `json:"bidIv"`
+	AskPrice               string `json:"askPrice"`
+	AskSize                string `json:"askSize"`
+	AskIv                  string `json:"askIv"`
+	LastPrice              string `json:"lastPrice"`
+	HighPrice24H           string `json:"highPrice24h"`
+	LowPrice24H            string `json:"lowPrice24h"`
+	MarkPrice              string `json:"markPrice"`
+	IndexPrice             string `json:"indexPrice"`
+	MarkPriceIv            string `json:"markPriceIv"`
+	UnderlyingPrice        string `json:"underlyingPrice"`
+	OpenInterest           string `json:"openInterest"`
+	Turnover24H            string `json:"turnover24h"`
+	Volume24H              string `json:"volume24h"`
+	TotalVolume            string `json:"totalVolume"`
+	TotalTurnover          string `json:"totalTurnover"`
+	Delta                  string `json:"delta"`
+	Gamma                  string `json:"gamma"`
+	Vega                   string `json:"vega"`
+	Theta                  string `json:"theta"`
+	PredictedDeliveryPrice string `json:"predictedDeliveryPrice"`
+	Change24H              string `json:"change24h"`
 }
 
 // V5WebsocketPublicTickerSpotResult :
 type V5WebsocketPublicTickerSpotResult struct {
-	Symbol        SymbolV5            `json:"symbol"`
+	Symbol        string              `json:"symbol"`
 	LastPrice     decimal.NullDecimal `json:"lastPrice"`
 	HighPrice24H  string              `json:"highPrice24h"`
 	LowPrice24H   string              `json:"lowPrice24h"`
@@ -159,7 +159,7 @@ func (r *V5WebsocketPublicTickerResponse) Key() V5WebsocketPublicTickerParamKey 
 	}
 
 	return V5WebsocketPublicTickerParamKey{
-		Symbol: SymbolV5(arr[1]),
+		Symbol: string(arr[1]),
 	}
 }
 

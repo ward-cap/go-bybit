@@ -67,7 +67,7 @@ type V5WebsocketPrivatePositionData struct {
 	TradeMode       int             `json:"tradeMode"`
 	RiskID          int             `json:"riskId"`
 	RiskLimitValue  string          `json:"riskLimitValue"`
-	Symbol          SymbolV5        `json:"symbol"`
+	Symbol          string          `json:"symbol"`
 	Side            Side            `json:"side"`
 	Size            decimal.Decimal `json:"size"`
 	EntryPrice      decimal.Decimal `json:"entryPrice"`

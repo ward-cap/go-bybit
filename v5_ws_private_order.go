@@ -89,7 +89,7 @@ type V5WebsocketPrivateOrderData struct {
 	SlTriggerBy        TriggerBy           `json:"slTriggerBy"`
 	StopLoss           string              `json:"stopLoss"`
 	StopOrderType      string              `json:"stopOrderType"`
-	Symbol             SymbolV5            `json:"symbol"`
+	Symbol             string              `json:"symbol"`
 	TakeProfit         string              `json:"takeProfit"`
 	TimeInForce        TimeInForce         `json:"timeInForce"`
 	TpTriggerBy        TriggerBy           `json:"tpTriggerBy"`

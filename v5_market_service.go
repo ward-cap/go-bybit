@@ -36,7 +36,7 @@ type V5MarketService struct {
 // V5GetKlineParam :
 type V5GetKlineParam struct {
 	Category CategoryV5 `url:"category"`
-	Symbol   SymbolV5   `url:"symbol"`
+	Symbol   string     `url:"symbol"`
 	Interval Interval   `url:"interval"`
 	Start    *int64     `url:"start,omitempty"` // timestamp point for result, in milliseconds
 	End      *int64     `url:"end,omitempty"`   // timestamp point for result, in milliseconds
@@ -53,7 +53,7 @@ type V5GetKlineResponse struct {
 // V5GetKlineResult :
 type V5GetKlineResult struct {
 	Category CategoryV5     `json:"category"`
-	Symbol   SymbolV5       `json:"symbol"`
+	Symbol   string         `json:"symbol"`
 	List     V5GetKlineList `json:"list"`
 }
 
@@ -113,7 +113,7 @@ func (s *V5MarketService) GetKline(param V5GetKlineParam) (*V5GetKlineResponse, 
 // V5GetMarkPriceKlineParam :
 type V5GetMarkPriceKlineParam struct {
 	Category CategoryV5 `url:"category"`
-	Symbol   SymbolV5   `url:"symbol"`
+	Symbol   string     `url:"symbol"`
 	Interval Interval   `url:"interval"`
 	Start    *int64     `url:"start,omitempty"` // timestamp point for result, in milliseconds
 	End      *int64     `url:"end,omitempty"`   // timestamp point for result, in milliseconds
@@ -129,7 +129,7 @@ type V5GetMarkPriceKlineResponse struct {
 // V5GetMarkPriceKlineResult :
 type V5GetMarkPriceKlineResult struct {
 	Category CategoryV5              `json:"category"`
-	Symbol   SymbolV5                `json:"symbol"`
+	Symbol   string                  `json:"symbol"`
 	List     V5GetMarkPriceKlineList `json:"list"`
 }
 
@@ -189,7 +189,7 @@ func (s *V5MarketService) GetMarkPriceKline(param V5GetMarkPriceKlineParam) (*V5
 // V5GetIndexPriceKlineParam :
 type V5GetIndexPriceKlineParam struct {
 	Category CategoryV5 `url:"category"`
-	Symbol   SymbolV5   `url:"symbol"`
+	Symbol   string     `url:"symbol"`
 	Interval Interval   `url:"interval"`
 	Start    *int64     `url:"start,omitempty"` // timestamp point for result, in milliseconds
 	End      *int64     `url:"end,omitempty"`   // timestamp point for result, in milliseconds
@@ -205,7 +205,7 @@ type V5GetIndexPriceKlineResponse struct {
 // V5GetIndexPriceKlineResult :
 type V5GetIndexPriceKlineResult struct {
 	Category CategoryV5               `json:"category"`
-	Symbol   SymbolV5                 `json:"symbol"`
+	Symbol   string                   `json:"symbol"`
 	List     V5GetIndexPriceKlineList `json:"list"`
 }
 
@@ -265,7 +265,7 @@ func (s *V5MarketService) GetIndexPriceKline(param V5GetIndexPriceKlineParam) (*
 // V5GetPremiumIndexPriceKlineParam :
 type V5GetPremiumIndexPriceKlineParam struct {
 	Category CategoryV5 `url:"category"`
-	Symbol   SymbolV5   `url:"symbol"`
+	Symbol   string     `url:"symbol"`
 	Interval Interval   `url:"interval"`
 	Start    *int64     `url:"start,omitempty"` // timestamp point for result, in milliseconds
 	End      *int64     `url:"end,omitempty"`   // timestamp point for result, in milliseconds
@@ -281,7 +281,7 @@ type V5GetPremiumIndexPriceKlineResponse struct {
 // V5GetPremiumIndexPriceKlineResult :
 type V5GetPremiumIndexPriceKlineResult struct {
 	Category CategoryV5                      `json:"category"`
-	Symbol   SymbolV5                        `json:"symbol"`
+	Symbol   string                          `json:"symbol"`
 	List     V5GetPremiumIndexPriceKlineList `json:"list"`
 }
 
@@ -345,10 +345,10 @@ func (s *V5MarketService) GetPremiumIndexPriceKline(param V5GetPremiumIndexPrice
 type V5GetInstrumentsInfoParam struct {
 	Category CategoryV5 `url:"category"`
 
-	Symbol   *SymbolV5 `url:"symbol,omitempty"`
-	BaseCoin *Coin     `url:"baseCoin,omitempty"` // Base coin. linear,inverse,option only
-	Limit    *int      `url:"limit,omitempty"`    // Limit for data size per page. [1, 1000]. Default: 500
-	Cursor   *string   `url:"cursor,omitempty"`
+	Symbol   *string `url:"symbol,omitempty"`
+	BaseCoin *Coin   `url:"baseCoin,omitempty"` // Base coin. linear,inverse,option only
+	Limit    *int    `url:"limit,omitempty"`    // Limit for data size per page. [1, 1000]. Default: 500
+	Cursor   *string `url:"cursor,omitempty"`
 }
 
 // V5GetInstrumentsInfoResponse :
@@ -406,7 +406,7 @@ type LinearInverseLeverageFilterV5 struct {
 }
 
 type V5GetInstrumentsInfoLinearInverseItem struct {
-	Symbol             SymbolV5                      `json:"symbol"`
+	Symbol             string                        `json:"symbol"`
 	ContractType       ContractType                  `json:"contractType"`
 	Status             InstrumentStatus              `json:"status"`
 	BaseCoin           Coin                          `json:"baseCoin"`
@@ -446,7 +446,7 @@ type V5GetInstrumentsInfoOptionResult struct {
 }
 
 type V5GetInstrumentsInfoOptionItem struct {
-	Symbol          SymbolV5              `json:"symbol"`
+	Symbol          string                `json:"symbol"`
 	OptionsType     OptionsType           `json:"optionsType"`
 	Status          InstrumentStatus      `json:"status"`
 	BaseCoin        Coin                  `json:"baseCoin"`
@@ -478,7 +478,7 @@ type V5GetInstrumentsInfoSpotResult struct {
 }
 
 type V5GetInstrumentsInfoSpotItem struct {
-	Symbol        SymbolV5            `json:"symbol"`
+	Symbol        string              `json:"symbol"`
 	BaseCoin      Coin                `json:"baseCoin"`
 	QuoteCoin     Coin                `json:"quoteCoin"`
 	Innovation    Innovation          `json:"innovation"`
@@ -519,7 +519,7 @@ func (s *V5MarketService) GetInstrumentsInfo(ctx context.Context, param V5GetIns
 // V5GetOrderbookParam :
 type V5GetOrderbookParam struct {
 	Category CategoryV5 `url:"category"`
-	Symbol   SymbolV5   `url:"symbol"`
+	Symbol   string     `url:"symbol"`
 
 	// spot: [1, 50]. Default: 1.
 	// linear&inverse: [1, 200]. Default: 25.
@@ -535,7 +535,7 @@ type V5GetOrderbookResponse struct {
 
 // V5GetOrderbookResult :
 type V5GetOrderbookResult struct {
-	Symbol    SymbolV5              `json:"s"`
+	Symbol    string                `json:"s"`
 	Bids      V5GetOrderbookBidAsks `json:"b"`
 	Asks      V5GetOrderbookBidAsks `json:"a"`
 	Timestamp int64                 `json:"ts"`
@@ -592,9 +592,9 @@ func (s *V5MarketService) GetOrderbook(param V5GetOrderbookParam) (*V5GetOrderbo
 type V5GetTickersParam struct {
 	Category CategoryV5 `url:"category"`
 
-	Symbol   *SymbolV5 `url:"symbol,omitempty"`
-	BaseCoin *Coin     `url:"baseCoin,omitempty"` // Base coin. For option only
-	ExpDate  *string   `url:"expDate,omitempty"`  // Expiry date. e.g., 25DEC22. For option only
+	Symbol   *string `url:"symbol,omitempty"`
+	BaseCoin *Coin   `url:"baseCoin,omitempty"` // Base coin. For option only
+	ExpDate  *string `url:"expDate,omitempty"`  // Expiry date. e.g., 25DEC22. For option only
 }
 
 func (p V5GetTickersParam) validate() error {
@@ -658,29 +658,29 @@ type V5GetTickersLinearInverseResult struct {
 }
 
 type V5GetTickersLinearInverseItem struct {
-	Symbol                 SymbolV5 `json:"symbol"`
-	LastPrice              string   `json:"lastPrice"`
-	IndexPrice             string   `json:"indexPrice"`
-	MarkPrice              string   `json:"markPrice"`
-	PrevPrice24H           string   `json:"prevPrice24h"`
-	Price24HPcnt           string   `json:"price24hPcnt"`
-	HighPrice24H           string   `json:"highPrice24h"`
-	LowPrice24H            string   `json:"lowPrice24h"`
-	PrevPrice1H            string   `json:"prevPrice1h"`
-	OpenInterest           string   `json:"openInterest"`
-	OpenInterestValue      string   `json:"openInterestValue"`
-	Turnover24H            string   `json:"turnover24h"`
-	Volume24H              string   `json:"volume24h"`
-	FundingRate            string   `json:"fundingRate"`
-	NextFundingTime        string   `json:"nextFundingTime"`
-	PredictedDeliveryPrice string   `json:"predictedDeliveryPrice"`
-	BasisRate              string   `json:"basisRate"`
-	DeliveryFeeRate        string   `json:"deliveryFeeRate"`
-	DeliveryTime           string   `json:"deliveryTime"`
-	Ask1Size               string   `json:"ask1Size"`
-	Bid1Price              string   `json:"bid1Price"`
-	Ask1Price              string   `json:"ask1Price"`
-	Bid1Size               string   `json:"bid1Size"`
+	Symbol                 string `json:"symbol"`
+	LastPrice              string `json:"lastPrice"`
+	IndexPrice             string `json:"indexPrice"`
+	MarkPrice              string `json:"markPrice"`
+	PrevPrice24H           string `json:"prevPrice24h"`
+	Price24HPcnt           string `json:"price24hPcnt"`
+	HighPrice24H           string `json:"highPrice24h"`
+	LowPrice24H            string `json:"lowPrice24h"`
+	PrevPrice1H            string `json:"prevPrice1h"`
+	OpenInterest           string `json:"openInterest"`
+	OpenInterestValue      string `json:"openInterestValue"`
+	Turnover24H            string `json:"turnover24h"`
+	Volume24H              string `json:"volume24h"`
+	FundingRate            string `json:"fundingRate"`
+	NextFundingTime        string `json:"nextFundingTime"`
+	PredictedDeliveryPrice string `json:"predictedDeliveryPrice"`
+	BasisRate              string `json:"basisRate"`
+	DeliveryFeeRate        string `json:"deliveryFeeRate"`
+	DeliveryTime           string `json:"deliveryTime"`
+	Ask1Size               string `json:"ask1Size"`
+	Bid1Price              string `json:"bid1Price"`
+	Ask1Price              string `json:"ask1Price"`
+	Bid1Size               string `json:"bid1Size"`
 }
 
 // V5GetTickersOptionResult :
@@ -690,31 +690,31 @@ type V5GetTickersOptionResult struct {
 }
 
 type V5GetTickersOptionItem struct {
-	Symbol                 SymbolV5 `json:"symbol"`
-	Bid1Price              string   `json:"bid1Price"`
-	Bid1Size               string   `json:"bid1Size"`
-	Bid1Iv                 string   `json:"bid1Iv"`
-	Ask1Price              string   `json:"ask1Price"`
-	Ask1Size               string   `json:"ask1Size"`
-	Ask1Iv                 string   `json:"ask1Iv"`
-	LastPrice              string   `json:"lastPrice"`
-	HighPrice24H           string   `json:"highPrice24h"`
-	LowPrice24H            string   `json:"lowPrice24h"`
-	MarkPrice              string   `json:"markPrice"`
-	IndexPrice             string   `json:"indexPrice"`
-	MarkIv                 string   `json:"markIv"`
-	UnderlyingPrice        string   `json:"underlyingPrice"`
-	OpenInterest           string   `json:"openInterest"`
-	Turnover24H            string   `json:"turnover24h"`
-	Volume24H              string   `json:"volume24h"`
-	TotalVolume            string   `json:"totalVolume"`
-	TotalTurnover          string   `json:"totalTurnover"`
-	Delta                  string   `json:"delta"`
-	Gamma                  string   `json:"gamma"`
-	Vega                   string   `json:"vega"`
-	Theta                  string   `json:"theta"`
-	PredictedDeliveryPrice string   `json:"predictedDeliveryPrice"`
-	Change24H              string   `json:"change24h"`
+	Symbol                 string `json:"symbol"`
+	Bid1Price              string `json:"bid1Price"`
+	Bid1Size               string `json:"bid1Size"`
+	Bid1Iv                 string `json:"bid1Iv"`
+	Ask1Price              string `json:"ask1Price"`
+	Ask1Size               string `json:"ask1Size"`
+	Ask1Iv                 string `json:"ask1Iv"`
+	LastPrice              string `json:"lastPrice"`
+	HighPrice24H           string `json:"highPrice24h"`
+	LowPrice24H            string `json:"lowPrice24h"`
+	MarkPrice              string `json:"markPrice"`
+	IndexPrice             string `json:"indexPrice"`
+	MarkIv                 string `json:"markIv"`
+	UnderlyingPrice        string `json:"underlyingPrice"`
+	OpenInterest           string `json:"openInterest"`
+	Turnover24H            string `json:"turnover24h"`
+	Volume24H              string `json:"volume24h"`
+	TotalVolume            string `json:"totalVolume"`
+	TotalTurnover          string `json:"totalTurnover"`
+	Delta                  string `json:"delta"`
+	Gamma                  string `json:"gamma"`
+	Vega                   string `json:"vega"`
+	Theta                  string `json:"theta"`
+	PredictedDeliveryPrice string `json:"predictedDeliveryPrice"`
+	Change24H              string `json:"change24h"`
 }
 
 // V5GetTickersSpotResult :
@@ -724,19 +724,19 @@ type V5GetTickersSpotResult struct {
 }
 
 type V5GetTickersSpotItem struct {
-	Symbol        SymbolV5 `json:"symbol"`
-	Bid1Price     string   `json:"bid1Price"`
-	Bid1Size      string   `json:"bid1Size"`
-	Ask1Price     string   `json:"ask1Price"`
-	Ask1Size      string   `json:"ask1Size"`
-	LastPrice     string   `json:"lastPrice"`
-	PrevPrice24H  string   `json:"prevPrice24h"`
-	Price24HPcnt  string   `json:"price24hPcnt"`
-	HighPrice24H  string   `json:"highPrice24h"`
-	LowPrice24H   string   `json:"lowPrice24h"`
-	Turnover24H   string   `json:"turnover24h"`
-	Volume24H     string   `json:"volume24h"`
-	UsdIndexPrice string   `json:"usdIndexPrice"`
+	Symbol        string `json:"symbol"`
+	Bid1Price     string `json:"bid1Price"`
+	Bid1Size      string `json:"bid1Size"`
+	Ask1Price     string `json:"ask1Price"`
+	Ask1Size      string `json:"ask1Size"`
+	LastPrice     string `json:"lastPrice"`
+	PrevPrice24H  string `json:"prevPrice24h"`
+	Price24HPcnt  string `json:"price24hPcnt"`
+	HighPrice24H  string `json:"highPrice24h"`
+	LowPrice24H   string `json:"lowPrice24h"`
+	Turnover24H   string `json:"turnover24h"`
+	Volume24H     string `json:"volume24h"`
+	UsdIndexPrice string `json:"usdIndexPrice"`
 }
 
 // GetTickers :
@@ -762,7 +762,7 @@ func (s *V5MarketService) GetTickers(param V5GetTickersParam) (*V5GetTickersResp
 // V5GetFundingRateHistoryParam :
 type V5GetFundingRateHistoryParam struct {
 	Category CategoryV5 `url:"category"`
-	Symbol   SymbolV5   `url:"symbol"`
+	Symbol   string     `url:"symbol"`
 
 	StartTime *int64 `url:"startTime,omitempty"` // The start timestamp (ms)
 	EndTime   *int64 `url:"endTime,omitempty"`   // The start timestamp (ms)
@@ -789,9 +789,9 @@ type V5GetFundingRateHistoryResult struct {
 }
 
 type V5GetFundingRateHistoryItem struct {
-	Symbol               SymbolV5 `json:"symbol"`
-	FundingRate          string   `json:"fundingRate"`
-	FundingRateTimestamp string   `json:"fundingRateTimestamp"`
+	Symbol               string `json:"symbol"`
+	FundingRate          string `json:"fundingRate"`
+	FundingRateTimestamp string `json:"fundingRateTimestamp"`
 }
 
 // GetFundingRateHistory :
@@ -817,7 +817,7 @@ func (s *V5MarketService) GetFundingRateHistory(param V5GetFundingRateHistoryPar
 // V5GetPublicTradingHistoryParam :
 type V5GetPublicTradingHistoryParam struct {
 	Category CategoryV5 `url:"category"`
-	Symbol   SymbolV5   `url:"symbol"`
+	Symbol   string     `url:"symbol"`
 
 	BaseCoin   *Coin        `url:"baseCoin,omitempty"` // For option only. If not passed, return BTC data by default
 	OptionType *OptionsType `url:"optionType,omitempty"`
@@ -848,13 +848,13 @@ type V5GetPublicTradingHistoryResult struct {
 }
 
 type V5GetPublicTradingHistoryItem struct {
-	ExecID       string   `json:"execId"`
-	Symbol       SymbolV5 `json:"symbol"`
-	Price        string   `json:"price"`
-	Size         string   `json:"size"`
-	Side         Side     `json:"side"`
-	Time         string   `json:"time"`
-	IsBlockTrade bool     `json:"isBlockTrade"`
+	ExecID       string `json:"execId"`
+	Symbol       string `json:"symbol"`
+	Price        string `json:"price"`
+	Size         string `json:"size"`
+	Side         Side   `json:"side"`
+	Time         string `json:"time"`
+	IsBlockTrade bool   `json:"isBlockTrade"`
 }
 
 // GetPublicTradingHistory :
@@ -880,7 +880,7 @@ func (s *V5MarketService) GetPublicTradingHistory(param V5GetPublicTradingHistor
 // V5GetOpenInterestParam :
 type V5GetOpenInterestParam struct {
 	Category     CategoryV5 `url:"category"`
-	Symbol       SymbolV5   `url:"symbol"`
+	Symbol       string     `url:"symbol"`
 	IntervalTime Period     `url:"intervalTime"`
 
 	StartTime *int64  `url:"startTime,omitempty"` // The start timestamp (ms)
@@ -905,7 +905,7 @@ type V5GetOpenInterestResponse struct {
 // V5GetOpenInterestResult :
 type V5GetOpenInterestResult struct {
 	Category       CategoryV5              `json:"category"`
-	Symbol         SymbolV5                `json:"symbol"`
+	Symbol         string                  `json:"symbol"`
 	List           []V5GetOpenInterestItem `json:"list"`
 	NextPageCursor string                  `json:"nextPageCursor"`
 }
@@ -1055,8 +1055,8 @@ func (s *V5MarketService) GetInsurance(param V5GetInsuranceParam) (*V5GetInsuran
 type V5GetRiskLimitParam struct {
 	Category CategoryV5 `url:"category"`
 
-	Symbol *SymbolV5 `url:"symbol,omitempty"`
-	Cursor *string   `url:"cursor,omitempty"`
+	Symbol *string `url:"symbol,omitempty"`
+	Cursor *string `url:"cursor,omitempty"`
 }
 
 func (p V5GetRiskLimitParam) validate() error {
@@ -1081,7 +1081,7 @@ type V5GetRiskLimitResult struct {
 
 type V5GetRiskLimitItem struct {
 	ID                int64           `json:"id"`
-	Symbol            SymbolV5        `json:"symbol"`
+	Symbol            string          `json:"symbol"`
 	RiskLimitValue    decimal.Decimal `json:"riskLimitValue"`
 	MaintenanceMargin decimal.Decimal `json:"maintenanceMargin"`
 	InitialMargin     decimal.Decimal `json:"initialMargin"`

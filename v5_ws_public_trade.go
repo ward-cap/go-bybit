@@ -53,7 +53,7 @@ func (s *V5WebsocketPublicService) SubscribeTrade(
 
 // V5WebsocketPublicTradeParamKey :
 type V5WebsocketPublicTradeParamKey struct {
-	Symbol SymbolV5
+	Symbol string
 }
 
 // Topic :
@@ -71,14 +71,14 @@ type V5WebsocketPublicTradeResponse struct {
 
 // V5WebsocketPublicTradeData :
 type V5WebsocketPublicTradeData struct {
-	Timestamp  uint64   `json:"T"`  // The timestamp (ms) that the order is filled
-	Symbol     SymbolV5 `json:"s"`  // Symbol name
-	Side       Side     `json:"S"`  // Side of taker. Buy,Sell
-	Value      string   `json:"v"`  // Trade size
-	Trade      string   `json:"p"`  // Trade price
-	Direction  string   `json:"L"`  // Direction of price change. Unique field for future
-	ID         string   `json:"i"`  // Trade ID
-	BlockTrade bool     `json:"BT"` // Whether it is a block trade order or not
+	Timestamp  uint64 `json:"T"`  // The timestamp (ms) that the order is filled
+	Symbol     string `json:"s"`  // Symbol name
+	Side       Side   `json:"S"`  // Side of taker. Buy,Sell
+	Value      string `json:"v"`  // Trade size
+	Trade      string `json:"p"`  // Trade price
+	Direction  string `json:"L"`  // Direction of price change. Unique field for future
+	ID         string `json:"i"`  // Trade ID
+	BlockTrade bool   `json:"BT"` // Whether it is a block trade order or not
 }
 
 // Key :
@@ -90,7 +90,7 @@ func (r *V5WebsocketPublicTradeResponse) Key() V5WebsocketPublicTradeParamKey {
 	}
 
 	return V5WebsocketPublicTradeParamKey{
-		Symbol: SymbolV5(arr[1]),
+		Symbol: string(arr[1]),
 	}
 }
 

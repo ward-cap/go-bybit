@@ -30,11 +30,11 @@ type V5PositionService struct {
 type V5GetPositionInfoParam struct {
 	Category CategoryV5 `url:"category"`
 
-	Symbol     *SymbolV5 `url:"symbol,omitempty"`
-	BaseCoin   *Coin     `url:"baseCoin,omitempty"`   // option only
-	SettleCoin *Coin     `url:"settleCoin,omitempty"` // Settle coin. For linear & inverse, either symbol or settleCon is required. symbol has a higher priority
-	Limit      *int      `url:"limit,omitempty"`      // Limit for data size per page. [1, 200]. Default: 200
-	Cursor     *string   `url:"cursor,omitempty"`     // Cursor. Used for pagination
+	Symbol     *string `url:"symbol,omitempty"`
+	BaseCoin   *Coin   `url:"baseCoin,omitempty"`   // option only
+	SettleCoin *Coin   `url:"settleCoin,omitempty"` // Settle coin. For linear & inverse, either symbol or settleCon is required. symbol has a higher priority
+	Limit      *int    `url:"limit,omitempty"`      // Limit for data size per page. [1, 200]. Default: 200
+	Cursor     *string `url:"cursor,omitempty"`     // Cursor. Used for pagination
 }
 
 // V5GetPositionInfoResponse :
@@ -55,7 +55,7 @@ type V5GetPositionInfoList []V5GetPositionInfoItem
 
 // V5GetPositionInfoItem :
 type V5GetPositionInfoItem struct {
-	Symbol                 SymbolV5         `json:"symbol"`
+	Symbol                 string           `json:"symbol"`
 	Leverage               decimal.Decimal  `json:"leverage"`
 	AvgPrice               string           `json:"avgPrice"` // Do not move to decimal. it can be emplty while get with symbol
 	LiqPrice               string           `json:"liqPrice"`
@@ -107,7 +107,7 @@ func (s *V5PositionService) GetPositionInfo(ctx context.Context, param V5GetPosi
 // V5SetLeverageParam :
 type V5SetLeverageParam struct {
 	Category     CategoryV5 `json:"category"`
-	Symbol       SymbolV5   `json:"symbol"`
+	Symbol       string     `json:"symbol"`
 	BuyLeverage  string     `json:"buyLeverage"`
 	SellLeverage string     `json:"sellLeverage"`
 }
@@ -141,7 +141,7 @@ func (s *V5PositionService) SetLeverage(ctx context.Context, param V5SetLeverage
 // V5SetTradingStopParam :
 type V5SetTradingStopParam struct {
 	Category    CategoryV5  `json:"category"`
-	Symbol      SymbolV5    `json:"symbol"`
+	Symbol      string      `json:"symbol"`
 	PositionIdx PositionIdx `json:"positionIdx"`
 
 	TakeProfit   *string    `json:"takeProfit,omitempty"`
@@ -198,7 +198,7 @@ func (s *V5PositionService) SetTradingStop(param V5SetTradingStopParam) (*V5SetT
 // V5SetTpSlModeParam :
 type V5SetTpSlModeParam struct {
 	Category CategoryV5 `json:"category"`
-	Symbol   SymbolV5   `json:"symbol"`
+	Symbol   string     `json:"symbol"`
 	TpSlMode TpSlMode   `json:"tpSlMode"`
 }
 
@@ -245,8 +245,8 @@ type V5SwitchPositionModeParam struct {
 	Category CategoryV5   `json:"category"`
 	Mode     PositionMode `json:"mode"`
 
-	Symbol *SymbolV5 `json:"symbol,omitempty"`
-	Coin   *Coin     `json:"coin,omitempty"`
+	Symbol *string `json:"symbol,omitempty"`
+	Coin   *Coin   `json:"coin,omitempty"`
 }
 
 func (p V5SwitchPositionModeParam) validate() error {
@@ -286,11 +286,11 @@ func (s *V5PositionService) SwitchPositionMode(param V5SwitchPositionModeParam) 
 type V5GetClosedPnLParam struct {
 	Category CategoryV5 `url:"category"`
 
-	Symbol    *SymbolV5 `url:"symbol,omitempty"`
-	StartTime *int64    `url:"startTime,omitempty"` // The start timestamp (ms)
-	EndTime   *int64    `url:"endTime,omitempty"`   // The start timestamp (ms)
-	Limit     *int      `url:"limit,omitempty"`     // Limit for data size per page. [1, 100]. Default: 50
-	Cursor    *string   `url:"cursor,omitempty"`
+	Symbol    *string `url:"symbol,omitempty"`
+	StartTime *int64  `url:"startTime,omitempty"` // The start timestamp (ms)
+	EndTime   *int64  `url:"endTime,omitempty"`   // The start timestamp (ms)
+	Limit     *int    `url:"limit,omitempty"`     // Limit for data size per page. [1, 100]. Default: 50
+	Cursor    *string `url:"cursor,omitempty"`
 }
 
 // V5GetClosedPnLResponse :
@@ -311,7 +311,7 @@ type V5GetClosedPnLList []V5GetClosedPnLItem
 
 // V5GetClosedPnLItem :
 type V5GetClosedPnLItem struct {
-	Symbol        SymbolV5   `json:"symbol"`
+	Symbol        string     `json:"symbol"`
 	OrderID       string     `json:"orderId"`
 	Side          Side       `json:"side"`
 	Qty           string     `json:"qty"`
@@ -350,7 +350,7 @@ func (s *V5PositionService) GetClosedPnL(param V5GetClosedPnLParam) (*V5GetClose
 type V5SwitchPositionMarginModeParam struct {
 	Category     CategoryV5         `json:"category"`
 	TradeMode    PositionMarginMode `json:"tradeMode"`
-	Symbol       SymbolV5           `json:"symbol"`
+	Symbol       string             `json:"symbol"`
 	BuyLeverage  string             `json:"buyLeverage"`
 	SellLeverage string             `json:"sellLeverage"`
 }
@@ -394,7 +394,7 @@ func (s *V5PositionService) SwitchPositionMarginMode(param V5SwitchPositionMargi
 // V5SetRiskLimitParam :
 type V5SetRiskLimitParam struct {
 	Category CategoryV5 `json:"category"`
-	Symbol   SymbolV5   `json:"symbol"`
+	Symbol   string     `json:"symbol"`
 	RiskID   int64      `json:"riskId"`
 
 	PositionIdx *PositionIdx `json:"positionIdx,omitempty"`

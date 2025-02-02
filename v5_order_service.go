@@ -24,7 +24,7 @@ type V5OrderService struct {
 
 type V5CreateOrderParam struct {
 	Category  CategoryV5 `json:"category"`
-	Symbol    SymbolV5   `json:"symbol"`
+	Symbol    string     `json:"symbol"`
 	Side      Side       `json:"side"`
 	OrderType OrderType  `json:"orderType"`
 	Qty       string     `json:"qty"`
@@ -82,7 +82,7 @@ func (s *V5OrderService) CreateOrder(ctx context.Context, param V5CreateOrderPar
 
 type V5AmendOrderParam struct {
 	Category CategoryV5 `json:"category"`
-	Symbol   SymbolV5   `json:"symbol"`
+	Symbol   string     `json:"symbol"`
 
 	OrderID      *string    `json:"orderId,omitempty"`
 	OrderLinkID  *string    `json:"orderLinkId,omitempty"`
@@ -140,7 +140,7 @@ func (s *V5OrderService) AmendOrder(ctx context.Context, param V5AmendOrderParam
 
 type V5CancelOrderParam struct {
 	Category CategoryV5 `json:"category"`
-	Symbol   SymbolV5   `json:"symbol"`
+	Symbol   string     `json:"symbol"`
 
 	OrderID     *string      `json:"orderId,omitempty"`
 	OrderLinkID *string      `json:"orderLinkId,omitempty"`
@@ -179,7 +179,7 @@ func (s *V5OrderService) CancelOrder(ctx context.Context, param V5CancelOrderPar
 type V5GetOpenOrdersParam struct {
 	Category CategoryV5 `url:"category"`
 
-	Symbol      *SymbolV5    `url:"symbol,omitempty"`
+	Symbol      *string      `url:"symbol,omitempty"`
 	BaseCoin    *Coin        `url:"baseCoin,omitempty"`
 	SettleCoin  *Coin        `url:"settleCoin,omitempty"`
 	OrderID     *string      `url:"orderId,omitempty"`
@@ -193,7 +193,7 @@ type V5GetOpenOrdersParam struct {
 type V5GetHistoryOrdersParam struct {
 	Category CategoryV5 `url:"category"`
 
-	Symbol      *SymbolV5    `url:"symbol,omitempty"`
+	Symbol      *string      `url:"symbol,omitempty"`
 	BaseCoin    *Coin        `url:"baseCoin,omitempty"`
 	OrderID     *string      `url:"orderId,omitempty"`
 	OrderLinkID *string      `url:"orderLinkId,omitempty"`
@@ -219,7 +219,7 @@ type V5GetOrdersResult struct {
 }
 
 type V5GetOrder struct {
-	Symbol             SymbolV5            `json:"symbol"`
+	Symbol             string              `json:"symbol"`
 	OrderType          OrderType           `json:"orderType"`
 	OrderLinkID        string              `json:"orderLinkId"`
 	OrderID            string              `json:"orderId"`
@@ -295,7 +295,7 @@ func (s *V5OrderService) GetHistoryOrders(ctx context.Context, param V5GetHistor
 type V5CancelAllOrdersParam struct {
 	Category CategoryV5 `json:"category"`
 
-	Symbol      *SymbolV5    `json:"symbol,omitempty"`
+	Symbol      *string      `json:"symbol,omitempty"`
 	BaseCoin    *Coin        `json:"baseCoin,omitempty"`
 	SettleCoin  *Coin        `json:"settleCoin,omitempty"`
 	OrderFilter *OrderFilter `json:"orderFilter,omitempty"` // If not passed, Order by default
