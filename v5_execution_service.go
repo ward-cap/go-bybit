@@ -23,7 +23,7 @@ type V5GetExecutionParam struct {
 	Symbol      *string     `url:"symbol,omitempty"`
 	OrderID     *string     `url:"orderId,omitempty"`
 	OrderLinkID *string     `url:"orderLinkId,omitempty"`
-	BaseCoin    *Coin       `url:"baseCoin,omitempty"`
+	BaseCoin    *string     `url:"baseCoin,omitempty"`
 	StartTime   *int64      `url:"startTime,omitempty"`
 	EndTime     *int64      `url:"endTime,omitempty"`
 	ExecType    *ExecTypeV5 `url:"execType,omitempty"`

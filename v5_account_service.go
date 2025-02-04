@@ -13,7 +13,7 @@ import (
 
 // V5AccountServiceI :
 type V5AccountServiceI interface {
-	GetWalletBalance(ctx context.Context, _ AccountTypeV5, _ []Coin) (*V5GetWalletBalanceResponse, error)
+	GetWalletBalance(ctx context.Context, _ AccountTypeV5, _ []string) (*V5GetWalletBalanceResponse, error)
 	SetCollateralCoin(V5SetCollateralCoinParam) (*V5SetCollateralCoinResponse, error)
 	GetCollateralInfo(V5GetCollateralInfoParam) (*V5GetCollateralInfoResponse, error)
 	GetAccountInfo() (*V5GetAccountInfoResponse, error)
@@ -51,8 +51,8 @@ type V5WalletBalanceCoin struct {
 	WalletBalance       decimal.Decimal `json:"walletBalance"`
 	CumRealisedPnl      string          `json:"cumRealisedPnl"`
 	Free                decimal.Decimal `json:"free"`
-	Locked              string          `json:"locked"`
-	Coin                Coin            `json:"coin"`
+	Locked              decimal.Decimal `json:"locked"`
+	Coin                string          `json:"coin"`
 }
 
 // V5WalletBalanceList :
@@ -77,7 +77,7 @@ type V5WalletBalanceList struct {
 // coin:
 // If not passed, it returns non-zero asset info
 // You can pass multiple coins to query, separated by comma. "USDT,USDC".
-func (s *V5AccountService) GetWalletBalance(ctx context.Context, at AccountTypeV5, coins []Coin) (*V5GetWalletBalanceResponse, error) {
+func (s *V5AccountService) GetWalletBalance(ctx context.Context, at AccountTypeV5, coins []string) (*V5GetWalletBalanceResponse, error) {
 	switch at {
 	case AccountTypeV5UNIFIED, AccountTypeV5CONTRACT, AccountTypeV5SPOT:
 	default:
@@ -109,7 +109,7 @@ type V5SetCollateralCoinParam struct {
 	// Coin:
 	// You cannot pass multiple coins to query
 	// USDT,USDC cannot be switched off
-	Coin Coin `json:"coin"`
+	Coin string `json:"coin"`
 
 	// CollateralSwitch: CollateralSwitchV5On or CollateralSwitchV5Off
 	CollateralSwitch CollateralSwitchV5 `json:"collateralSwitch"`
@@ -218,7 +218,7 @@ type V5GetTransactionLogParam struct {
 	AccountType *AccountTypeV5        `url:"accountType,omitempty"`
 	Category    *CategoryV5           `url:"category,omitempty"`
 	Currency    *string               `url:"currency,omitempty"`
-	BaseCoin    *Coin                 `url:"baseCoin,omitempty"`
+	BaseCoin    *string               `url:"baseCoin,omitempty"`
 	Type        *TransactionLogTypeV5 `url:"type,omitempty"`
 	StartTime   *int64                `url:"startTime,omitempty"` // The start timestamp (ms)
 	EndTime     *int64                `url:"endTime,omitempty"`   // The start timestamp (ms)

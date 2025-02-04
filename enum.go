@@ -1,7 +1,5 @@
 package bybit
 
-type Coin string
-
 type Side string
 
 const (

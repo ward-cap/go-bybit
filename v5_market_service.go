@@ -346,7 +346,7 @@ type V5GetInstrumentsInfoParam struct {
 	Category CategoryV5 `url:"category"`
 
 	Symbol   *string `url:"symbol,omitempty"`
-	BaseCoin *Coin   `url:"baseCoin,omitempty"` // Base coin. linear,inverse,option only
+	BaseCoin *string `url:"baseCoin,omitempty"` // Base coin. linear,inverse,option only
 	Limit    *int    `url:"limit,omitempty"`    // Limit for data size per page. [1, 1000]. Default: 500
 	Cursor   *string `url:"cursor,omitempty"`
 }
@@ -409,9 +409,9 @@ type V5GetInstrumentsInfoLinearInverseItem struct {
 	Symbol             string                        `json:"symbol"`
 	ContractType       ContractType                  `json:"contractType"`
 	Status             InstrumentStatus              `json:"status"`
-	BaseCoin           Coin                          `json:"baseCoin"`
-	QuoteCoin          Coin                          `json:"quoteCoin"`
-	SettleCoin         Coin                          `json:"settleCoin"`
+	BaseCoin           string                        `json:"baseCoin"`
+	QuoteCoin          string                        `json:"quoteCoin"`
+	SettleCoin         string                        `json:"settleCoin"`
 	LaunchTime         string                        `json:"launchTime"`
 	DeliveryTime       string                        `json:"deliveryTime"`
 	DeliveryFeeRate    string                        `json:"deliveryFeeRate"`
@@ -449,9 +449,9 @@ type V5GetInstrumentsInfoOptionItem struct {
 	Symbol          string                `json:"symbol"`
 	OptionsType     OptionsType           `json:"optionsType"`
 	Status          InstrumentStatus      `json:"status"`
-	BaseCoin        Coin                  `json:"baseCoin"`
-	QuoteCoin       Coin                  `json:"quoteCoin"`
-	SettleCoin      Coin                  `json:"settleCoin"`
+	BaseCoin        string                `json:"baseCoin"`
+	QuoteCoin       string                `json:"quoteCoin"`
+	SettleCoin      string                `json:"settleCoin"`
 	LaunchTime      string                `json:"launchTime"`
 	DeliveryTime    string                `json:"deliveryTime"`
 	DeliveryFeeRate string                `json:"deliveryFeeRate"`
@@ -479,8 +479,8 @@ type V5GetInstrumentsInfoSpotResult struct {
 
 type V5GetInstrumentsInfoSpotItem struct {
 	Symbol        string              `json:"symbol"`
-	BaseCoin      Coin                `json:"baseCoin"`
-	QuoteCoin     Coin                `json:"quoteCoin"`
+	BaseCoin      string              `json:"baseCoin"`
+	QuoteCoin     string              `json:"quoteCoin"`
 	Innovation    Innovation          `json:"innovation"`
 	Status        InstrumentStatus    `json:"status"`
 	LotSizeFilter SpotLotSizeFilterV5 `json:"lotSizeFilter"`
@@ -593,7 +593,7 @@ type V5GetTickersParam struct {
 	Category CategoryV5 `url:"category"`
 
 	Symbol   *string `url:"symbol,omitempty"`
-	BaseCoin *Coin   `url:"baseCoin,omitempty"` // Base coin. For option only
+	BaseCoin *string `url:"baseCoin,omitempty"` // Base coin. For option only
 	ExpDate  *string `url:"expDate,omitempty"`  // Expiry date. e.g., 25DEC22. For option only
 }
 
@@ -819,7 +819,7 @@ type V5GetPublicTradingHistoryParam struct {
 	Category CategoryV5 `url:"category"`
 	Symbol   string     `url:"symbol"`
 
-	BaseCoin   *Coin        `url:"baseCoin,omitempty"` // For option only. If not passed, return BTC data by default
+	BaseCoin   *string      `url:"baseCoin,omitempty"` // For option only. If not passed, return BTC data by default
 	OptionType *OptionsType `url:"optionType,omitempty"`
 
 	// Limit for data size per page.
@@ -939,10 +939,10 @@ func (s *V5MarketService) GetOpenInterest(param V5GetOpenInterestParam) (*V5GetO
 type V5GetHistoricalVolatilityParam struct {
 	Category CategoryV5 `url:"category"` // option only
 
-	BaseCoin  *Coin  `url:"baseCoin,omitempty"`
-	Period    *int   `url:"period,omitempty"`
-	StartTime *int64 `url:"startTime,omitempty"` // The start timestamp (ms)
-	EndTime   *int64 `url:"endTime,omitempty"`   // The start timestamp (ms)
+	BaseCoin  *string `url:"baseCoin,omitempty"`
+	Period    *int    `url:"period,omitempty"`
+	StartTime *int64  `url:"startTime,omitempty"` // The start timestamp (ms)
+	EndTime   *int64  `url:"endTime,omitempty"`   // The start timestamp (ms)
 }
 
 func (p V5GetHistoricalVolatilityParam) validate() error {
@@ -1014,7 +1014,7 @@ func (s *V5MarketService) GetHistoricalVolatility(param V5GetHistoricalVolatilit
 
 // V5GetInsuranceParam :
 type V5GetInsuranceParam struct {
-	Coin *Coin `url:"coin"`
+	Coin *string `url:"coin"`
 }
 
 // V5GetInsuranceResponse :
@@ -1030,7 +1030,7 @@ type V5GetInsuranceResult struct {
 }
 
 type V5GetInsuranceItem struct {
-	Coin    Coin   `json:"coin"`
+	Coin    string `json:"coin"`
 	Balance string `json:"balance"`
 	Value   string `json:"value"`
 }

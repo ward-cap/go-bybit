@@ -37,7 +37,7 @@ type V5AssetService struct {
 // V5CreateInternalTransferParam :
 type V5CreateInternalTransferParam struct {
 	TransferID      string        `json:"transferId"`
-	Coin            Coin          `json:"coin"`
+	Coin            string        `json:"coin"`
 	Amount          string        `json:"amount"`
 	FromAccountType AccountTypeV5 `json:"fromAccountType"`
 	ToAccountType   AccountTypeV5 `json:"toAccountType"`
@@ -97,7 +97,7 @@ func (s *V5AssetService) CreateInternalTransfer(ctx context.Context, param V5Cre
 // V5GetInternalTransferRecordsParam :
 type V5GetInternalTransferRecordsParam struct {
 	TransferID *string           `url:"transferId,omitempty"`
-	Coin       *Coin             `url:"coin,omitempty"`
+	Coin       *string           `url:"coin,omitempty"`
 	Status     *TransferStatusV5 `url:"status,omitempty"`
 	StartTime  *int64            `url:"startTime,omitempty"` // The start timestamp (ms)
 	EndTime    *int64            `url:"endTime,omitempty"`   // The start timestamp (ms)
@@ -123,7 +123,7 @@ type V5GetInternalTransferRecordsList []V5GetInternalTransferRecordsItem
 // V5GetInternalTransferRecordsItem :
 type V5GetInternalTransferRecordsItem struct {
 	TransferID      string           `json:"transferId"`
-	Coin            Coin             `json:"coin"`
+	Coin            string           `json:"coin"`
 	Amount          string           `json:"amount"`
 	FromAccountType AccountTypeV5    `json:"fromAccountType"`
 	ToAccountType   AccountTypeV5    `json:"toAccountType"`
@@ -149,7 +149,7 @@ func (s *V5AssetService) GetInternalTransferRecords(param V5GetInternalTransferR
 
 type V5CreateUniversalTransferParam struct {
 	TransferID      uuid.UUID     `json:"transferId"`
-	Coin            Coin          `json:"coin"`
+	Coin            string        `json:"coin"`
 	Amount          string        `json:"amount"`
 	FromAccountType AccountTypeV5 `json:"fromAccountType"`
 	ToAccountType   AccountTypeV5 `json:"toAccountType"`
@@ -205,7 +205,7 @@ func (s *V5AssetService) CreateUniversalTransfer(ctx context.Context, param V5Cr
 
 type V5GetUniversalTransferRecordsParam struct {
 	TransferID *string           `url:"transferId,omitempty"`
-	Coin       *Coin             `url:"coin,omitempty"`
+	Coin       *string           `url:"coin,omitempty"`
 	Status     *TransferStatusV5 `url:"status,omitempty"`
 	StartTime  *int64            `url:"startTime,omitempty"` // The start timestamp (ms)
 	EndTime    *int64            `url:"endTime,omitempty"`   // The start timestamp (ms)
@@ -227,7 +227,7 @@ type V5GetUniversalTransferRecordsList []V5GetUniversalTransferRecordsItem
 
 type V5GetUniversalTransferRecordsItem struct {
 	TransferID      string           `json:"transferId"`
-	Coin            Coin             `json:"coin"`
+	Coin            string           `json:"coin"`
 	Amount          decimal.Decimal  `json:"amount"`
 	FromMemberID    string           `json:"fromMemberId"`
 	ToMemberID      string           `json:"toMemberId"`
@@ -254,7 +254,7 @@ func (s *V5AssetService) GetUniversalTransferRecords(
 
 // V5GetDepositRecordsParam :
 type V5GetDepositRecordsParam struct {
-	Coin      *Coin   `url:"coin,omitempty"`
+	Coin      *string `url:"coin,omitempty"`
 	StartTime *int64  `url:"startTime,omitempty"` // Start time (ms). Default value: 30 days before the current time
 	EndTime   *int64  `url:"endTime,omitempty"`   // End time (ms). Default value: current time
 	Limit     *int    `url:"limit,omitempty"`     // Number of items per page, [1, 50]. Default value: 50
@@ -278,7 +278,7 @@ type V5GetDepositRecordsRows []V5GetDepositRecordsRow
 
 // V5GetDepositRecordsRow :
 type V5GetDepositRecordsRow struct {
-	Coin          Coin            `json:"coin"`
+	Coin          string          `json:"coin"`
 	Chain         string          `json:"chain"`
 	Amount        decimal.Decimal `json:"amount"`
 	TxID          string          `json:"txID"`
@@ -312,7 +312,7 @@ func (s *V5AssetService) GetDepositRecords(ctx context.Context, param V5GetDepos
 type V5GetSubDepositRecordsParam struct {
 	SubMemberID string `url:"subMemberId"`
 
-	Coin      *Coin   `url:"coin,omitempty"`
+	Coin      *string `url:"coin,omitempty"`
 	StartTime *int64  `url:"startTime,omitempty"` // Start time (ms). Default value: 30 days before the current time
 	EndTime   *int64  `url:"endTime,omitempty"`   // The start timestamp (ms)
 	Limit     *int    `url:"limit,omitempty"`     // Limit for data size per page. [1, 50]. Default: 50
@@ -336,7 +336,7 @@ type V5GetSubDepositRecordsRows []V5GetSubDepositRecordsRow
 
 // V5GetSubDepositRecordsRow :
 type V5GetSubDepositRecordsRow struct {
-	Coin          Coin            `json:"coin"`
+	Coin          string          `json:"coin"`
 	Chain         string          `json:"chain"`
 	Amount        string          `json:"amount"`
 	TxID          string          `json:"txID"`
@@ -370,7 +370,7 @@ func (s *V5AssetService) GetSubDepositRecords(param V5GetSubDepositRecordsParam)
 type V5GetInternalDepositRecordsParam struct {
 	StartTime *int64  `url:"startTime,omitempty"` // Start time (ms). Default value: 30 days before the current time
 	EndTime   *int64  `url:"endTime,omitempty"`   // End time (ms). Default value: current time
-	Coin      *Coin   `url:"coin,omitempty"`
+	Coin      *string `url:"coin,omitempty"`
 	Cursor    *string `url:"cursor,omitempty"`
 	Limit     *int    `url:"limit,omitempty"` // Number of items per page, [1, 50]. Default value: 50
 }
@@ -394,7 +394,7 @@ type V5GetInternalDepositRecordsRows []V5GetInternalDepositRecordsRow
 type V5GetInternalDepositRecordsRow struct {
 	ID          string                  `json:"id"`
 	Type        string                  `json:"type"`
-	Coin        Coin                    `json:"coin"`
+	Coin        string                  `json:"coin"`
 	Amount      string                  `json:"amount"`
 	Status      InternalDepositStatusV5 `json:"status"`
 	Address     string                  `json:"address"` // Email address or phone number
@@ -418,7 +418,7 @@ func (s *V5AssetService) GetInternalDepositRecords(param V5GetInternalDepositRec
 }
 
 type V5GetMasterDepositAddressParam struct {
-	Coin      Coin    `url:"coin"`
+	Coin      string  `url:"coin"`
 	ChainType *string `url:"chainType,omitempty"`
 }
 
@@ -442,7 +442,7 @@ type V5GetMasterDepositAddressChain struct {
 }
 
 type V5GetMasterDepositAddressResult struct {
-	Coin   Coin                             `json:"coin"`
+	Coin   string                           `json:"coin"`
 	Chains []V5GetMasterDepositAddressChain `json:"chains"`
 }
 
@@ -469,7 +469,7 @@ func (s *V5AssetService) GetMasterDepositAddress(ctx context.Context, param V5Ge
 // V5GetWithdrawalRecordsParam :
 type V5GetWithdrawalRecordsParam struct {
 	WithdrawID   *string         `url:"withdrawId,omitempty"`
-	Coin         *Coin           `url:"coin,omitempty"`
+	Coin         *string         `url:"coin,omitempty"`
 	WithdrawType *WithdrawTypeV5 `url:"withdrawType,omitempty"`
 	StartTime    *int64          `url:"startTime,omitempty"` // The start timestamp (ms)
 	EndTime      *int64          `url:"endTime,omitempty"`   // The start timestamp (ms)
@@ -497,7 +497,7 @@ type V5GetWithdrawalRecordsRow struct {
 	WithdrawID   string              `json:"withdrawId"`
 	TxID         string              `json:"txId"`
 	WithdrawType WithdrawTypeV5      `json:"withdrawType"`
-	Coin         Coin                `json:"coin"`
+	Coin         string              `json:"coin"`
 	Chain        string              `json:"chain"`
 	Amount       decimal.Decimal     `json:"amount"`
 	WithdrawFee  decimal.NullDecimal `json:"withdrawFee"`
@@ -526,7 +526,7 @@ func (s *V5AssetService) GetWithdrawalRecords(ctx context.Context, param V5GetWi
 
 // V5GetCoinInfoParam :
 type V5GetCoinInfoParam struct {
-	Coin *Coin `url:"coin,omitempty"`
+	Coin *string `url:"coin,omitempty"`
 }
 
 // V5GetCoinInfoResponse :
@@ -546,7 +546,7 @@ type V5GetCoinInfoRows []V5GetCoinInfoRow
 // V5GetCoinInfoRow :
 type V5GetCoinInfoRow struct {
 	Name         string              `json:"name"`
-	Coin         Coin                `json:"coin"`
+	Coin         string              `json:"coin"`
 	RemainAmount string              `json:"remainAmount"`
 	Chains       V5GetCoinInfoChains `json:"chains"`
 }
@@ -607,7 +607,7 @@ type V5GetAllCoinsBalanceResult struct {
 
 // V5GetAllCoinsBalanceBalance :
 type V5GetAllCoinsBalanceBalance struct {
-	Coin            Coin            `json:"coin"`
+	Coin            string          `json:"coin"`
 	TransferBalance string          `json:"transferBalance"`
 	WalletBalance   decimal.Decimal `json:"walletBalance"`
 	Bonus           string          `json:"bonus"`
@@ -644,7 +644,7 @@ type V5WithdrawResult struct {
 }
 
 type V5WithdrawParam struct {
-	Coin      Coin   `json:"coin"`
+	Coin      string `json:"coin"`
 	Address   string `json:"address"`
 	Amount    string `json:"amount"`
 	Timestamp int64  `json:"timestamp"`

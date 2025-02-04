@@ -77,7 +77,7 @@ type V5WebsocketPrivateWalletData struct {
 
 // V5WebsocketPrivateWalletCoin :
 type V5WebsocketPrivateWalletCoin struct {
-	Coin          Coin            `json:"coin"`
+	Coin          string          `json:"coin"`
 	Equity        decimal.Decimal `json:"equity"`
 	WalletBalance decimal.Decimal `json:"walletBalance"`
 

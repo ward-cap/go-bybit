@@ -180,8 +180,8 @@ type V5GetOpenOrdersParam struct {
 	Category CategoryV5 `url:"category"`
 
 	Symbol      *string      `url:"symbol,omitempty"`
-	BaseCoin    *Coin        `url:"baseCoin,omitempty"`
-	SettleCoin  *Coin        `url:"settleCoin,omitempty"`
+	BaseCoin    *string      `url:"baseCoin,omitempty"`
+	SettleCoin  *string      `url:"settleCoin,omitempty"`
 	OrderID     *string      `url:"orderId,omitempty"`
 	OrderLinkID *string      `url:"orderLinkId,omitempty"`
 	OpenOnly    *int         `url:"openOnly,omitempty"`
@@ -194,7 +194,7 @@ type V5GetHistoryOrdersParam struct {
 	Category CategoryV5 `url:"category"`
 
 	Symbol      *string      `url:"symbol,omitempty"`
-	BaseCoin    *Coin        `url:"baseCoin,omitempty"`
+	BaseCoin    *string      `url:"baseCoin,omitempty"`
 	OrderID     *string      `url:"orderId,omitempty"`
 	OrderLinkID *string      `url:"orderLinkId,omitempty"`
 	OrderFilter *OrderFilter `url:"orderFilter,omitempty"` // If not passed, Order by default
@@ -296,8 +296,8 @@ type V5CancelAllOrdersParam struct {
 	Category CategoryV5 `json:"category"`
 
 	Symbol      *string      `json:"symbol,omitempty"`
-	BaseCoin    *Coin        `json:"baseCoin,omitempty"`
-	SettleCoin  *Coin        `json:"settleCoin,omitempty"`
+	BaseCoin    *string      `json:"baseCoin,omitempty"`
+	SettleCoin  *string      `json:"settleCoin,omitempty"`
 	OrderFilter *OrderFilter `json:"orderFilter,omitempty"` // If not passed, Order by default
 }
 

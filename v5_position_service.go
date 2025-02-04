@@ -31,8 +31,8 @@ type V5GetPositionInfoParam struct {
 	Category CategoryV5 `url:"category"`
 
 	Symbol     *string `url:"symbol,omitempty"`
-	BaseCoin   *Coin   `url:"baseCoin,omitempty"`   // option only
-	SettleCoin *Coin   `url:"settleCoin,omitempty"` // Settle coin. For linear & inverse, either symbol or settleCon is required. symbol has a higher priority
+	BaseCoin   *string `url:"baseCoin,omitempty"`   // option only
+	SettleCoin *string `url:"settleCoin,omitempty"` // Settle coin. For linear & inverse, either symbol or settleCon is required. symbol has a higher priority
 	Limit      *int    `url:"limit,omitempty"`      // Limit for data size per page. [1, 200]. Default: 200
 	Cursor     *string `url:"cursor,omitempty"`     // Cursor. Used for pagination
 }
@@ -246,7 +246,7 @@ type V5SwitchPositionModeParam struct {
 	Mode     PositionMode `json:"mode"`
 
 	Symbol *string `json:"symbol,omitempty"`
-	Coin   *Coin   `json:"coin,omitempty"`
+	Coin   *string `json:"coin,omitempty"`
 }
 
 func (p V5SwitchPositionModeParam) validate() error {
