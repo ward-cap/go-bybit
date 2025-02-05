@@ -67,7 +67,7 @@ type V5WebsocketPrivateWalletData struct {
 	TotalEquity            string                         `json:"totalEquity"`
 	TotalWalletBalance     string                         `json:"totalWalletBalance"`
 	TotalMarginBalance     string                         `json:"totalMarginBalance"`
-	TotalAvailableBalance  string                         `json:"totalAvailableBalance"`
+	TotalAvailableBalance  decimal.Decimal                `json:"totalAvailableBalance"`
 	TotalPerpUPL           string                         `json:"totalPerpUPL"`
 	TotalInitialMargin     string                         `json:"totalInitialMargin"`
 	TotalMaintenanceMargin string                         `json:"totalMaintenanceMargin"`
