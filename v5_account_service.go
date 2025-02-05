@@ -13,8 +13,10 @@ import (
 
 // V5AccountServiceI :
 type V5AccountServiceI interface {
-	GetWalletBalance(ctx context.Context, _ AccountTypeV5, _ []string) (*V5GetWalletBalanceResponse, error)
 	SetCollateralCoin(V5SetCollateralCoinParam) (*V5SetCollateralCoinResponse, error)
+	SetMarginMode(param V5SetMarginModeParam) ([]string, error)
+
+	GetWalletBalance(ctx context.Context, _ AccountTypeV5, _ []string) (*V5GetWalletBalanceResponse, error)
 	GetCollateralInfo(V5GetCollateralInfoParam) (*V5GetCollateralInfoResponse, error)
 	GetAccountInfo() (*V5GetAccountInfoResponse, error)
 	GetTransactionLog(V5GetTransactionLogParam) (*V5GetTransactionLogResponse, error)
