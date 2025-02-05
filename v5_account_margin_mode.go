@@ -22,7 +22,7 @@ type V5SetMarginModeResponse struct {
 func (s *V5AccountService) SetMarginMode(
 	ctx context.Context,
 	param V5SetMarginModeParam,
-) (res []V5SetMarginModeResponse, err error) {
+) (res V5SetMarginModeResponse, err error) {
 
 	body, err := json.Marshal(param)
 	if err != nil {

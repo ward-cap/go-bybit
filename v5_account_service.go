@@ -14,11 +14,11 @@ import (
 // V5AccountServiceI :
 type V5AccountServiceI interface {
 	SetCollateralCoin(V5SetCollateralCoinParam) (*V5SetCollateralCoinResponse, error)
-	SetMarginMode(param V5SetMarginModeParam) ([]string, error)
+	SetMarginMode(context.Context, V5SetMarginModeParam) (V5SetMarginModeResponse, error)
 
 	GetWalletBalance(ctx context.Context, _ AccountTypeV5, _ []string) (*V5GetWalletBalanceResponse, error)
 	GetCollateralInfo(V5GetCollateralInfoParam) (*V5GetCollateralInfoResponse, error)
-	GetAccountInfo() (*V5GetAccountInfoResponse, error)
+	GetAccountInfo(context.Context) (*V5GetAccountInfoResponse, error)
 	GetTransactionLog(V5GetTransactionLogParam) (*V5GetTransactionLogResponse, error)
 }
 
@@ -202,13 +202,13 @@ type V5AccountInfoResult struct {
 }
 
 // GetAccountInfo :
-func (s *V5AccountService) GetAccountInfo() (*V5GetAccountInfoResponse, error) {
+func (s *V5AccountService) GetAccountInfo(ctx context.Context) (*V5GetAccountInfoResponse, error) {
 	var (
 		res   V5GetAccountInfoResponse
 		query = make(url.Values)
 	)
 
-	if err := s.client.getV5Privately("/v5/account/info", query, &res); err != nil {
+	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/account/info", query, &res); err != nil {
 		return nil, err
 	}
 
