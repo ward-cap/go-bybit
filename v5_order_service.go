@@ -242,7 +242,7 @@ type V5GetOrder struct {
 	LeavesValue        string              `json:"leavesValue"`
 	UpdatedTime        string              `json:"updatedTime"`
 	Side               Side                `json:"side"`
-	TriggerPrice       string              `json:"triggerPrice"`
+	TriggerPrice       NullDecimalV2       `json:"triggerPrice"`
 	CumExecFee         string              `json:"cumExecFee"`
 	LeavesQty          string              `json:"leavesQty"`
 	SlTriggerBy        string              `json:"slTriggerBy"`
