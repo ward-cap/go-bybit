@@ -483,15 +483,15 @@ func (c *Client) updateSyncTimeDelta(
 	return nil
 }
 
-func (c *Client) SyncServerTime() error {
-	r, err := c.NewTimeService().GetServerTime()
-	if err != nil {
-		return fmt.Errorf("get server time: %w", err)
-	}
-
-	if r.Result.TimeNano == "" {
-		return errors.New("server time is empty")
-	}
-
-	return c.updateSyncTimeDelta(r.Result.TimeNano, time.Now().UnixNano())
-}
+//func (c *Client) SyncServerTime() error {
+//	r, err := c.NewTimeService().GetServerTime()
+//	if err != nil {
+//		return fmt.Errorf("get server time: %w", err)
+//	}
+//
+//	if r.Result.TimeNano == "" {
+//		return errors.New("server time is empty")
+//	}
+//
+//	return c.updateSyncTimeDelta(r.Result.TimeNano, time.Now().UnixNano())
+//}

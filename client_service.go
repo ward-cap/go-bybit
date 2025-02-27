@@ -1,30 +1,6 @@
 package bybit
 
-// SpotServiceI :
-type SpotServiceI interface {
-	V1() SpotV1ServiceI
-	V3() *SpotV3Service
-}
-
-// SpotService :
-type SpotService struct {
-	client *Client
-}
-
-// V1 :
-func (s *SpotService) V1() SpotV1ServiceI {
-	return &SpotV1Service{s.client}
-}
-
-// V3 :
-func (s *SpotService) V3() *SpotV3Service {
-	return &SpotV3Service{s.client}
-}
-
 // Spot :
-func (c *Client) Spot() SpotServiceI {
-	return &SpotService{c}
-}
 
 // NewTimeService :
 func (c *Client) NewTimeService() TimeServiceI {
