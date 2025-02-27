@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"go.uber.org/zap"
 	"os"
 	"os/signal"
 	"sync"
@@ -15,7 +16,7 @@ import (
 
 // V5WebsocketPrivateServiceI :
 type V5WebsocketPrivateServiceI interface {
-	Start(context.Context, ErrHandler) error
+	Start(context.Context) error
 	Subscribe() error
 	Run() error
 	Ping() error
@@ -42,6 +43,8 @@ type V5WebsocketPrivateServiceI interface {
 type V5WebsocketPrivateService struct {
 	client     *WebSocketClient
 	connection *websocket.Conn
+
+	logger *zap.SugaredLogger
 
 	mu sync.Mutex
 
@@ -125,24 +128,21 @@ func (s *V5WebsocketPrivateService) Subscribe() error {
 type ErrHandler func(isWebsocketClosed bool, err error)
 
 // Start :
-func (s *V5WebsocketPrivateService) Start(ctx context.Context, errHandler ErrHandler) error {
+func (s *V5WebsocketPrivateService) Start(ctx context.Context) error {
 	done := make(chan struct{})
 
 	go func() {
 		defer close(done)
 		defer s.connection.Close()
-		_ = s.connection.SetReadDeadline(time.Now().Add(60 * time.Second))
+		_ = s.connection.SetReadDeadline(time.Now().Add(30 * time.Second))
 		s.connection.SetPongHandler(func(string) error {
-			_ = s.connection.SetReadDeadline(time.Now().Add(60 * time.Second))
+			s.logger.Debug("pong")
+			_ = s.connection.SetReadDeadline(time.Now().Add(30 * time.Second))
 			return nil
 		})
 
 		for {
 			if err := s.Run(); err != nil {
-				if errHandler == nil {
-					return
-				}
-				errHandler(IsErrWebsocketClosed(err), err)
 				return
 			}
 		}
@@ -261,10 +261,10 @@ func (s *V5WebsocketPrivateService) Ping() error {
 
 // Close :
 func (s *V5WebsocketPrivateService) Close() error {
-	if err := s.writeMessage(websocket.CloseMessage, websocket.FormatCloseMessage(websocket.CloseNormalClosure, "")); err != nil && !errors.Is(err, websocket.ErrCloseSent) {
-		return err
-	}
-	return nil
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	return s.connection.Close()
 }
 
 func (s *V5WebsocketPrivateService) writeMessage(messageType int, body []byte) error {

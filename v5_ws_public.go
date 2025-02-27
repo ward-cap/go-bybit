@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"go.uber.org/zap"
 	"os"
 	"os/signal"
 	"strings"
@@ -15,7 +16,7 @@ import (
 
 // V5WebsocketPublicServiceI :
 type V5WebsocketPublicServiceI interface {
-	Start(context.Context, ErrHandler) error
+	Start(context.Context) error
 	Run() error
 	Ping() error
 	Close() error
@@ -53,6 +54,8 @@ type V5WebsocketPublicService struct {
 	category   CategoryV5
 
 	mu sync.Mutex
+
+	logger *zap.SugaredLogger
 
 	paramOrderBookMap   map[V5WebsocketPublicOrderBookParamKey]func(V5WebsocketPublicOrderBookResponse) error
 	paramKlineMap       map[V5WebsocketPublicKlineParamKey]func(V5WebsocketPublicKlineResponse) error
@@ -140,26 +143,23 @@ func (s *V5WebsocketPublicService) parseResponse(respBody []byte, response inter
 }
 
 // Start :
-func (s *V5WebsocketPublicService) Start(ctx context.Context, errHandler ErrHandler) error {
+func (s *V5WebsocketPublicService) Start(ctx context.Context) error {
 	done := make(chan struct{})
 
 	go func() {
 		defer close(done)
 		defer s.connection.Close()
 
-		_ = s.connection.SetReadDeadline(time.Now().Add(60 * time.Second))
+		_ = s.connection.SetReadDeadline(time.Now().Add(30 * time.Second))
 		s.connection.SetPongHandler(func(string) error {
-			_ = s.connection.SetReadDeadline(time.Now().Add(60 * time.Second))
+			s.logger.Debug("pong")
+			_ = s.connection.SetReadDeadline(time.Now().Add(30 * time.Second))
 			return nil
 		})
 
 		for {
 			if err := s.Run(); err != nil {
-				if errHandler == nil {
-					return
-				}
-				errHandler(IsErrWebsocketClosed(err), err)
-				return
+				break
 			}
 		}
 	}()
@@ -293,10 +293,10 @@ func (s *V5WebsocketPublicService) Ping() error {
 
 // Close :
 func (s *V5WebsocketPublicService) Close() error {
-	if err := s.writeMessage(websocket.CloseMessage, websocket.FormatCloseMessage(websocket.CloseNormalClosure, "")); err != nil && !errors.Is(err, websocket.ErrCloseSent) {
-		return err
-	}
-	return nil
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	return s.connection.Close()
 }
 
 func (s *V5WebsocketPublicService) writeMessage(messageType int, body []byte) error {

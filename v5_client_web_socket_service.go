@@ -2,6 +2,7 @@ package bybit
 
 import (
 	"github.com/gorilla/websocket"
+	"go.uber.org/zap"
 )
 
 // V5WebsocketServiceI :
@@ -16,7 +17,7 @@ type V5WebsocketService struct {
 }
 
 // Public :
-func (s *V5WebsocketService) Public(category CategoryV5) (V5WebsocketPublicServiceI, error) {
+func (s *V5WebsocketService) Public(category CategoryV5, logger *zap.SugaredLogger) (V5WebsocketPublicServiceI, error) {
 	url := s.client.baseURL + V5WebsocketPublicPathFor(category)
 	c, _, err := websocket.DefaultDialer.Dial(url, nil)
 	if err != nil {
@@ -31,11 +32,12 @@ func (s *V5WebsocketService) Public(category CategoryV5) (V5WebsocketPublicServi
 		paramTickerMap:      make(map[V5WebsocketPublicTickerParamKey]func(V5WebsocketPublicTickerResponse) error),
 		paramTradeMap:       make(map[V5WebsocketPublicTradeParamKey]func(V5WebsocketPublicTradeResponse) error),
 		paramLiquidationMap: make(map[V5WebsocketPublicLiquidationParamKey]func(V5WebsocketPublicLiquidationResponse) error),
+		logger:              logger,
 	}, nil
 }
 
 // Private :
-func (s *V5WebsocketService) Private() (V5WebsocketPrivateServiceI, error) {
+func (s *V5WebsocketService) Private(logger *zap.SugaredLogger) (V5WebsocketPrivateServiceI, error) {
 	url := s.client.baseURL + V5WebsocketPrivatePath
 	c, _, err := websocket.DefaultDialer.Dial(url, nil)
 	if err != nil {
@@ -48,6 +50,7 @@ func (s *V5WebsocketService) Private() (V5WebsocketPrivateServiceI, error) {
 		paramPositionMap:  make(map[V5WebsocketPrivateParamKey]func(V5WebsocketPrivatePositionResponse) error),
 		paramExecutionMap: make(map[V5WebsocketPrivateParamKey]func(V5WebsocketPrivateExecutionResponse) error),
 		paramWalletMap:    make(map[V5WebsocketPrivateParamKey]func(V5WebsocketPrivateWalletResponse) error),
+		logger:            logger,
 	}, nil
 }
 
