@@ -6,8 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"go.uber.org/zap"
-	"os"
-	"os/signal"
 	"sync"
 	"time"
 
@@ -18,8 +16,6 @@ import (
 type V5WebsocketPrivateServiceI interface {
 	Start(context.Context) error
 	Subscribe() error
-	Run() error
-	Ping() error
 	Close() error
 
 	SubscribeOrder(
@@ -129,17 +125,10 @@ type ErrHandler func(isWebsocketClosed bool, err error)
 
 // Start :
 func (s *V5WebsocketPrivateService) Start(ctx context.Context) error {
-	done := make(chan struct{})
-
 	go func() {
-		defer close(done)
-		defer s.connection.Close()
-		_ = s.connection.SetReadDeadline(time.Now().Add(30 * time.Second))
-		s.connection.SetPongHandler(func(string) error {
-			s.logger.Debug("pong")
-			_ = s.connection.SetReadDeadline(time.Now().Add(30 * time.Second))
-			return nil
-		})
+		defer s.Close()
+
+		s.keepAlive(s.connection)
 
 		for {
 			if err := s.Run(); err != nil {
@@ -148,31 +137,12 @@ func (s *V5WebsocketPrivateService) Start(ctx context.Context) error {
 		}
 	}()
 
-	ticker := time.NewTicker(20 * time.Second)
-	defer ticker.Stop()
-
-	ctx, stop := signal.NotifyContext(ctx, os.Interrupt)
-	defer stop()
-
 	for {
 		select {
-		case <-done:
-			return nil
-		case <-ticker.C:
-			if err := s.Ping(); err != nil {
-				return err
-			}
 		case <-ctx.Done():
-			s.client.debugf("caught websocket private service interrupt signal")
+			s.logger.Debug("caught websocket private service interrupt signal")
 
-			if err := s.Close(); err != nil {
-				return err
-			}
-			select {
-			case <-done:
-			case <-time.After(time.Second):
-			}
-			return nil
+			return s.Close()
 		}
 	}
 }
@@ -247,16 +217,51 @@ func (s *V5WebsocketPrivateService) Run() error {
 }
 
 // Ping :
-func (s *V5WebsocketPrivateService) Ping() error {
-	// NOTE: It appears that two messages need to be sent.
-	// REF: https://github.com/hirokisan/bybit/pull/127#issuecomment-1537479346
-	if err := s.writeMessage(websocket.PingMessage, nil); err != nil {
-		return err
-	}
-	if err := s.writeMessage(websocket.TextMessage, []byte(`{"op":"ping"}`)); err != nil {
-		return err
-	}
-	return nil
+//func (s *V5WebsocketPrivateService) Ping() error {
+//	// NOTE: It appears that two messages need to be sent.
+//	// REF: https://github.com/hirokisan/bybit/pull/127#issuecomment-1537479346
+//	if err := s.writeMessage(websocket.PingMessage, nil); err != nil {
+//		return err
+//	}
+//	if err := s.writeMessage(websocket.TextMessage, []byte(`{"op":"ping"}`)); err != nil {
+//		return err
+//	}
+//	return nil
+//}
+
+func (s *V5WebsocketPrivateService) keepAlive(c *websocket.Conn) {
+	timeout := time.Second * 10
+	ticker := time.NewTicker(timeout)
+
+	lastResponse := time.Now()
+	c.SetPongHandler(func(msg string) error {
+		s.logger.Debug("pong")
+		lastResponse = time.Now()
+		return nil
+	})
+
+	go func() {
+		defer ticker.Stop()
+		for {
+			go func() {
+				err := errors.Join(
+					s.writeMessage(websocket.PingMessage, nil),
+					s.writeMessage(websocket.TextMessage, []byte(`{"op":"ping"}`)),
+				)
+
+				if err != nil {
+					_ = c.Close()
+					return
+				}
+			}()
+
+			<-ticker.C
+			if time.Since(lastResponse) > timeout {
+				_ = c.Close()
+				return
+			}
+		}
+	}()
 }
 
 // Close :
@@ -271,8 +276,5 @@ func (s *V5WebsocketPrivateService) writeMessage(messageType int, body []byte) e
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	if err := s.connection.WriteMessage(messageType, body); err != nil {
-		return err
-	}
-	return nil
+	return s.connection.WriteMessage(messageType, body)
 }

@@ -5,8 +5,6 @@ import (
 	"encoding/json"
 	"errors"
 	"go.uber.org/zap"
-	"os"
-	"os/signal"
 	"strings"
 	"sync"
 	"time"
@@ -17,8 +15,7 @@ import (
 // V5WebsocketPublicServiceI :
 type V5WebsocketPublicServiceI interface {
 	Start(context.Context) error
-	Run() error
-	Ping() error
+	//Run() error
 	Close() error
 
 	SubscribeOrderBook(
@@ -100,7 +97,7 @@ func (t V5WebsocketPublicTopic) String() string {
 
 // judgeTopic :
 func (s *V5WebsocketPublicService) judgeTopic(respBody []byte) (V5WebsocketPublicTopic, error) {
-	parsedData := map[string]interface{}{}
+	parsedData := map[string]any{}
 	if err := json.Unmarshal(respBody, &parsedData); err != nil {
 		return "", err
 	}
@@ -116,6 +113,8 @@ func (s *V5WebsocketPublicService) judgeTopic(respBody []byte) (V5WebsocketPubli
 			return V5WebsocketPublicTopicTrade, nil
 		case strings.Contains(topic, V5WebsocketPublicTopicLiquidation.String()):
 			return V5WebsocketPublicTopicLiquidation, nil
+		default:
+			s.logger.Warnf("Unhandled topic: %s", topic)
 		}
 	}
 	return "", nil
@@ -144,18 +143,11 @@ func (s *V5WebsocketPublicService) parseResponse(respBody []byte, response inter
 
 // Start :
 func (s *V5WebsocketPublicService) Start(ctx context.Context) error {
-	done := make(chan struct{})
 
 	go func() {
-		defer close(done)
-		defer s.connection.Close()
+		defer s.Close()
 
-		_ = s.connection.SetReadDeadline(time.Now().Add(30 * time.Second))
-		s.connection.SetPongHandler(func(string) error {
-			s.logger.Debug("pong")
-			_ = s.connection.SetReadDeadline(time.Now().Add(30 * time.Second))
-			return nil
-		})
+		s.keepAlive(s.connection)
 
 		for {
 			if err := s.Run(); err != nil {
@@ -164,31 +156,11 @@ func (s *V5WebsocketPublicService) Start(ctx context.Context) error {
 		}
 	}()
 
-	ticker := time.NewTicker(20 * time.Second)
-	defer ticker.Stop()
-
-	ctx, stop := signal.NotifyContext(ctx, os.Interrupt)
-	defer stop()
-
 	for {
 		select {
-		case <-done:
-			return nil
-		case <-ticker.C:
-			if err := s.Ping(); err != nil {
-				return err
-			}
 		case <-ctx.Done():
-			s.client.debugf("caught websocket public service interrupt signal")
-
-			if err := s.Close(); err != nil {
-				return err
-			}
-			select {
-			case <-done:
-			case <-time.After(time.Second):
-			}
-			return nil
+			s.logger.Debug("caught websocket public service interrupt signal")
+			return s.Close()
 		}
 	}
 }
@@ -205,6 +177,8 @@ func (s *V5WebsocketPublicService) Run() error {
 		return err
 	}
 	switch topic {
+	//case V5WebsocketPrivateTopicPong:
+
 	case V5WebsocketPublicTopicOrderBook:
 		var resp V5WebsocketPublicOrderBookResponse
 		if err := s.parseResponse(message, &resp); err != nil {
@@ -278,19 +252,6 @@ func (s *V5WebsocketPublicService) Run() error {
 	return nil
 }
 
-// Ping :
-func (s *V5WebsocketPublicService) Ping() error {
-	// NOTE: It appears that two messages need to be sent.
-	// REF: https://github.com/hirokisan/bybit/pull/127#issuecomment-1537479346
-	if err := s.writeMessage(websocket.PingMessage, nil); err != nil {
-		return err
-	}
-	if err := s.writeMessage(websocket.TextMessage, []byte(`{"op":"ping"}`)); err != nil {
-		return err
-	}
-	return nil
-}
-
 // Close :
 func (s *V5WebsocketPublicService) Close() error {
 	s.mu.Lock()
@@ -303,8 +264,40 @@ func (s *V5WebsocketPublicService) writeMessage(messageType int, body []byte) er
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	if err := s.connection.WriteMessage(messageType, body); err != nil {
-		return err
-	}
-	return nil
+	return s.connection.WriteMessage(messageType, body)
+}
+
+func (s *V5WebsocketPublicService) keepAlive(c *websocket.Conn) {
+	timeout := time.Second * 10
+	ticker := time.NewTicker(timeout)
+
+	lastResponse := time.Now()
+	c.SetPongHandler(func(msg string) error {
+		s.logger.Debug("pong")
+		lastResponse = time.Now()
+		return nil
+	})
+
+	go func() {
+		defer ticker.Stop()
+		for {
+			go func() {
+				err := errors.Join(
+					s.writeMessage(websocket.PingMessage, nil),
+					s.writeMessage(websocket.TextMessage, []byte(`{"op":"ping"}`)),
+				)
+
+				if err != nil {
+					_ = c.Close()
+					return
+				}
+			}()
+
+			<-ticker.C
+			if time.Since(lastResponse) > timeout {
+				_ = c.Close()
+				return
+			}
+		}
+	}()
 }

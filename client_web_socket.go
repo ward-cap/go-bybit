@@ -1,23 +1,17 @@
 package bybit
 
 import (
-	"context"
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"go.uber.org/zap"
-	"os"
-	"os/signal"
 	"time"
 )
 
 const (
-	// WebsocketBaseURL :
 	WebsocketBaseURL = "wss://stream.bybit.com"
-	// WebsocketBaseURL2 :
-	WebsocketBaseURL2 = "wss://stream.bytick.com"
 )
 
 // WebSocketClient :
@@ -102,64 +96,4 @@ func (c *WebSocketClient) buildAuthParam() ([]byte, error) {
 		return nil, err
 	}
 	return buf, nil
-}
-
-// WebsocketExecutor :
-type WebsocketExecutor interface {
-	Run() error
-	Close() error
-	Ping() error
-}
-
-// Start :
-func (c *WebSocketClient) Start(ctx context.Context, executors []WebsocketExecutor) {
-	done := make(chan struct{})
-
-	go func() {
-		defer close(done)
-
-		for {
-			for _, executor := range executors {
-				if err := executor.Run(); err != nil {
-					if IsErrWebsocketClosed(err) {
-						return
-					}
-					c.debugf("websocket executor error: %s", err)
-					return
-				}
-			}
-		}
-	}()
-
-	ticker := time.NewTicker(20 * time.Second)
-	defer ticker.Stop()
-
-	ctx, stop := signal.NotifyContext(ctx, os.Interrupt)
-	defer stop()
-
-	for {
-		select {
-		case <-done:
-			return
-		case <-ticker.C:
-			for _, executor := range executors {
-				if err := executor.Ping(); err != nil {
-					return
-				}
-			}
-		case <-ctx.Done():
-			c.debugf("caught websocket interrupt signal")
-
-			for _, executor := range executors {
-				if err := executor.Close(); err != nil {
-					return
-				}
-			}
-			select {
-			case <-done:
-			case <-time.After(time.Second):
-			}
-			return
-		}
-	}
 }
