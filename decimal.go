@@ -14,6 +14,14 @@ func (d *NullDecimalV2) UnmarshalJSON(decimalBytes []byte) error {
 	return d.Decimal.UnmarshalJSON(decimalBytes)
 }
 
+func (d NullDecimalV2) MarshalJSON() ([]byte, error) {
+	return decimal.NullDecimal(d).MarshalJSON()
+}
+
+func (d NullDecimalV2) MarshalText() ([]byte, error) {
+	return decimal.NullDecimal(d).MarshalText()
+}
+
 //goland:noinspection GoMixedReceiverTypes
 func (d NullDecimalV2) N() decimal.NullDecimal {
 	return decimal.NullDecimal(d)
