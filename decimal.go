@@ -15,11 +15,11 @@ func (d *NullDecimalV2) UnmarshalJSON(decimalBytes []byte) error {
 }
 
 func (d NullDecimalV2) MarshalJSON() ([]byte, error) {
-	return decimal.NullDecimal(d).MarshalJSON()
+	return d.N().MarshalJSON()
 }
 
 func (d NullDecimalV2) MarshalText() ([]byte, error) {
-	return decimal.NullDecimal(d).MarshalText()
+	return d.N().MarshalText()
 }
 
 //goland:noinspection GoMixedReceiverTypes
