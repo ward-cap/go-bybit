@@ -132,6 +132,7 @@ func (s *V5WebsocketPrivateService) Start(ctx context.Context) error {
 
 		for {
 			if err := s.Run(); err != nil {
+				s.logger.Error(err)
 				return
 			}
 		}
