@@ -95,7 +95,7 @@ type V5WebsocketPrivateOrderData struct {
 	TpTriggerBy        TriggerBy           `json:"tpTriggerBy"`
 	TriggerBy          TriggerBy           `json:"triggerBy"`
 	TriggerDirection   TriggerDirection    `json:"triggerDirection"`
-	TriggerPrice       string              `json:"triggerPrice"`
+	TriggerPrice       NullDecimalV2       `json:"triggerPrice"`
 	UpdatedTime        string              `json:"updatedTime"`
 }
 
