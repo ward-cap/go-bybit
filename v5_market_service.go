@@ -12,7 +12,7 @@ import (
 
 // V5MarketServiceI :
 type V5MarketServiceI interface {
-	GetKline(V5GetKlineParam) (*V5GetKlineResponse, error)
+	GetKline(context.Context, V5GetKlineParam) (*V5GetKlineResponse, error)
 	GetMarkPriceKline(V5GetMarkPriceKlineParam) (*V5GetMarkPriceKlineResponse, error)
 	GetIndexPriceKline(V5GetIndexPriceKlineParam) (*V5GetIndexPriceKlineResponse, error)
 	GetPremiumIndexPriceKline(V5GetPremiumIndexPriceKlineParam) (*V5GetPremiumIndexPriceKlineResponse, error)
@@ -95,7 +95,7 @@ func (l *V5GetKlineList) UnmarshalJSON(data []byte) error {
 }
 
 // GetKline :
-func (s *V5MarketService) GetKline(param V5GetKlineParam) (*V5GetKlineResponse, error) {
+func (s *V5MarketService) GetKline(ctx context.Context, param V5GetKlineParam) (*V5GetKlineResponse, error) {
 	var res V5GetKlineResponse
 
 	queryString, err := query.Values(param)
@@ -103,7 +103,7 @@ func (s *V5MarketService) GetKline(param V5GetKlineParam) (*V5GetKlineResponse, 
 		return nil, err
 	}
 
-	if err := s.client.getPublicly("/v5/market/kline", queryString, &res); err != nil {
+	if err := s.client.getPubliclyCtx(ctx, "/v5/market/kline", queryString, &res); err != nil {
 		return nil, err
 	}
 
