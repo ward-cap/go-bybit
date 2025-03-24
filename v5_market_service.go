@@ -18,7 +18,7 @@ type V5MarketServiceI interface {
 	GetPremiumIndexPriceKline(V5GetPremiumIndexPriceKlineParam) (*V5GetPremiumIndexPriceKlineResponse, error)
 	GetInstrumentsInfo(context.Context, V5GetInstrumentsInfoParam) (*V5GetInstrumentsInfoResponse, error)
 	GetOrderbook(V5GetOrderbookParam) (*V5GetOrderbookResponse, error)
-	GetTickers(V5GetTickersParam) (*V5GetTickersResponse, error)
+	GetTickers(context.Context, V5GetTickersParam) (*V5GetTickersResponse, error)
 	GetFundingRateHistory(V5GetFundingRateHistoryParam) (*V5GetFundingRateHistoryResponse, error)
 	GetPublicTradingHistory(V5GetPublicTradingHistoryParam) (*V5GetPublicTradingHistoryResponse, error)
 	GetOpenInterest(V5GetOpenInterestParam) (*V5GetOpenInterestResponse, error)
@@ -740,7 +740,7 @@ type V5GetTickersSpotItem struct {
 }
 
 // GetTickers :
-func (s *V5MarketService) GetTickers(param V5GetTickersParam) (*V5GetTickersResponse, error) {
+func (s *V5MarketService) GetTickers(ctx context.Context, param V5GetTickersParam) (*V5GetTickersResponse, error) {
 	var res V5GetTickersResponse
 
 	if err := param.validate(); err != nil {
@@ -752,7 +752,7 @@ func (s *V5MarketService) GetTickers(param V5GetTickersParam) (*V5GetTickersResp
 		return nil, err
 	}
 
-	if err := s.client.getPublicly("/v5/market/tickers", queryString, &res); err != nil {
+	if err := s.client.getPubliclyCtx(ctx, "/v5/market/tickers", queryString, &res); err != nil {
 		return nil, err
 	}
 
