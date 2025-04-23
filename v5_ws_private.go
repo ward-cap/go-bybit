@@ -125,10 +125,11 @@ type ErrHandler func(isWebsocketClosed bool, err error)
 
 // Start :
 func (s *V5WebsocketPrivateService) Start(ctx context.Context) error {
+	ctx, cancelFunc := context.WithCancel(ctx)
 	go func() {
 		defer s.Close()
 
-		s.keepAlive(s.connection)
+		s.keepAlive(s.connection, cancelFunc)
 
 		for {
 			if err := s.Run(); err != nil {
@@ -138,13 +139,10 @@ func (s *V5WebsocketPrivateService) Start(ctx context.Context) error {
 		}
 	}()
 
-	for {
-		select {
-		case <-ctx.Done():
-			s.logger.Debug("caught websocket private service interrupt signal")
-
-			return s.Close()
-		}
+	select {
+	case <-ctx.Done():
+		s.logger.Debug("caught websocket private service interrupt signal")
+		return s.Close()
 	}
 }
 
@@ -230,7 +228,7 @@ func (s *V5WebsocketPrivateService) Run() error {
 //	return nil
 //}
 
-func (s *V5WebsocketPrivateService) keepAlive(c *websocket.Conn) {
+func (s *V5WebsocketPrivateService) keepAlive(c *websocket.Conn, cancelFunc context.CancelFunc) {
 	timeout := time.Second * 10
 	ticker := time.NewTicker(timeout)
 
@@ -258,7 +256,8 @@ func (s *V5WebsocketPrivateService) keepAlive(c *websocket.Conn) {
 
 			<-ticker.C
 			if time.Since(lastResponse) > timeout {
-				_ = c.Close()
+				s.logger.Warn("keep alive timeout")
+				cancelFunc()
 				return
 			}
 		}
