@@ -128,6 +128,7 @@ func (s *V5WebsocketPrivateService) Start(ctx context.Context) error {
 	ctx, cancelFunc := context.WithCancel(ctx)
 	go func() {
 		defer s.Close()
+		defer cancelFunc()
 
 		s.keepAlive(s.connection, cancelFunc)
 
