@@ -1,6 +1,6 @@
 module github.com/ward-cap/go-bybit
 
-go 1.23.1
+go 1.24.6
 
 require (
 	github.com/google/go-querystring v1.1.0

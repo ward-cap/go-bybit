@@ -71,14 +71,14 @@ type V5WebsocketPublicTradeResponse struct {
 
 // V5WebsocketPublicTradeData :
 type V5WebsocketPublicTradeData struct {
-	Timestamp  uint64 `json:"T"`  // The timestamp (ms) that the order is filled
-	Symbol     string `json:"s"`  // Symbol name
-	Side       Side   `json:"S"`  // Side of taker. Buy,Sell
-	Value      string `json:"v"`  // Trade size
-	Trade      string `json:"p"`  // Trade price
-	Direction  string `json:"L"`  // Direction of price change. Unique field for future
-	ID         string `json:"i"`  // Trade ID
-	BlockTrade bool   `json:"BT"` // Whether it is a block trade order or not
+	Timestamp  uint64        `json:"T"`  // The timestamp (ms) that the order is filled
+	Symbol     string        `json:"s"`  // Symbol name
+	Side       Side          `json:"S"`  // Side of taker. Buy,Sell
+	Value      NullDecimalV2 `json:"v"`  // Trade size
+	Trade      NullDecimalV2 `json:"p"`  // Trade price
+	Direction  string        `json:"L"`  // Direction of price change. Unique field for future
+	ID         string        `json:"i"`  // Trade ID
+	BlockTrade bool          `json:"BT"` // Whether it is a block trade order or not
 }
 
 // Key :

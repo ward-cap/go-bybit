@@ -94,7 +94,7 @@ func (s *V5AccountService) GetWalletBalance(ctx context.Context, at AccountTypeV
 	if len(coins) > 0 {
 		var coinsStr []string
 		for _, c := range coins {
-			coinsStr = append(coinsStr, string(c))
+			coinsStr = append(coinsStr, c)
 		}
 		query.Add("coin", strings.Join(coinsStr, ","))
 	}
