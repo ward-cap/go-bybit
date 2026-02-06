@@ -123,7 +123,7 @@ const (
 	ExecTypeV5AdlTrade         ExecTypeV5 = "AdlTrade"
 	ExecTypeV5Funding          ExecTypeV5 = "Funding"
 	ExecTypeV5BustTrade        ExecTypeV5 = "BustTrade"
-	ExecTypeV5Delivery         ExecTypeV5 = "Delivery"
+	ExecTypeV5Delivery         ExecTypeV5 = "Delivery" //Position closed by contract delisted
 	ExecTypeV5SessionSettlePnL ExecTypeV5 = "SessionSettlePnL"
 	ExecTypeV5Settle           ExecTypeV5 = "Settle"
 	ExecTypeV5BlockTrade       ExecTypeV5 = "BlockTrade"

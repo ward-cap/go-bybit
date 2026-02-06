@@ -2,6 +2,7 @@ package bybit
 
 import (
 	"context"
+
 	"github.com/google/go-querystring/query"
 )
 
@@ -17,9 +18,9 @@ type V5APIGetSubDepositAddressResult struct {
 	Chains struct {
 		//ChainType         string `json:"chainType"`
 		AddressDeposit string `json:"addressDeposit"`
-		//TagDeposit        string `json:"tagDeposit"`
+		TagDeposit     string `json:"tagDeposit"`
 		//Chain             string `json:"chain"`
-		//BatchReleaseLimit string `json:"batchReleaseLimit"`
+		BatchReleaseLimit string `json:"batchReleaseLimit"`
 	} `json:"chains"`
 }
 
