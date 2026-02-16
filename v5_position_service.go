@@ -77,7 +77,7 @@ type V5GetPositionInfoItem struct {
 	CreatedTime            string           `json:"createdTime"`
 	UpdatedTime            string           `json:"updatedTime"`
 	Seq                    int64            `json:"seq"`
-	PositionIdx            int              `json:"positionIdx"`
+	PositionIdx            PositionIdx      `json:"positionIdx"`
 	PositionIM             string           `json:"positionIM"`
 	Side                   Side             `json:"side"`
 	BustPrice              string           `json:"bustPrice"`
