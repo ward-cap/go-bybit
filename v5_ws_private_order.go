@@ -80,7 +80,7 @@ type V5WebsocketPrivateOrderData struct {
 	OrderStatus        OrderStatus         `json:"orderStatus"`
 	OrderLinkID        string              `json:"orderLinkId"`
 	OrderType          OrderType           `json:"orderType"`
-	PositionIdx        int                 `json:"positionIdx"`
+	PositionIdx        PositionIdx         `json:"positionIdx"`
 	Price              decimal.Decimal     `json:"price"`
 	Qty                decimal.Decimal     `json:"qty"`
 	ReduceOnly         bool                `json:"reduceOnly"`

@@ -237,7 +237,7 @@ type V5GetOrder struct {
 	OrderIv            string              `json:"orderIv"`
 	CreatedTime        string              `json:"createdTime"`
 	TpTriggerBy        string              `json:"tpTriggerBy"`
-	PositionIdx        int                 `json:"positionIdx"`
+	PositionIdx        PositionIdx         `json:"positionIdx"`
 	TimeInForce        TimeInForce         `json:"timeInForce"`
 	LeavesValue        string              `json:"leavesValue"`
 	UpdatedTime        string              `json:"updatedTime"`
