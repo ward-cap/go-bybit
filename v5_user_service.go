@@ -16,7 +16,7 @@ type V5UserServiceI interface {
 	GetBrokerAccountInfo(context.Context) (*V5APIBrokerAccountInfo, error)
 	GetSubUIDList(context.Context) (*V5APISubUIDList, error)
 	GetMemberType(context.Context) (*V5APIGetMemberType, error)
-	SignAgreement(context.Context) error
+	SignAgreement(context.Context, int) (*V5APISignAgreementResponse, error)
 }
 
 // V5UserService :
