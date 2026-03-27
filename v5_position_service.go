@@ -15,7 +15,7 @@ type V5PositionServiceI interface {
 	SetLeverage(context.Context, V5SetLeverageParam) (*V5SetLeverageResponse, error)
 	SetTradingStop(V5SetTradingStopParam) (*V5SetTradingStopResponse, error)
 	SetTpSlMode(V5SetTpSlModeParam) (*V5SetTpSlModeResponse, error)
-	SwitchPositionMode(V5SwitchPositionModeParam) (*V5SwitchPositionModeResponse, error)
+	SwitchPositionMode(context.Context, V5SwitchPositionModeParam) (*V5SwitchPositionModeResponse, error)
 	GetClosedPnL(V5GetClosedPnLParam) (*V5GetClosedPnLResponse, error)
 	SwitchPositionMarginMode(V5SwitchPositionMarginModeParam) (*V5SwitchPositionMarginModeResponse, error)
 	SetRiskLimit(V5SetRiskLimitParam) (*V5SetRiskLimitResponse, error)
@@ -263,7 +263,7 @@ type V5SwitchPositionModeResponse struct {
 }
 
 // SwitchPositionMode :
-func (s *V5PositionService) SwitchPositionMode(param V5SwitchPositionModeParam) (*V5SwitchPositionModeResponse, error) {
+func (s *V5PositionService) SwitchPositionMode(ctx context.Context, param V5SwitchPositionModeParam) (*V5SwitchPositionModeResponse, error) {
 	var res V5SwitchPositionModeResponse
 
 	if err := param.validate(); err != nil {
@@ -275,7 +275,7 @@ func (s *V5PositionService) SwitchPositionMode(param V5SwitchPositionModeParam) 
 		return &res, fmt.Errorf("json marshal: %w", err)
 	}
 
-	if err := s.client.postV5JSON(nil, "/v5/position/switch-mode", body, &res); err != nil {
+	if err := s.client.postV5JSON(ctx, "/v5/position/switch-mode", body, &res); err != nil {
 		return &res, err
 	}
 
