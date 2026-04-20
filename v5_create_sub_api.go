@@ -46,7 +46,7 @@ func (s *V5UserService) CreateSubAPIKey(ctx context.Context, param CreateSubAPIK
 
 	var res *V5APICreateSubAPIKey
 
-	if err := s.client.postV5JSON(ctx, "/v5/user/create-sub-api", body, &res); err != nil {
+	if err := s.client.postV5JSON(ctx, "/v5/user/create-sub-api", body, "V5UserService", &res); err != nil {
 		return nil, err
 	}
 

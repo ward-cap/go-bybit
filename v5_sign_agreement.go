@@ -22,7 +22,7 @@ func (s *V5UserService) SignAgreement(ctx context.Context, category int) (res *V
 		return nil, err
 	}
 
-	err = s.client.postV5JSON(ctx, "/v5/user/agreement", rqJson, &res)
+	err = s.client.postV5JSON(ctx, "/v5/user/agreement", rqJson, "V5UserService", &res)
 
 	return res, err
 }

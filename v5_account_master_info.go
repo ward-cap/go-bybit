@@ -24,6 +24,6 @@ type V5APIBrokerAccountInfoResult struct {
 }
 
 func (s *V5UserService) GetBrokerAccountInfo(ctx context.Context) (res *V5APIBrokerAccountInfo, err error) {
-	err = s.client.getV5PrivatelyCtx(ctx, "/v5/broker/account-info", nil, &res)
+	err = s.client.getV5PrivatelyCtx(ctx, "/v5/broker/account-info", nil, "V5UserService", &res)
 	return
 }

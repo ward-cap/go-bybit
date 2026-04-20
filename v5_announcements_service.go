@@ -55,7 +55,7 @@ func (s *V5AnnouncementsService) GetAnnouncement(
 		return nil, err
 	}
 
-	err = s.client.getV5PrivatelyCtx(ctx, "/v5/announcements/index", queryString, &res)
+	err = s.client.getV5PrivatelyCtx(ctx, "/v5/announcements/index", queryString, "V5AnnouncementsService", &res)
 
 	return
 }

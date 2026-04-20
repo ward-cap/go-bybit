@@ -42,7 +42,7 @@ func (s *V5UserService) GetSubDepositAddress(ctx context.Context, param GetSubDe
 	}
 
 	// Виконуємо POST-запит до API
-	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/asset/deposit/query-sub-member-address", queryString, &res); err != nil {
+	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/asset/deposit/query-sub-member-address", queryString, "V5UserService", &res); err != nil {
 		return nil, err
 	}
 

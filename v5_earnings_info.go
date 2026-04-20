@@ -58,7 +58,7 @@ func (s *V5MarketService) GetExchangeEarning(ctx context.Context, param Exchange
 		return nil, err
 	}
 
-	err = s.client.getV5PrivatelyCtx(ctx, "/v5/broker/earnings-info", q, &res)
+	err = s.client.getV5PrivatelyCtx(ctx, "/v5/broker/earnings-info", q, "V5MarketService", &res)
 
 	return
 }

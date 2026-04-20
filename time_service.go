@@ -25,7 +25,7 @@ type GetServerTimeResult struct {
 func (s *TimeService) GetServerTime() (*GetServerTimeResponse, error) {
 	var res GetServerTimeResponse
 
-	if err := s.client.getPublicly("/v3/public/time", nil, &res); err != nil {
+	if err := s.client.getPublicly("/v3/public/time", nil, "TimeService", &res); err != nil {
 		return nil, err
 	}
 

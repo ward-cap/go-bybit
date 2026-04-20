@@ -25,7 +25,7 @@ func (s *V5UserService) GetMemberType(ctx context.Context) (*V5APIGetMemberType,
 	var res V5APIGetMemberType
 
 	// Виконуємо GET-запит до API
-	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/user/get-member-type", url.Values{}, &res); err != nil {
+	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/user/get-member-type", url.Values{}, "V5UserService", &res); err != nil {
 		return nil, fmt.Errorf("не вдалося отримати типи акаунтів: %w", err)
 	}
 

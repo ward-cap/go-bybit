@@ -73,7 +73,7 @@ func (s *V5OrderService) CreateOrder(ctx context.Context, param V5CreateOrderPar
 		return &res, fmt.Errorf("json marshal: %w", err)
 	}
 
-	if err := s.client.postV5JSON(ctx, "/v5/order/create", body, &res); err != nil {
+	if err := s.client.postV5JSON(ctx, "/v5/order/create", body, "V5OrderService", &res); err != nil {
 		return &res, err
 	}
 
@@ -131,7 +131,7 @@ func (s *V5OrderService) AmendOrder(ctx context.Context, param V5AmendOrderParam
 		return &res, fmt.Errorf("json marshal: %w", err)
 	}
 
-	if err := s.client.postV5JSON(ctx, "/v5/order/amend", body, &res); err != nil {
+	if err := s.client.postV5JSON(ctx, "/v5/order/amend", body, "V5OrderService", &res); err != nil {
 		return &res, err
 	}
 
@@ -169,7 +169,7 @@ func (s *V5OrderService) CancelOrder(ctx context.Context, param V5CancelOrderPar
 		return &res, fmt.Errorf("json marshal: %w", err)
 	}
 
-	if err := s.client.postV5JSON(ctx, "/v5/order/cancel", body, &res); err != nil {
+	if err := s.client.postV5JSON(ctx, "/v5/order/cancel", body, "V5OrderService", &res); err != nil {
 		return &res, err
 	}
 
@@ -266,7 +266,7 @@ func (s *V5OrderService) GetOpenOrders(ctx context.Context, param V5GetOpenOrder
 		return nil, err
 	}
 
-	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/order/realtime", queryString, &res); err != nil {
+	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/order/realtime", queryString, "V5OrderService", &res); err != nil {
 		return nil, err
 	}
 
@@ -285,7 +285,7 @@ func (s *V5OrderService) GetHistoryOrders(ctx context.Context, param V5GetHistor
 		return nil, err
 	}
 
-	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/order/history", queryString, &res); err != nil {
+	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/order/history", queryString, "V5OrderService", &res); err != nil {
 		return nil, err
 	}
 
@@ -356,7 +356,7 @@ func (s *V5OrderService) CancelAllOrders(ctx context.Context, param V5CancelAllO
 		return &res, fmt.Errorf("json marshal: %w", err)
 	}
 
-	if err := s.client.postV5JSON(ctx, "/v5/order/cancel-all", body, &res); err != nil {
+	if err := s.client.postV5JSON(ctx, "/v5/order/cancel-all", body, "V5OrderService", &res); err != nil {
 		return &res, err
 	}
 

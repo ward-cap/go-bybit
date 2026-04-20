@@ -16,7 +16,7 @@ type V5PositionServiceI interface {
 	SetTradingStop(V5SetTradingStopParam) (*V5SetTradingStopResponse, error)
 	SetTpSlMode(V5SetTpSlModeParam) (*V5SetTpSlModeResponse, error)
 	SwitchPositionMode(V5SwitchPositionModeParam) (*V5SwitchPositionModeResponse, error)
-	GetClosedPnL(V5GetClosedPnLParam) (*V5GetClosedPnLResponse, error)
+	GetClosedPnL(context.Context, V5GetClosedPnLParam) (*V5GetClosedPnLResponse, error)
 	SwitchPositionMarginMode(V5SwitchPositionMarginModeParam) (*V5SwitchPositionMarginModeResponse, error)
 	SetRiskLimit(V5SetRiskLimitParam) (*V5SetRiskLimitResponse, error)
 }
@@ -97,7 +97,7 @@ func (s *V5PositionService) GetPositionInfo(ctx context.Context, param V5GetPosi
 		return nil, err
 	}
 
-	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/position/list", queryString, &res); err != nil {
+	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/position/list", queryString, "V5PositionService", &res); err != nil {
 		return nil, err
 	}
 
@@ -131,7 +131,7 @@ func (s *V5PositionService) SetLeverage(ctx context.Context, param V5SetLeverage
 		return &res, fmt.Errorf("json marshal: %w", err)
 	}
 
-	if err := s.client.postV5JSON(ctx, "/v5/position/set-leverage", body, &res); err != nil {
+	if err := s.client.postV5JSON(ctx, "/v5/position/set-leverage", body, "V5PositionService", &res); err != nil {
 		return &res, err
 	}
 
@@ -188,7 +188,7 @@ func (s *V5PositionService) SetTradingStop(param V5SetTradingStopParam) (*V5SetT
 		return &res, fmt.Errorf("json marshal: %w", err)
 	}
 
-	if err := s.client.postV5JSON(nil, "/v5/position/trading-stop", body, &res); err != nil {
+	if err := s.client.postV5JSON(nil, "/v5/position/trading-stop", body, "V5PositionService", &res); err != nil {
 		return &res, err
 	}
 
@@ -233,7 +233,7 @@ func (s *V5PositionService) SetTpSlMode(param V5SetTpSlModeParam) (*V5SetTpSlMod
 		return &res, fmt.Errorf("json marshal: %w", err)
 	}
 
-	if err := s.client.postV5JSON(nil, "/v5/position/set-tpsl-mode", body, &res); err != nil {
+	if err := s.client.postV5JSON(nil, "/v5/position/set-tpsl-mode", body, "V5PositionService", &res); err != nil {
 		return &res, err
 	}
 
@@ -275,7 +275,7 @@ func (s *V5PositionService) SwitchPositionMode(param V5SwitchPositionModeParam) 
 		return &res, fmt.Errorf("json marshal: %w", err)
 	}
 
-	if err := s.client.postV5JSON(nil, "/v5/position/switch-mode", body, &res); err != nil {
+	if err := s.client.postV5JSON(nil, "/v5/position/switch-mode", body, "V5PositionService", &res); err != nil {
 		return &res, err
 	}
 
@@ -331,7 +331,7 @@ type V5GetClosedPnLItem struct {
 }
 
 // GetClosedPnL :
-func (s *V5PositionService) GetClosedPnL(param V5GetClosedPnLParam) (*V5GetClosedPnLResponse, error) {
+func (s *V5PositionService) GetClosedPnL(ctx context.Context, param V5GetClosedPnLParam) (*V5GetClosedPnLResponse, error) {
 	var res V5GetClosedPnLResponse
 
 	queryString, err := query.Values(param)
@@ -339,7 +339,7 @@ func (s *V5PositionService) GetClosedPnL(param V5GetClosedPnLParam) (*V5GetClose
 		return nil, err
 	}
 
-	if err := s.client.getV5Privately("/v5/position/closed-pnl", queryString, &res); err != nil {
+	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/position/closed-pnl", queryString, "V5PositionService", &res); err != nil {
 		return nil, err
 	}
 
@@ -384,7 +384,7 @@ func (s *V5PositionService) SwitchPositionMarginMode(param V5SwitchPositionMargi
 		return &res, fmt.Errorf("json marshal: %w", err)
 	}
 
-	if err := s.client.postV5JSON(nil, "/v5/position/switch-isolated", body, &res); err != nil {
+	if err := s.client.postV5JSON(nil, "/v5/position/switch-isolated", body, "V5PositionService", &res); err != nil {
 		return &res, err
 	}
 
@@ -422,7 +422,7 @@ func (s *V5PositionService) SetRiskLimit(param V5SetRiskLimitParam) (*V5SetRiskL
 		return &res, fmt.Errorf("json marshal: %w", err)
 	}
 
-	if err := s.client.postV5JSON(nil, "/v5/position/set-risk-limit", body, &res); err != nil {
+	if err := s.client.postV5JSON(nil, "/v5/position/set-risk-limit", body, "V5PositionService", &res); err != nil {
 		return &res, err
 	}
 

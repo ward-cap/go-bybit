@@ -17,9 +17,9 @@ type V5AccountServiceI interface {
 	SetMarginMode(context.Context, V5SetMarginModeParam) (V5SetMarginModeResponse, error)
 
 	GetWalletBalance(ctx context.Context, _ AccountTypeV5, _ []string) (*V5GetWalletBalanceResponse, error)
-	GetCollateralInfo(V5GetCollateralInfoParam) (*V5GetCollateralInfoResponse, error)
+	GetCollateralInfo(context.Context, V5GetCollateralInfoParam) (*V5GetCollateralInfoResponse, error)
 	GetAccountInfo(context.Context) (*V5GetAccountInfoResponse, error)
-	GetTransactionLog(V5GetTransactionLogParam) (*V5GetTransactionLogResponse, error)
+	GetTransactionLog(context.Context, V5GetTransactionLogParam) (*V5GetTransactionLogResponse, error)
 }
 
 // V5AccountService :
@@ -99,7 +99,7 @@ func (s *V5AccountService) GetWalletBalance(ctx context.Context, at AccountTypeV
 		query.Add("coin", strings.Join(coinsStr, ","))
 	}
 
-	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/account/wallet-balance", query, &res); err != nil {
+	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/account/wallet-balance", query, "V5AccountService", &res); err != nil {
 		return nil, err
 	}
 
@@ -132,7 +132,7 @@ func (s *V5AccountService) SetCollateralCoin(param V5SetCollateralCoinParam) (*V
 		return nil, err
 	}
 
-	if err := s.client.postV5JSON(nil, "/v5/account/set-collateral-switch", body, &res); err != nil {
+	if err := s.client.postV5JSON(nil, "/v5/account/set-collateral-switch", body, "V5AccountService", &res); err != nil {
 		return nil, err
 	}
 
@@ -173,7 +173,7 @@ type V5GetCollateralInfoList struct {
 }
 
 // GetCollateralInfo :
-func (s *V5AccountService) GetCollateralInfo(param V5GetCollateralInfoParam) (*V5GetCollateralInfoResponse, error) {
+func (s *V5AccountService) GetCollateralInfo(ctx context.Context, param V5GetCollateralInfoParam) (*V5GetCollateralInfoResponse, error) {
 	var res V5GetCollateralInfoResponse
 
 	queryString, err := query.Values(param)
@@ -181,7 +181,7 @@ func (s *V5AccountService) GetCollateralInfo(param V5GetCollateralInfoParam) (*V
 		return nil, err
 	}
 
-	if err = s.client.getV5Privately("/v5/account/collateral-info", queryString, &res); err != nil {
+	if err = s.client.getV5PrivatelyCtx(ctx, "/v5/account/collateral-info", queryString, "V5AccountService", &res); err != nil {
 		return nil, err
 	}
 
@@ -208,7 +208,7 @@ func (s *V5AccountService) GetAccountInfo(ctx context.Context) (*V5GetAccountInf
 		query = make(url.Values)
 	)
 
-	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/account/info", query, &res); err != nil {
+	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/account/info", query, "V5AccountService", &res); err != nil {
 		return nil, err
 	}
 
@@ -267,7 +267,7 @@ type V5GetTransactionLogItem struct {
 }
 
 // GetTransactionLog :
-func (s *V5AccountService) GetTransactionLog(param V5GetTransactionLogParam) (*V5GetTransactionLogResponse, error) {
+func (s *V5AccountService) GetTransactionLog(ctx context.Context, param V5GetTransactionLogParam) (*V5GetTransactionLogResponse, error) {
 	var res V5GetTransactionLogResponse
 
 	queryString, err := query.Values(param)
@@ -275,7 +275,7 @@ func (s *V5AccountService) GetTransactionLog(param V5GetTransactionLogParam) (*V
 		return nil, err
 	}
 
-	if err := s.client.getV5Privately("/v5/account/transaction-log", queryString, &res); err != nil {
+	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/account/transaction-log", queryString, "V5AccountService", &res); err != nil {
 		return nil, err
 	}
 

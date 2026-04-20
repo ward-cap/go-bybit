@@ -80,7 +80,7 @@ func (s *V5ExecutionService) GetExecutionList(ctx context.Context, param V5GetEx
 		return
 	}
 
-	err = s.client.getV5PrivatelyCtx(ctx, "/v5/execution/list", queryString, &res)
+	err = s.client.getV5PrivatelyCtx(ctx, "/v5/execution/list", queryString, "V5ExecutionService", &res)
 
 	return
 }

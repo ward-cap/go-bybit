@@ -24,7 +24,7 @@ type V5SubMemberInfo struct {
 }
 
 func (s *V5UserService) GetSubUIDList(ctx context.Context) (res *V5APISubUIDList, err error) {
-	err = s.client.getV5PrivatelyCtx(ctx, "/v5/user/query-sub-members", url.Values{}, &res)
+	err = s.client.getV5PrivatelyCtx(ctx, "/v5/user/query-sub-members", url.Values{}, "V5UserService", &res)
 
 	return
 }

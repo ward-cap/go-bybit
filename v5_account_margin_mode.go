@@ -29,7 +29,7 @@ func (s *V5AccountService) SetMarginMode(
 		return
 	}
 
-	err = s.client.postV5JSON(ctx, "/v5/account/set-margin-mode", body, &res)
+	err = s.client.postV5JSON(ctx, "/v5/account/set-margin-mode", body, "V5AccountService", &res)
 
 	return
 }

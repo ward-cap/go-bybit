@@ -7,7 +7,7 @@ import (
 )
 
 type V5UserServiceI interface {
-	GetAPIKey() (*V5APIKeyResponse, error)
+	GetAPIKey(context.Context) (*V5APIKeyResponse, error)
 	CreateSubAcc(context.Context, CreateSubUserRequest) (*V5APICreateSubAcc, error)
 	CreateSubAPIKey(context.Context, CreateSubAPIKeyRequest) (*V5APICreateSubAPIKey, error)
 	ModifySubAPIKey(context.Context, ModifySubAPIKeyRequest) (*V5APIModifySubAPIKey, error)
@@ -63,12 +63,12 @@ type V5ApiKeyResult struct {
 }
 
 // GetAPIKey :
-func (s *V5UserService) GetAPIKey() (*V5APIKeyResponse, error) {
+func (s *V5UserService) GetAPIKey(ctx context.Context) (*V5APIKeyResponse, error) {
 	var (
 		res V5APIKeyResponse
 	)
 
-	if err := s.client.getV5Privately("/v5/user/query-api", url.Values{}, &res); err != nil {
+	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/user/query-api", url.Values{}, "V5UserService", &res); err != nil {
 		return nil, err
 	}
 

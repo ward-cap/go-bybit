@@ -35,7 +35,7 @@ func (s *V5UserService) CreateSubAcc(ctx context.Context, param CreateSubUserReq
 		return nil, fmt.Errorf("json marshal for CreateSubAcc: %w", err)
 	}
 
-	if err := s.client.postV5JSON(ctx, "/v5/user/create-sub-member", body, &res); err != nil {
+	if err := s.client.postV5JSON(ctx, "/v5/user/create-sub-member", body, "V5UserService", &res); err != nil {
 		return nil, err
 	}
 

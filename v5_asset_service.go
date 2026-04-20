@@ -16,12 +16,12 @@ import (
 // V5AssetServiceI :
 type V5AssetServiceI interface {
 	CreateInternalTransfer(context.Context, V5CreateInternalTransferParam) (*V5CreateInternalTransferResponse, error)
-	GetInternalTransferRecords(V5GetInternalTransferRecordsParam) (*V5GetInternalTransferRecordsResponse, error)
+	GetInternalTransferRecords(context.Context, V5GetInternalTransferRecordsParam) (*V5GetInternalTransferRecordsResponse, error)
 	CreateUniversalTransfer(context.Context, V5CreateUniversalTransferParam) (*V5CreateUniversalTransferResponse, error)
 	GetUniversalTransferRecords(context.Context, V5GetUniversalTransferRecordsParam) (*V5GetUniversalTransferRecordsResponse, error)
 	GetDepositRecords(context.Context, V5GetDepositRecordsParam) (*V5GetDepositRecordsResponse, error)
-	GetSubDepositRecords(V5GetSubDepositRecordsParam) (*V5GetSubDepositRecordsResponse, error)
-	GetInternalDepositRecords(V5GetInternalDepositRecordsParam) (*V5GetInternalDepositRecordsResponse, error)
+	GetSubDepositRecords(context.Context, V5GetSubDepositRecordsParam) (*V5GetSubDepositRecordsResponse, error)
+	GetInternalDepositRecords(context.Context, V5GetInternalDepositRecordsParam) (*V5GetInternalDepositRecordsResponse, error)
 	GetMasterDepositAddress(context.Context, V5GetMasterDepositAddressParam) (*V5GetMasterDepositAddressResponse, error)
 	GetWithdrawalRecords(context.Context, V5GetWithdrawalRecordsParam) (*V5GetWithdrawalRecordsResponse, error)
 	GetCoinInfo(context.Context, V5GetCoinInfoParam) (*V5GetCoinInfoResponse, error)
@@ -87,7 +87,7 @@ func (s *V5AssetService) CreateInternalTransfer(ctx context.Context, param V5Cre
 		return &res, fmt.Errorf("json marshal: %w", err)
 	}
 
-	if err := s.client.postV5JSON(ctx, "/v5/asset/transfer/inter-transfer", body, &res); err != nil {
+	if err := s.client.postV5JSON(ctx, "/v5/asset/transfer/inter-transfer", body, "V5AssetService", &res); err != nil {
 		return &res, err
 	}
 
@@ -132,7 +132,7 @@ type V5GetInternalTransferRecordsItem struct {
 }
 
 // GetInternalTransferRecords :
-func (s *V5AssetService) GetInternalTransferRecords(param V5GetInternalTransferRecordsParam) (*V5GetInternalTransferRecordsResponse, error) {
+func (s *V5AssetService) GetInternalTransferRecords(ctx context.Context, param V5GetInternalTransferRecordsParam) (*V5GetInternalTransferRecordsResponse, error) {
 	var res V5GetInternalTransferRecordsResponse
 
 	queryString, err := query.Values(param)
@@ -140,7 +140,7 @@ func (s *V5AssetService) GetInternalTransferRecords(param V5GetInternalTransferR
 		return nil, err
 	}
 
-	if err := s.client.getV5Privately("/v5/asset/transfer/query-inter-transfer-list", queryString, &res); err != nil {
+	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/asset/transfer/query-inter-transfer-list", queryString, "V5AssetService", &res); err != nil {
 		return nil, err
 	}
 
@@ -196,7 +196,7 @@ func (s *V5AssetService) CreateUniversalTransfer(ctx context.Context, param V5Cr
 		return &res, fmt.Errorf("json marshal: %w", err)
 	}
 
-	if err := s.client.postV5JSON(ctx, "/v5/asset/transfer/universal-transfer", body, &res); err != nil {
+	if err := s.client.postV5JSON(ctx, "/v5/asset/transfer/universal-transfer", body, "V5AssetService", &res); err != nil {
 		return &res, err
 	}
 
@@ -247,7 +247,7 @@ func (s *V5AssetService) GetUniversalTransferRecords(
 		return
 	}
 
-	err = s.client.getV5PrivatelyCtx(ctx, "/v5/asset/transfer/query-universal-transfer-list", queryString, &res)
+	err = s.client.getV5PrivatelyCtx(ctx, "/v5/asset/transfer/query-universal-transfer-list", queryString, "V5AssetService", &res)
 
 	return
 }
@@ -301,7 +301,7 @@ func (s *V5AssetService) GetDepositRecords(ctx context.Context, param V5GetDepos
 		return nil, err
 	}
 
-	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/asset/deposit/query-record", queryString, &res); err != nil {
+	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/asset/deposit/query-record", queryString, "V5AssetService", &res); err != nil {
 		return nil, err
 	}
 
@@ -351,7 +351,7 @@ type V5GetSubDepositRecordsRow struct {
 }
 
 // GetSubDepositRecords :
-func (s *V5AssetService) GetSubDepositRecords(param V5GetSubDepositRecordsParam) (*V5GetSubDepositRecordsResponse, error) {
+func (s *V5AssetService) GetSubDepositRecords(ctx context.Context, param V5GetSubDepositRecordsParam) (*V5GetSubDepositRecordsResponse, error) {
 	var res V5GetSubDepositRecordsResponse
 
 	queryString, err := query.Values(param)
@@ -359,7 +359,7 @@ func (s *V5AssetService) GetSubDepositRecords(param V5GetSubDepositRecordsParam)
 		return nil, err
 	}
 
-	if err := s.client.getV5Privately("/v5/asset/deposit/query-sub-member-record", queryString, &res); err != nil {
+	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/asset/deposit/query-sub-member-record", queryString, "V5AssetService", &res); err != nil {
 		return nil, err
 	}
 
@@ -402,7 +402,7 @@ type V5GetInternalDepositRecordsRow struct {
 }
 
 // GetInternalDepositRecords :
-func (s *V5AssetService) GetInternalDepositRecords(param V5GetInternalDepositRecordsParam) (*V5GetInternalDepositRecordsResponse, error) {
+func (s *V5AssetService) GetInternalDepositRecords(ctx context.Context, param V5GetInternalDepositRecordsParam) (*V5GetInternalDepositRecordsResponse, error) {
 	var res V5GetInternalDepositRecordsResponse
 
 	queryString, err := query.Values(param)
@@ -410,7 +410,7 @@ func (s *V5AssetService) GetInternalDepositRecords(param V5GetInternalDepositRec
 		return nil, err
 	}
 
-	if err := s.client.getV5Privately("/v5/asset/deposit/query-internal-record", queryString, &res); err != nil {
+	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/asset/deposit/query-internal-record", queryString, "V5AssetService", &res); err != nil {
 		return nil, err
 	}
 
@@ -459,7 +459,7 @@ func (s *V5AssetService) GetMasterDepositAddress(ctx context.Context, param V5Ge
 		return nil, err
 	}
 
-	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/asset/deposit/query-address", queryString, &res); err != nil {
+	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/asset/deposit/query-address", queryString, "V5AssetService", &res); err != nil {
 		return nil, err
 	}
 
@@ -517,7 +517,7 @@ func (s *V5AssetService) GetWithdrawalRecords(ctx context.Context, param V5GetWi
 		return nil, err
 	}
 
-	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/asset/withdraw/query-record", queryString, &res); err != nil {
+	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/asset/withdraw/query-record", queryString, "V5AssetService", &res); err != nil {
 		return nil, err
 	}
 
@@ -577,7 +577,7 @@ func (s *V5AssetService) GetCoinInfo(ctx context.Context, param V5GetCoinInfoPar
 		return nil, err
 	}
 
-	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/asset/coin/query-info", queryString, &res); err != nil {
+	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/asset/coin/query-info", queryString, "V5AssetService", &res); err != nil {
 		return nil, err
 	}
 
@@ -627,7 +627,7 @@ func (s *V5AssetService) GetAllCoinsBalance(ctx context.Context, param V5GetAllC
 		queryString.Set("coin", strings.Join(param.Coins, ","))
 	}
 
-	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/asset/transfer/query-account-coins-balance", queryString, &res); err != nil {
+	if err := s.client.getV5PrivatelyCtx(ctx, "/v5/asset/transfer/query-account-coins-balance", queryString, "V5AssetService", &res); err != nil {
 		return nil, err
 	}
 
@@ -665,7 +665,7 @@ func (s *V5AssetService) Withdraw(ctx context.Context, param V5WithdrawParam) (*
 		return &res, fmt.Errorf("json marshal: %w", err)
 	}
 
-	if err := s.client.postV5JSON(ctx, "/v5/asset/withdraw/create", body, &res); err != nil {
+	if err := s.client.postV5JSON(ctx, "/v5/asset/withdraw/create", body, "V5AssetService", &res); err != nil {
 		return &res, err
 	}
 

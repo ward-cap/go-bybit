@@ -46,7 +46,7 @@ func (s *V5UserService) ModifySubAPIKey(ctx context.Context, param ModifySubAPIK
 
 	var res *V5APIModifySubAPIKey
 
-	if err := s.client.postV5JSON(ctx, "/v5/user/update-sub-api", body, &res); err != nil {
+	if err := s.client.postV5JSON(ctx, "/v5/user/update-sub-api", body, "V5UserService", &res); err != nil {
 		return nil, err
 	}
 

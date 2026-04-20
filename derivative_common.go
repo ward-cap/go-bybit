@@ -101,7 +101,7 @@ func (s *DerivativeCommonService) DerivativesOrderBook(param DerivativesOrderBoo
 		return nil, err
 	}
 
-	if err := s.client.getPublicly("/derivatives/v3/public/order-book/L2", queryString, &res); err != nil {
+	if err := s.client.getPublicly("/derivatives/v3/public/order-book/L2", queryString, "DerivativeCommonService", &res); err != nil {
 		return nil, err
 	}
 
@@ -177,7 +177,7 @@ func (s *DerivativeCommonService) DerivativesKline(param DerivativesKlineParam) 
 		return nil, err
 	}
 
-	if err := s.client.getPublicly("/derivatives/v3/public/kline", queryString, &res); err != nil {
+	if err := s.client.getPublicly("/derivatives/v3/public/kline", queryString, "DerivativeCommonService", &res); err != nil {
 		return nil, err
 	}
 
@@ -241,7 +241,7 @@ func (s *DerivativeCommonService) DerivativesTickers(param DerivativesTickersPar
 		return nil, err
 	}
 
-	if err := s.client.getPublicly("/derivatives/v3/public/tickers", queryString, &res); err != nil {
+	if err := s.client.getPublicly("/derivatives/v3/public/tickers", queryString, "DerivativeCommonService", &res); err != nil {
 		return nil, err
 	}
 
@@ -301,7 +301,7 @@ func (s *DerivativeCommonService) DerivativesTickersForOption(param DerivativesT
 		return nil, err
 	}
 
-	if err := s.client.getPublicly("/derivatives/v3/public/tickers", queryString, &res); err != nil {
+	if err := s.client.getPublicly("/derivatives/v3/public/tickers", queryString, "DerivativeCommonService", &res); err != nil {
 		return nil, err
 	}
 
@@ -368,7 +368,7 @@ func (s *DerivativeCommonService) DerivativesInstruments(param DerivativesInstru
 		return nil, err
 	}
 
-	if err := s.client.getPublicly("/derivatives/v3/public/instruments-info", queryString, &res); err != nil {
+	if err := s.client.getPublicly("/derivatives/v3/public/instruments-info", queryString, "DerivativeCommonService", &res); err != nil {
 		return nil, err
 	}
 
@@ -426,7 +426,7 @@ func (s *DerivativeCommonService) DerivativesInstrumentsForOption(param Derivati
 	}
 	queryString.Add("category", string(CategoryDerivativeOption))
 
-	if err := s.client.getPublicly("/derivatives/v3/public/instruments-info", queryString, &res); err != nil {
+	if err := s.client.getPublicly("/derivatives/v3/public/instruments-info", queryString, "DerivativeCommonService", &res); err != nil {
 		return nil, err
 	}
 
@@ -494,7 +494,7 @@ func (s *DerivativeCommonService) DerivativesMarkPriceKline(param DerivativesMar
 		return nil, err
 	}
 
-	if err := s.client.getPublicly("/derivatives/v3/public/mark-price-kline", queryString, &res); err != nil {
+	if err := s.client.getPublicly("/derivatives/v3/public/mark-price-kline", queryString, "DerivativeCommonService", &res); err != nil {
 		return nil, err
 	}
 
@@ -562,7 +562,7 @@ func (s *DerivativeCommonService) DerivativesIndexPriceKline(param DerivativesIn
 		return nil, err
 	}
 
-	if err := s.client.getPublicly("/derivatives/v3/public/index-price-kline", queryString, &res); err != nil {
+	if err := s.client.getPublicly("/derivatives/v3/public/index-price-kline", queryString, "DerivativeCommonService", &res); err != nil {
 		return nil, err
 	}
 
