@@ -1,9 +1,6 @@
 package bybit
 
 import (
-	"crypto/hmac"
-	"crypto/sha256"
-	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"go.uber.org/zap"
@@ -67,6 +64,11 @@ func (c *WebSocketClient) WithBaseURL(url string) *WebSocketClient {
 	return c
 }
 
+// Sign returns an HMAC-SHA256 signature for the provided payload using the client's secret.
+func (c *WebSocketClient) Sign(payload string) string {
+	return signPayload(c.secret, payload)
+}
+
 // hasAuth : check has auth key and secret
 func (c *WebSocketClient) hasAuth() bool {
 	return c.key != "" && c.secret != ""
@@ -79,17 +81,12 @@ func (c *WebSocketClient) buildAuthParam() ([]byte, error) {
 
 	expires := time.Now().Unix()*1000 + 10000
 	req := fmt.Sprintf("GET/realtime%d", expires)
-	s := hmac.New(sha256.New, []byte(c.secret))
-	if _, err := s.Write([]byte(req)); err != nil {
-		return nil, err
-	}
-	signature := hex.EncodeToString(s.Sum(nil))
 	param := struct {
 		Op   string        `json:"op"`
 		Args []interface{} `json:"args"`
 	}{
 		Op:   "auth",
-		Args: []interface{}{c.key, expires, signature},
+		Args: []interface{}{c.key, expires, c.Sign(req)},
 	}
 	buf, err := json.Marshal(param)
 	if err != nil {

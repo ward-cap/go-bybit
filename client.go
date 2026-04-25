@@ -117,6 +117,11 @@ func (c *Client) WithReferer(referer string) *Client {
 	return c
 }
 
+// Sign returns an HMAC-SHA256 signature for the provided payload using the client's secret.
+func (c *Client) Sign(payload string) string {
+	return signPayload(c.secret, payload)
+}
+
 // Request :
 func (c *Client) Request(req *http.Request, dst any) (err error) {
 	return c.callAPI(req.Context(), apiCall{
@@ -142,7 +147,7 @@ func (c *Client) populateSignature(src url.Values) url.Values {
 	if c.referer != "" {
 		src.Add("referer", c.referer)
 	}
-	src.Add("sign", getSignature(src, c.secret))
+	src.Add("sign", getSignature(src, c))
 
 	return src
 }
@@ -158,7 +163,7 @@ func (c *Client) populateSignatureForBody(src []byte) []byte {
 	if c.referer != "" {
 		body["referer"] = c.referer
 	}
-	body["sign"] = getSignatureForBody(body, c.secret)
+	body["sign"] = getSignatureForBody(body, c)
 
 	result, err := json.Marshal(body)
 	if err != nil {
@@ -172,27 +177,23 @@ func getV5Signature(
 	timestamp int64,
 	key string,
 	queryString string,
-	secret string,
+	signer interface{ Sign(string) string },
 ) string {
-	h := hmac.New(sha256.New, []byte(secret))
-	h.Write([]byte(fmt.Sprintf("%d%s%s", timestamp, key, queryString)))
-	return hex.EncodeToString(h.Sum(nil))
+	return signer.Sign(fmt.Sprintf("%d%s%s", timestamp, key, queryString))
 }
 
 func getV5SignatureForBody(
 	timestamp int64,
 	key string,
 	body []byte,
-	secret string,
+	signer interface{ Sign(string) string },
 ) string {
 	val := strconv.FormatInt(timestamp, 10) + key
 	val = val + string(body)
-	h := hmac.New(sha256.New, []byte(secret))
-	h.Write([]byte(val))
-	return hex.EncodeToString(h.Sum(nil))
+	return signer.Sign(val)
 }
 
-func getSignature(src url.Values, key string) string {
+func getSignature(src url.Values, signer interface{ Sign(string) string }) string {
 	keys := make([]string, len(src))
 	i := 0
 	_val := ""
@@ -205,16 +206,10 @@ func getSignature(src url.Values, key string) string {
 		_val += k + "=" + src.Get(k) + "&"
 	}
 	_val = _val[0 : len(_val)-1]
-	h := hmac.New(sha256.New, []byte(key))
-	_, err := io.WriteString(h, _val)
-	if err != nil {
-		panic(err)
-	}
-
-	return fmt.Sprintf("%x", h.Sum(nil))
+	return signer.Sign(_val)
 }
 
-func getSignatureForBody(src map[string]interface{}, key string) string {
+func getSignatureForBody(src map[string]interface{}, signer interface{ Sign(string) string }) string {
 	keys := make([]string, len(src))
 	i := 0
 	_val := ""
@@ -227,13 +222,18 @@ func getSignatureForBody(src map[string]interface{}, key string) string {
 		_val += k + "=" + fmt.Sprintf("%v", src[k]) + "&"
 	}
 	_val = _val[0 : len(_val)-1]
-	h := hmac.New(sha256.New, []byte(key))
-	_, err := io.WriteString(h, _val)
+	return signer.Sign(_val)
+}
+
+func signPayload(secret string, payload string) string {
+	h := hmac.New(sha256.New, []byte(secret))
+	_, _ = h.Write([]byte(payload))
+	_, err := io.WriteString(h, payload)
 	if err != nil {
 		panic(err)
 	}
 
-	return fmt.Sprintf("%x", h.Sum(nil))
+	return hex.EncodeToString(h.Sum(nil))
 }
 
 func (c *Client) getPublicly(path string, query url.Values, service string, dst any) error {
@@ -284,7 +284,7 @@ func (c *Client) getV5PrivatelyCtx(ctx context.Context, path string, query url.V
 	}
 	req.Header.Set("X-BAPI-API-KEY", c.key)
 	req.Header.Set("X-BAPI-TIMESTAMP", strconv.FormatInt(timestamp, 10))
-	req.Header.Set("X-BAPI-SIGN", getV5Signature(timestamp, c.key, u.RawQuery, c.secret))
+	req.Header.Set("X-BAPI-SIGN", getV5Signature(timestamp, c.key, u.RawQuery, c))
 
 	if err := c.callAPI(ctx, apiCall{
 		service: service,
@@ -309,7 +309,7 @@ func (c *Client) postV5JSON(ctx context.Context, path string, body []byte, servi
 	u.Path = path
 
 	timestamp := c.getTimestamp()
-	sign := getV5SignatureForBody(timestamp, c.key, body, c.secret)
+	sign := getV5SignatureForBody(timestamp, c.key, body, c)
 
 	if ctx == nil {
 		ctx = context.Background()
