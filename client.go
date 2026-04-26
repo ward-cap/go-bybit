@@ -227,7 +227,6 @@ func getSignatureForBody(src map[string]interface{}, signer interface{ Sign(stri
 
 func signPayload(secret string, payload string) string {
 	h := hmac.New(sha256.New, []byte(secret))
-	_, _ = h.Write([]byte(payload))
 	_, err := io.WriteString(h, payload)
 	if err != nil {
 		panic(err)
