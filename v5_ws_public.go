@@ -4,10 +4,12 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"go.uber.org/zap"
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/mailru/easyjson"
+	"go.uber.org/zap"
 
 	"github.com/gorilla/websocket"
 )
@@ -124,11 +126,26 @@ func (s *V5WebsocketPublicService) judgeTopic(respBody []byte) (V5WebsocketPubli
 func (r *V5WebsocketPublicTickerData) UnmarshalJSON(data []byte) error {
 	switch r.category {
 	case CategoryV5Linear, CategoryV5Inverse:
-		return json.Unmarshal(data, &r.LinearInverse)
+		var result V5WebsocketPublicTickerLinearInverseResult
+		if err := easyjson.Unmarshal(data, &result); err != nil {
+			return err
+		}
+		r.LinearInverse = &result
+		return nil
 	case CategoryV5Option:
-		return json.Unmarshal(data, &r.Option)
+		var result V5WebsocketPublicTickerOptionResult
+		if err := easyjson.Unmarshal(data, &result); err != nil {
+			return err
+		}
+		r.Option = &result
+		return nil
 	case CategoryV5Spot:
-		return json.Unmarshal(data, &r.Spot)
+		var result V5WebsocketPublicTickerSpotResult
+		if err := easyjson.Unmarshal(data, &result); err != nil {
+			return err
+		}
+		r.Spot = &result
+		return nil
 	}
 	return errors.New("unsupported format")
 }

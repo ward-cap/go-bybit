@@ -122,6 +122,8 @@ type DerivativesKlineResult struct {
 }
 
 // DerivativesKlineResultList :
+//
+//easyjson:skip
 type DerivativesKlineResultList struct {
 	Start    string
 	Open     string
@@ -447,6 +449,8 @@ type DerivativesMarkPriceKlineResult struct {
 }
 
 // DerivativesMarkPriceKlineResultListItem :
+//
+//easyjson:skip
 type DerivativesMarkPriceKlineResultListItem struct {
 	Start string `json:"start"`
 	Open  string `json:"open"`
@@ -515,6 +519,8 @@ type DerivativesIndexPriceKlineResult struct {
 }
 
 // DerivativesIndexPriceKlineResultListItem :
+//
+//easyjson:skip
 type DerivativesIndexPriceKlineResultListItem struct {
 	Start string `json:"start"`
 	Open  string `json:"open"`

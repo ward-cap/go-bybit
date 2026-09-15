@@ -359,6 +359,8 @@ type V5GetInstrumentsInfoResponse struct {
 
 // V5GetInstrumentsInfoResult :
 // Responses are filled according to category.
+//
+//easyjson:skip
 type V5GetInstrumentsInfoResult struct {
 	LinearInverse *V5GetInstrumentsInfoLinearInverseResult
 	Option        *V5GetInstrumentsInfoOptionResult
@@ -618,6 +620,8 @@ type V5GetTickersResponse struct {
 
 // V5GetTickersResult :
 // Responses are filled according to category.
+//
+//easyjson:skip
 type V5GetTickersResult struct {
 	LinearInverse *V5GetTickersLinearInverseResult
 	Option        *V5GetTickersOptionResult
@@ -953,6 +957,8 @@ func (p V5GetHistoricalVolatilityParam) validate() error {
 }
 
 // V5GetHistoricalVolatilityResponse :
+//
+//easyjson:skip
 type V5GetHistoricalVolatilityResponse struct {
 	CommonV5Response `json:",inline"`
 	Result           V5GetHistoricalVolatilityResult `json:"result"`

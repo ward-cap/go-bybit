@@ -73,6 +73,8 @@ type V5WebsocketPublicTickerResponse struct {
 }
 
 // V5WebsocketPublicTickerData :
+//
+//easyjson:skip
 type V5WebsocketPublicTickerData struct {
 	category      CategoryV5
 	LinearInverse *V5WebsocketPublicTickerLinearInverseResult

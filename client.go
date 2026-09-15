@@ -438,6 +438,8 @@ func (c *Client) callAPI(ctx context.Context, call apiCall) (err error) {
 		err = fmt.Errorf("unexpected status code %d", resp.StatusCode)
 	}
 
+	_ = zap.ErrorLevel
+
 	span.RecordError(err)
 	span.SetStatus(codes.Error, err.Error())
 	c.logError(logger, resp, respBody, duration, err)

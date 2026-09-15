@@ -318,6 +318,7 @@ type V5CancelAllOrdersResponse struct {
 	Result           V5CancelAllOrdersResult `json:"result"`
 }
 
+//easyjson:skip
 type V5CancelAllOrdersResult struct {
 	LinearInverseOption *V5CancelAllOrdersLinearInverseOptionResult
 	Spot                *V5CancelAllOrdersSpotResult

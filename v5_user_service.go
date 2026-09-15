@@ -15,6 +15,7 @@ type V5UserServiceI interface {
 	GetSubDepositAddress(context.Context, GetSubDepositAddressRequest) (*V5APIGetSubDepositAddress, error)
 	GetBrokerAccountInfo(context.Context) (*V5APIBrokerAccountInfo, error)
 	GetSubUIDList(context.Context) (*V5APISubUIDList, error)
+	GetSubUIDAPIKeys(context.Context, GetSubUIDAPIKeysRequest) (*V5APISubUIDAPIKeys, error)
 	GetMemberType(context.Context) (*V5APIGetMemberType, error)
 	SignAgreement(context.Context, int) (*V5APISignAgreementResponse, error)
 }
