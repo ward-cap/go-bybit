@@ -1732,7 +1732,7 @@ func easyjson905cbfe2DecodeGithubComWardCapGoBybit8(in *jlexer.Lexer, out *V5Cre
 					*out.SlTriggerBy = TriggerBy(in.String())
 				}
 			}
-		case "reduce_only":
+		case "reduceOnly":
 			if in.IsNull() {
 				in.Skip()
 				out.ReduceOnly = nil
@@ -1982,7 +1982,7 @@ func easyjson905cbfe2EncodeGithubComWardCapGoBybit8(out *jwriter.Writer, in V5Cr
 		out.String(string(*in.SlTriggerBy))
 	}
 	if in.ReduceOnly != nil {
-		const prefix string = ",\"reduce_only\":"
+		const prefix string = ",\"reduceOnly\":"
 		out.RawString(prefix)
 		out.Bool(bool(*in.ReduceOnly))
 	}
