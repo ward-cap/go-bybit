@@ -43,7 +43,7 @@ type V5CreateOrderParam struct {
 	StopLoss              *string           `json:"stopLoss,omitempty"`
 	TpTriggerBy           *TriggerBy        `json:"tpTriggerBy,omitempty"`
 	SlTriggerBy           *TriggerBy        `json:"slTriggerBy,omitempty"`
-	ReduceOnly            *bool             `json:"reduce_only,omitempty"`
+	ReduceOnly            *bool             `json:"reduceOnly,omitempty"`
 	CloseOnTrigger        *bool             `json:"closeOnTrigger,omitempty"`
 	SmpType               *string           `json:"smpType,omitempty"`
 	MarketMakerProtection *bool             `json:"mmp,omitempty"` // option only
