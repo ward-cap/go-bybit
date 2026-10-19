@@ -18,6 +18,9 @@ type V5UserServiceI interface {
 	GetSubUIDAPIKeys(context.Context, GetSubUIDAPIKeysRequest) (*V5APISubUIDAPIKeys, error)
 	GetMemberType(context.Context) (*V5APIGetMemberType, error)
 	SignAgreement(context.Context, int) (*V5APISignAgreementResponse, error)
+	SetBrokerAPILimit(context.Context, SetBrokerAPILimitRequest) (*V5APIBrokerAPILimitSet, error)
+	GetBrokerAPILimits(context.Context, GetBrokerAPILimitsRequest) (*V5APIBrokerAPILimits, error)
+	GetBrokerAPILimitCap(context.Context) (*V5APIBrokerAPILimitCap, error)
 }
 
 // V5UserService :
