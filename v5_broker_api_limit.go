@@ -6,6 +6,9 @@ import (
 	"fmt"
 	"net/url"
 	"strconv"
+	"strings"
+
+	"github.com/shopspring/decimal"
 )
 
 // Exchange broker per-UID API rate limits. Only the broker's master account may
@@ -68,8 +71,8 @@ type V5APIBrokerAPILimitsResult struct {
 }
 
 type GetBrokerAPILimitsRequest struct {
-	// UIDs is comma-separated; empty lists every configured uid.
-	UIDs string
+	// UIDs empty lists every configured uid.
+	UIDs []string
 	// Limit is capped at 1000 by the exchange; zero leaves it to the default.
 	Limit  int
 	Cursor string
@@ -80,8 +83,8 @@ type GetBrokerAPILimitsRequest struct {
 // exchange to 1 request per second.
 func (s *V5UserService) GetBrokerAPILimits(ctx context.Context, param GetBrokerAPILimitsRequest) (res *V5APIBrokerAPILimits, err error) {
 	query := url.Values{}
-	if param.UIDs != "" {
-		query.Set("uids", param.UIDs)
+	if len(param.UIDs) > 0 {
+		query.Set("uids", strings.Join(param.UIDs, ","))
 	}
 	if param.Limit > 0 {
 		query.Set("limit", strconv.Itoa(param.Limit))
@@ -107,9 +110,9 @@ type V5APIBrokerAPILimitCapResult struct {
 type V5BrokerAPILimitCap struct {
 	BizType string `json:"bizType"`
 	// TotalRate is what is already handed out across the master and every sub account.
-	TotalRate string `json:"totalRate"`
-	EbCap     string `json:"ebCap"`
-	UIDCap    string `json:"uidCap"`
+	TotalRate decimal.Decimal `json:"totalRate"`
+	EbCap     decimal.Decimal `json:"ebCap"`
+	UIDCap    decimal.Decimal `json:"uidCap"`
 }
 
 // GetBrokerAPILimitCap returns the broker-level and per-UID ceilings. The list

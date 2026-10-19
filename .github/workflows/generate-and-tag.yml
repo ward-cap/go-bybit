@@ -1,0 +1,92 @@
+name: Generate & Tag
+
+# *_easyjson.go is never committed to main (see .gitignore and the Makefile's
+# `easyjson` target). On every push to main this workflow regenerates it,
+# commits it onto a throwaway `generated-{short main SHA}` branch only so a tag
+# has a commit to point at, tags that commit, pushes both and deletes the
+# branch. The tag is what consumers' go.mod must point at: a pseudo-version of
+# a main commit has no easyjson and does not compile.
+#
+# Tags are v1.x.y. The older v2.x tags are invisible to Go: a v2+ tag needs a
+# `/v2` module path, and this module has none.
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: generate-and-tag
+  cancel-in-progress: false
+
+jobs:
+  generate-and-tag:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: false
+
+      # go.sum is gitignored here, so a fresh checkout has none.
+      - name: Populate go.sum
+        run: go mod download all
+
+      - name: Generate easyjson
+        run: make easyjson
+
+      - name: Test
+        run: make test
+
+      - name: Compute next version tag
+        id: version
+        run: |
+          latest=$(git tag --list 'v1.*' | sort -V | tail -1)
+          if [ -z "$latest" ]; then
+            next="v1.0.0"
+          else
+            IFS='.' read -r major minor patch <<< "${latest#v}"
+            next="v${major}.${minor}.$((patch + 1))"
+          fi
+          echo "next version: $next (previous: ${latest:-none})"
+          echo "tag=$next" >> "$GITHUB_OUTPUT"
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Compute branch name
+        id: branch
+        run: echo "name=generated-$(git rev-parse --short=6 HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Commit generated files onto a throwaway branch
+        run: |
+          git checkout -B "${{ steps.branch.outputs.name }}"
+          git add -f ./*_easyjson.go
+          git commit -m "chore: generated files for ${{ steps.version.outputs.tag }} (source ${GITHUB_SHA})" --allow-empty
+          git tag "${{ steps.version.outputs.tag }}"
+
+      - name: Verify the tagged commit builds on its own
+        run: |
+          rm -rf /tmp/tagcheck
+          git clone --quiet --no-local --branch "${{ steps.version.outputs.tag }}" . /tmp/tagcheck
+          cd /tmp/tagcheck
+          go mod download all
+          go build ./...
+
+      - name: Push branch and tag
+        run: |
+          git push origin "${{ steps.branch.outputs.name }}" --force
+          git push origin "${{ steps.version.outputs.tag }}"
+
+      - name: Delete the throwaway branch
+        run: git push origin --delete "${{ steps.branch.outputs.name }}"
